@@ -238,9 +238,9 @@ void tevent_097(void)
 {
 	if (TRV_enter_hut_question()) {
 
-		gs_current_loctype = LOCTYPE_WILDCAMP;
+		gs_town_loc_type = LOCTYPE_WILDCAMP;
 		do_location();
-		gs_current_loctype = LOCTYPE_NONE;
+		gs_town_loc_type = LOCTYPE_NONE;
 	}
 }
 
@@ -306,9 +306,9 @@ void tevent_098(void)
 
 			loose_random_item(hero, 1, get_ttx(506));
 
-			gs_current_loctype = LOCTYPE_WILDCAMP;
+			gs_town_loc_type = LOCTYPE_WILDCAMP;
 			do_location();
-			gs_current_loctype = LOCTYPE_NONE;
+			gs_town_loc_type = LOCTYPE_NONE;
 
 			TRV_load_textfile(-1);
 		} else {
@@ -500,9 +500,9 @@ void tevent_102(void)
 {
 	if (TRV_enter_hut_question())
 	{
-		gs_current_loctype = LOCTYPE_WILDCAMP;
+		gs_town_loc_type = LOCTYPE_WILDCAMP;
 		do_location();
-		gs_current_loctype = LOCTYPE_NONE;
+		gs_town_loc_type = LOCTYPE_NONE;
 	}
 }
 
@@ -568,9 +568,9 @@ void tevent_103(void)
 
 			GUI_output(get_tx2(52));
 
-			gs_current_loctype = LOCTYPE_WILDCAMP;
+			gs_town_loc_type = LOCTYPE_WILDCAMP;
 			do_location();
-			gs_current_loctype = LOCTYPE_NONE;
+			gs_town_loc_type = LOCTYPE_NONE;
 
 			TRV_load_textfile(-1);
 
@@ -637,9 +637,9 @@ void tevent_104(void)
 			if (answer == 2) {
 				/* make a camp */
 
-				gs_current_loctype = LOCTYPE_WILDCAMP;
+				gs_town_loc_type = LOCTYPE_WILDCAMP;
 				do_location();
-				gs_current_loctype = LOCTYPE_NONE;
+				gs_town_loc_type = LOCTYPE_NONE;
 
 				TRV_load_textfile(-1);
 #ifdef M302de_ORIGINAL_BUGFIX
@@ -728,9 +728,9 @@ void tevent_105(void)
 {
 	if (TRV_enter_hut_question()) {
 
-		gs_current_loctype = LOCTYPE_WILDCAMP;
+		gs_town_loc_type = LOCTYPE_WILDCAMP;
 		do_location();
-		gs_current_loctype = LOCTYPE_NONE;
+		gs_town_loc_type = LOCTYPE_NONE;
 	}
 }
 

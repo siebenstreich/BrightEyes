@@ -270,9 +270,9 @@ void tevent_095(void)
 			if (counter_failed == 2)
 			{
 				/* make a rest */
-				gs_current_loctype = LOCTYPE_WILDCAMP;
+				gs_town_loc_type = LOCTYPE_WILDCAMP;
 				do_location();
-				gs_current_loctype = LOCTYPE_NONE;
+				gs_town_loc_type = LOCTYPE_NONE;
 
 				TRV_load_textfile(-1);
 			} else {
@@ -418,9 +418,9 @@ void tevent_096(void)
 
 			GUI_output(get_tx2(25));
 
-			gs_current_loctype = LOCTYPE_WILDCAMP;
+			gs_town_loc_type = LOCTYPE_WILDCAMP;
 			do_location();
-			gs_current_loctype = LOCTYPE_NONE;
+			gs_town_loc_type = LOCTYPE_NONE;
 
 			TRV_load_textfile(-1);
 
