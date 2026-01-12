@@ -361,7 +361,7 @@ void draw_fight_screen(const signed int val)
 
 	call_mouse_bg();
 
-	p_fighter = (struct struct_fighter*)g_fig_list_head;
+	p_fighter = g_fig_list_head;
 
 	do {
 		/* Check for each list entry if a sprite is needed */
@@ -392,7 +392,7 @@ void draw_fight_screen(const signed int val)
 		g_fig_ani_state[i] = -1;
 	}
 
-	p_fighter = (struct struct_fighter*)g_fig_list_head;
+	p_fighter = g_fig_list_head;
 	flag = 0;
 
 	do {
@@ -448,7 +448,7 @@ void draw_fight_screen(const signed int val)
 
 		g_pic_copy.dst = g_vga_backbuffer = g_renderbuf_ptr;
 
-		for (p_fighter = (struct struct_fighter*)g_fig_list_head; p_fighter; p_fighter = p_fighter->next) {
+		for (p_fighter = g_fig_list_head; p_fighter; p_fighter = p_fighter->next) {
 			if (p_fighter->visible == 2)
 				p_fighter->visible = 1;
 		}
@@ -473,7 +473,7 @@ void draw_fight_screen(const signed int val)
 		g_pic_copy.src = g_buffer8_ptr;
 		do_pic_copy(3);
 
-		p_fighter = (struct struct_fighter*)g_fig_list_head;
+		p_fighter = g_fig_list_head;
 
 		do {
 			p_weapon_gfx = 0;	/* NULL */
@@ -976,7 +976,7 @@ void draw_fight_screen(const signed int val)
 		g_pic_copy.dst = g_renderbuf_ptr;
 	}
 
-	for (p_fighter = (struct struct_fighter*)g_fig_list_head; p_fighter; p_fighter = p_fighter->next) {
+	for (p_fighter = g_fig_list_head; p_fighter; p_fighter = p_fighter->next) {
 		if (p_fighter->visible != 0)
 			p_fighter->visible = 1;
 	}
