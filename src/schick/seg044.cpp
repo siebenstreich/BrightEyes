@@ -372,7 +372,7 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	signed int i;
 	int8_t *p_ani_clip_base;
 	int8_t *p_ani_clip_weapon;
-	struct struct_fighter *fighter;			/* only user for two sprited figures */
+	struct struct_fighter *p_fighter;			/* only user for two sprited figures */
 	int16_t *ani_index_ptr;			/* read only */
 	signed int weapon_gfx_id;
 
@@ -569,9 +569,9 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 
 		memcpy(&g_fig_ani_tracks[FANI_TRACK_ID_BASE_TO_TAIL(ani_track_id)], &g_fig_ani_tracks[ani_track_id], 243);
 
-		fighter = FIG_get_fighter(enemy->fighter_id);
+		p_fighter = FIG_get_fighter(enemy->fighter_id);
 
-		FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[fighter->double_size], FANI_TRACK_ID_BASE_TO_TAIL(ani_track_id));
+		FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[p_fighter->double_size], FANI_TRACK_ID_BASE_TO_TAIL(ani_track_id));
 	}
 
 	if (weapon_gfx_id != WEAPON_GFX_ID_NONE) {

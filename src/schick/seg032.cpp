@@ -381,7 +381,7 @@ void FIG_do_round(void)
 	struct enemy_sheet *enemy;
 	signed int x;
 	signed int y;
-	struct struct_fighter *fighter_ptr;
+	struct struct_fighter *p_fighter;
 
 	/* A round is the phase of a fight where all heroes and enemies get their number of BP (Bewegungspunkte; depending on load, enemy type etc.) and use them to perform a series of actions.
 	 * Actions are performed in action phases, An action phase consists of one or more actions by the active actor, where the actions 'melee attack', 'ranged attack',
@@ -556,12 +556,12 @@ void FIG_do_round(void)
 					/* awake him (or her) */
 					hero->flags.asleep = 0;
 
-					fighter_ptr = FIG_get_fighter(hero->fighter_id);
+					p_fighter = FIG_get_fighter(hero->fighter_id);
 
-					fighter_ptr->nvf_no = hero->viewdir;
-					fighter_ptr->reload = -1;
-					fighter_ptr->offsetx = 0;
-					fighter_ptr->offsety = 0;
+					p_fighter->nvf_no = hero->viewdir;
+					p_fighter->reload = -1;
+					p_fighter->offsetx = 0;
+					p_fighter->offsety = 0;
 				}
 			}
 
@@ -612,28 +612,28 @@ void FIG_do_round(void)
 									/* goal: remove tail part */
 
 									FIG_search_obj_on_cb(hero->target_object_id + 20, &x, &y);
-									/* (x,y) are the coordinates of the tail of the enemy. redundant as fighter_ptr->cbx, fighter_ptr->cby could have been used later. */
+									/* (x,y) are the coordinates of the tail of the enemy. redundant as p_fighter->cbx, p_fighter->cby could have been used later. */
 
-									fighter_ptr = FIG_get_fighter(g_enemy_sheets[hero->target_object_id - 10].fighter_id);
-									/* intermediate: fighter_ptr points to the fighter assigned to the enemy */
+									p_fighter = FIG_get_fighter(g_enemy_sheets[hero->target_object_id - 10].fighter_id);
+									/* intermediate: p_fighter points to the fighter assigned to the enemy */
 
-									fighter_ptr = FIG_get_fighter(g_fig_double_size_fighter_id_table[fighter_ptr->double_size]);
-									/* fighter_ptr now points the fighter entry of the tail part of the enemy */
-									// assert((fighter_ptr->cbx == x) && (fighter_ptr->cby == y))
+									p_fighter = FIG_get_fighter(g_fig_double_size_fighter_id_table[p_fighter->double_size]);
+									/* p_fighter now points the fighter entry of the tail part of the enemy */
+									// assert((p_fighter->cbx == x) && (p_fighter->cby == y))
 
 									/* Probably, the following if-then-else-condition is not necessary as the condition is always true. */
-									if (fighter_ptr->object_id >= 0) {
+									if (p_fighter->object_id >= 0) {
 										/* The object_id of something is stored in the figher.object_id (meaning that the tail part is standing on it),
 										 * restore that to the cb */
 										/* BAE-TODO: passing of the 3rd parameter is different */
 #if !defined(__BORLANDC__)
-										FIG_set_cb_object(y, x, ((unsigned char)fighter_ptr->object_id));
+										FIG_set_cb_object(y, x, ((unsigned char)p_fighter->object_id));
 #else
-										FIG_set_cb_object(y, x, (_AL = fighter_ptr->object_id, _AX));
+										FIG_set_cb_object(y, x, (_AL = p_fighter->object_id, _AX));
 #endif
 									} else {
 										/* otherwise, set the square in the cb to 0 (free) */
-										FIG_set_cb_object(fighter_ptr->cby, fighter_ptr->cbx, 0);
+										FIG_set_cb_object(p_fighter->cby, p_fighter->cbx, 0);
 									}
 								}
 							}
@@ -706,28 +706,28 @@ void FIG_do_round(void)
 									/* attacked dead enemy is double-size */
 									/* goal: remove tail part */
 									FIG_search_obj_on_cb(enemy->target_object_id + 20, &x, &y);
-									/* (x,y) are the coordinates of the tail of the enemy. redundant as fighter_ptr->cbx, fighter_ptr->cby could have been used later. */
+									/* (x,y) are the coordinates of the tail of the enemy. redundant as p_fighter->cbx, p_fighter->cby could have been used later. */
 
 
-									fighter_ptr = FIG_get_fighter(g_enemy_sheets[enemy->target_object_id - 10].fighter_id);
-									/* intermediate: fighter_ptr points to the fighter assigned to the killed enemy */
+									p_fighter = FIG_get_fighter(g_enemy_sheets[enemy->target_object_id - 10].fighter_id);
+									/* intermediate: p_fighter points to the fighter assigned to the killed enemy */
 
-									fighter_ptr = FIG_get_fighter(g_fig_double_size_fighter_id_table[fighter_ptr->double_size]);
-									/* fighter_ptr now points the fighter assigned to the tail part of the killed enemy */
-									/* should be true: (fighter_ptr->cbx == x) and (fighter_ptr->cby == y) */
+									p_fighter = FIG_get_fighter(g_fig_double_size_fighter_id_table[p_fighter->double_size]);
+									/* p_fighter now points the fighter assigned to the tail part of the killed enemy */
+									/* should be true: (p_fighter->cbx == x) and (p_fighter->cby == y) */
 
 									/* Probably, the following if-then-else-condition is not necessary as the condition is always true. */
-									if (fighter_ptr->object_id >= 0) {
+									if (p_fighter->object_id >= 0) {
 										/* The object_id of something is stored in the figher.object_id (meaning that the tail part is standing on it),
 										 * restore that to the cb */
 #if !defined(__BORLANDC__)
-										FIG_set_cb_object(y, x, fighter_ptr->object_id);
+										FIG_set_cb_object(y, x, p_fighter->object_id);
 #else
-										FIG_set_cb_object(y, x, (_AL = fighter_ptr->object_id, _AX));
+										FIG_set_cb_object(y, x, (_AL = p_fighter->object_id, _AX));
 #endif
 									} else {
 										/* otherwise, set the square in the cb to 0 (free) */
-										FIG_set_cb_object(fighter_ptr->cby, fighter_ptr->cbx, 0);
+										FIG_set_cb_object(p_fighter->cby, p_fighter->cbx, 0);
 									}
 								}
 							}
@@ -756,15 +756,15 @@ void FIG_do_round(void)
 								/* attacking dead enemy is double-size */
 								/* goal: remove tail part */
 
-								fighter_ptr = FIG_get_fighter(enemy->fighter_id);
-								/* intermediate: fighter_ptr points to the fighter assigned to the enemy */
+								p_fighter = FIG_get_fighter(enemy->fighter_id);
+								/* intermediate: p_fighter points to the fighter assigned to the enemy */
 
-								fighter_ptr = FIG_get_fighter(g_fig_double_size_fighter_id_table[fighter_ptr->double_size]);
-								/* fighter_ptr now points the fighter assigned to the tail part of the enemy */
-								// assert((fighter_ptr->cbx == x) && (fighter_ptr->cby == y))
+								p_fighter = FIG_get_fighter(g_fig_double_size_fighter_id_table[p_fighter->double_size]);
+								/* p_fighter now points the fighter assigned to the tail part of the enemy */
+								// assert((p_fighter->cbx == x) && (p_fighter->cby == y))
 
 								/* restore the object_id stored at fighter.object_id (meaning that the tail part is standing on it) to the chessboard. */
-								FIG_set_cb_object(fighter_ptr->cby, fighter_ptr->cbx, fighter_ptr->object_id);
+								FIG_set_cb_object(p_fighter->cby, p_fighter->cbx, p_fighter->object_id);
 							}
 						}
 #endif

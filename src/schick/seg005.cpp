@@ -78,37 +78,37 @@ static void fight_delay(void);
  * \param[in] x       x coordinate on the screen
  * \param[in] y       y coordinate on the screen
  */
-static signed int FIG_obj_needs_refresh(struct struct_fighter *fighter, const signed int x, const signed int y)
+static signed int FIG_obj_needs_refresh(struct struct_fighter *p_fighter, const signed int x, const signed int y)
 {
-	if (fighter->visible) {
+	if (p_fighter->visible) {
 
-		struct struct_fighter *list_i;
+		struct struct_fighter *p_fighter_iter;
 		signed int ox;
 		signed int oy;
 
 		/* animated objects always need a refresh */
-		if ((fighter->ani_track_id_base != FANI_TRACK_ID_NONE) || (fighter->visible == 3))
+		if ((p_fighter->ani_track_id_base != FANI_TRACK_ID_NONE) || (p_fighter->visible == 3))
 			goto damn_label;
 
 		/* i = i->next; */
 		/* check if given object overlaps with any of the objects behind it */
-		for (list_i = g_fig_list_head; list_i != fighter; list_i = list_i->next)
+		for (p_fighter_iter = g_fig_list_head; p_fighter_iter != p_fighter; p_fighter_iter = p_fighter_iter->next)
 		{
 			/* Ignore invisible objects or objects, that are not refreshed */
-			if (list_i->visible >= 2) {
+			if (p_fighter_iter->visible >= 2) {
 
-				ox = 10 - list_i->width / 2 + (list_i->cbx + list_i->cby) * 10;
+				ox = 10 - p_fighter_iter->width / 2 + (p_fighter_iter->cbx + p_fighter_iter->cby) * 10;
 
-				oy = 118 - list_i->height + (list_i->cbx - list_i->cby) * 5;
+				oy = 118 - p_fighter_iter->height + (p_fighter_iter->cbx - p_fighter_iter->cby) * 5;
 
-				ox += list_i->offsetx;
-				oy += list_i->offsety;
+				ox += p_fighter_iter->offsetx;
+				oy += p_fighter_iter->offsety;
 
-				if ((x + fighter->width >= ox) && (x - list_i->width <= ox) && (y + fighter->height >= oy) && (y - list_i->height <= oy))
+				if ((x + p_fighter->width >= ox) && (x - p_fighter_iter->width <= ox) && (y + p_fighter->height >= oy) && (y - p_fighter_iter->height <= oy))
 				{
 damn_label:
-					if (fighter->visible == 1)
-						fighter->visible = 2;
+					if (p_fighter->visible == 1)
+						p_fighter->visible = 2;
 
 					return 1;
 				}
@@ -739,10 +739,11 @@ void draw_fight_screen(const signed int val)
 								}
 
 								/* check chessboard bounds */
-								if ( (p_fighter->cbx >= 24) || (p_fighter->cby >= 24)
+								if (
+									(p_fighter->cbx >= 24) || (p_fighter->cby >= 24)
 									|| (p_fighter->cbx < 0) || (p_fighter->cby < 0)
-									|| (p_fighter->object_id < 0))
-								{
+									|| (p_fighter->object_id < 0)
+								) {
 									/* hero/enemy escapes */
 
 										if (p_fighter->is_enemy == 1) {

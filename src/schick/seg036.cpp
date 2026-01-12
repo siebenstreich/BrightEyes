@@ -194,7 +194,7 @@ signed int AFIG_change_hero_weapon(struct struct_hero *hero)
 	signed int has_new_weapon = 0;
 	struct item_stats *item_p;
 	signed int item_id;
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 
 	for (pos = HERO_INVENTORY_SLOT_KNAPSACK_1; pos < NR_HERO_INVENTORY_SLOTS; pos++) {
 
@@ -235,9 +235,9 @@ signed int AFIG_change_hero_weapon(struct struct_hero *hero)
 		has_new_weapon = 0;
 	}
 
-	fighter = FIG_get_fighter(hero->fighter_id);
-	fighter->nvf_no = hero->viewdir;
-	fighter->reload = -1;
+	p_fighter = FIG_get_fighter(hero->fighter_id);
+	p_fighter->nvf_no = hero->viewdir;
+	p_fighter->reload = -1;
 
 	draw_fight_screen_pal(0);
 

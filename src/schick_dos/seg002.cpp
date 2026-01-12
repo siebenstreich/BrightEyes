@@ -4556,7 +4556,7 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 	signed int i; /* multi use: disease_id, poison_id, hero_pos */
 	signed int bak;
 	signed int old_le;
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	struct struct_hero *hero_i;
 
 	if (!hero->flags.dead && (le > 0)) {
@@ -4576,13 +4576,13 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 			/* in fight mode */
 			if (g_in_fight) {
 
-				fighter = FIG_get_fighter(hero->fighter_id);
+				p_fighter = FIG_get_fighter(hero->fighter_id);
 
 				/* update looking dir and other  */
-				fighter->nvf_no = hero->viewdir;
-				fighter->reload = -1;
-				fighter->offsetx = 0;
-				fighter->offsety = 0;
+				p_fighter->nvf_no = hero->viewdir;
+				p_fighter->reload = -1;
+				p_fighter->offsetx = 0;
+				p_fighter->offsety = 0;
 			}
 		}
 
@@ -4657,14 +4657,14 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 				/* in fight mode */
 				if (g_in_fight) {
 
-					fighter = FIG_get_fighter(hero->fighter_id);
+					p_fighter = FIG_get_fighter(hero->fighter_id);
 
-					fighter->nvf_no = g_nvftab_figures_unconscious[hero->actor_sprite_id] + hero->viewdir;
+					p_fighter->nvf_no = g_nvftab_figures_unconscious[hero->actor_sprite_id] + hero->viewdir;
 
-					fighter->reload = -1;
+					p_fighter->reload = -1;
 
-					fighter->offsetx = g_gfxtab_offsets_unconscious[hero->actor_sprite_id][hero->viewdir].x;
-					fighter->offsety = g_gfxtab_offsets_unconscious[hero->actor_sprite_id][hero->viewdir].y;
+					p_fighter->offsetx = g_gfxtab_offsets_unconscious[hero->actor_sprite_id][hero->viewdir].x;
+					p_fighter->offsety = g_gfxtab_offsets_unconscious[hero->actor_sprite_id][hero->viewdir].y;
 
 
 					FIG_add_msg(7, 0);
@@ -4702,7 +4702,7 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 void add_hero_le(struct struct_hero *hero, const signed int le)
 {
 	signed int val_bak;
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	signed int ret;
 
 	/* dead heroes never get LE */
@@ -4729,20 +4729,20 @@ void add_hero_le(struct struct_hero *hero, const signed int le)
 			/* maybe if we are in a fight */
 			if (g_in_fight) {
 
-				fighter = FIG_get_fighter(hero->fighter_id);
+				p_fighter = FIG_get_fighter(hero->fighter_id);
 
 				ret = FIG_weapon_gfx_id_ranged(hero);
 
 				if (ret != WEAPON_GFX_ID_NONE) {
 
-					fighter->nvf_no = g_nvftab_figures_rangeweapon[hero->actor_sprite_id - 1][ret][hero->viewdir];
+					p_fighter->nvf_no = g_nvftab_figures_rangeweapon[hero->actor_sprite_id - 1][ret][hero->viewdir];
 				} else {
-					fighter->nvf_no = hero->viewdir;
+					p_fighter->nvf_no = hero->viewdir;
 				}
 
-				fighter->reload = -1;
-				fighter->offsetx = 0;
-				fighter->offsety = 0;
+				p_fighter->reload = -1;
+				p_fighter->offsetx = 0;
+				p_fighter->offsety = 0;
 			}
 		}
 

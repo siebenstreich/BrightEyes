@@ -427,8 +427,8 @@ void FIG_latecomers(void)
 	signed int y;
 	signed int l4;
 	struct enemy_sheet *p_enemy;
-	struct struct_fighter *fighter;
-	struct struct_fighter *fighter_add;
+	struct struct_fighter *p_fighter;
+	struct struct_fighter *p_fighter_add;
 
 	struct viewdir_offsets a = g_fig_viewdir_offsets2;
 
@@ -454,17 +454,17 @@ void FIG_latecomers(void)
 						FIG_find_latecomer_position(g_current_fight->enemies[i].x, g_current_fight->enemies[i].y,
 								&x, &y,	g_current_fight->enemies[i].viewdir, 1);
 
-						fighter = FIG_get_fighter(p_enemy->fighter_id);
+						p_fighter = FIG_get_fighter(p_enemy->fighter_id);
 
-						fighter->cbx = x;
-						fighter->cby = y;
+						p_fighter->cbx = x;
+						p_fighter->cby = y;
 
-						l4 = g_fig_double_size_fighter_id_table[fighter->double_size];
+						l4 = g_fig_double_size_fighter_id_table[p_fighter->double_size];
 
-						fighter_add = FIG_get_fighter((signed char)l4);
+						p_fighter_add = FIG_get_fighter((signed char)l4);
 
-						fighter_add->cbx = x - a.offset[g_current_fight->enemies[i].viewdir].x;
-						fighter_add->cby = y - a.offset[g_current_fight->enemies[i].viewdir].y;
+						p_fighter_add->cbx = x - a.offset[g_current_fight->enemies[i].viewdir].x;
+						p_fighter_add->cby = y - a.offset[g_current_fight->enemies[i].viewdir].y;
 
 						FIG_remove_from_list(p_enemy->fighter_id, 1);
 
@@ -477,10 +477,10 @@ void FIG_latecomers(void)
 						FIG_find_latecomer_position(g_current_fight->enemies[i].x, g_current_fight->enemies[i].y,
 								&x, &y, g_current_fight->enemies[i].viewdir, 0);
 
-						fighter = FIG_get_fighter(p_enemy->fighter_id);
+						p_fighter = FIG_get_fighter(p_enemy->fighter_id);
 
-						fighter->cbx = x;
-						fighter->cby = y;
+						p_fighter->cbx = x;
+						p_fighter->cby = y;
 
 						FIG_remove_from_list(p_enemy->fighter_id, 1);
 

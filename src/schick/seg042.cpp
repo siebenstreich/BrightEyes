@@ -76,7 +76,7 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 	signed int ranged_attack_nonadjacent_flag; /* for ranged or spell attack: 0: at an adjacent square; 1: at a square at distance >= 2 */
 	signed int target_is_hero = 0;
 	signed int spell_test_result;
-	struct struct_fighter *fighter_add;
+	struct struct_fighter *p_fighter_add;
 	signed int width;
 	signed int height;
 
@@ -95,7 +95,7 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 	signed int target_x;
 	signed int target_y;
 	signed int viewdir;
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	struct actor_class grammar_tmp;
 	signed int fg_bak;
 	signed int bg_bak;
@@ -206,12 +206,12 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 				/* wake up target hero */
 				p_target_hero->flags.asleep = 0;
 
-				fighter = FIG_get_fighter(p_target_hero->fighter_id);
+				p_fighter = FIG_get_fighter(p_target_hero->fighter_id);
 
-				fighter->nvf_no = p_target_hero->viewdir;
-				fighter->reload = -1;
-				fighter->offsetx = 0;
-				fighter->offsety = 0;
+				p_fighter->nvf_no = p_target_hero->viewdir;
+				p_fighter->reload = -1;
+				p_fighter->offsetx = 0;
+				p_fighter->offsety = 0;
 			}
 
 			if (p_target_hero->flags.dead || !p_target_hero->typus) {
@@ -748,10 +748,10 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 
 				if (FIG_weapon_gfx_id_ranged(hero) == WEAPON_GFX_ID_NONE) {
 
-					fighter = FIG_get_fighter(hero->fighter_id);
+					p_fighter = FIG_get_fighter(hero->fighter_id);
 
-					fighter->nvf_no = hero->viewdir;
-					fighter->reload = -1;
+					p_fighter->nvf_no = hero->viewdir;
+					p_fighter->reload = -1;
 				}
 
 				if (ranged_attack_nonadjacent_flag != 0) {
@@ -982,9 +982,9 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 
 							if (is_in_byte_array(p_target_enemy->actor_sprite_id, g_double_size_actor_sprite_id_table))
 							{
-								fighter_add = FIG_get_fighter(p_target_enemy->fighter_id);
+								p_fighter_add = FIG_get_fighter(p_target_enemy->fighter_id);
 
-								FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[fighter_add->double_size], FANI_TRACK_ID_ACTOR_1_TAIL);
+								FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[p_fighter_add->double_size], FANI_TRACK_ID_ACTOR_1_TAIL);
 							}
 
 						} else {
@@ -1012,9 +1012,9 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 
 							if (is_in_byte_array(p_target_enemy->actor_sprite_id, g_double_size_actor_sprite_id_table))
 							{
-								fighter_add = FIG_get_fighter(p_target_enemy->fighter_id);
+								p_fighter_add = FIG_get_fighter(p_target_enemy->fighter_id);
 
-								FIG_make_invisible(g_fig_double_size_fighter_id_table[fighter_add->double_size]);
+								FIG_make_invisible(g_fig_double_size_fighter_id_table[p_fighter_add->double_size]);
 							}
 						} else {
 							if (hero->target_object_id > 0) {

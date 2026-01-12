@@ -54,7 +54,7 @@ void FIG_do_enemy_action(struct enemy_sheet* p_enemy, const signed int enemy_id)
 	signed int spell_test_result;
 	signed int spell_impact_gfx_id;
 	signed int weapon_gfx_id_ranged;
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 
 	signed int target_cannot_parry = 0;
 	/* The target cannot parry if it is a double-size enemy,
@@ -775,9 +775,9 @@ void FIG_do_enemy_action(struct enemy_sheet* p_enemy, const signed int enemy_id)
 
 						if (is_in_byte_array(target_enemy->actor_sprite_id, g_double_size_actor_sprite_id_table)) {
 
-							fighter = FIG_get_fighter(target_enemy->fighter_id);
+							p_fighter = FIG_get_fighter(target_enemy->fighter_id);
 
-							FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[fighter->double_size], FANI_TRACK_ID_ACTOR_1_TAIL);
+							FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[p_fighter->double_size], FANI_TRACK_ID_ACTOR_1_TAIL);
 						}
 					} else {
 
@@ -836,9 +836,9 @@ void FIG_do_enemy_action(struct enemy_sheet* p_enemy, const signed int enemy_id)
 
 							if (is_in_byte_array(target_enemy->actor_sprite_id, g_double_size_actor_sprite_id_table)) {
 
-								fighter = FIG_get_fighter(target_enemy->fighter_id);
+								p_fighter = FIG_get_fighter(target_enemy->fighter_id);
 
-								FIG_make_invisible(g_fig_double_size_fighter_id_table[fighter->double_size]);
+								FIG_make_invisible(g_fig_double_size_fighter_id_table[p_fighter->double_size]);
 							}
 						} else {
 

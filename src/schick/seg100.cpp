@@ -249,7 +249,7 @@ void spell_harmlos(void)
 
 void spell_hexenknoten(void)
 {
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	uint8_t *rp;
 	signed int x;
 	signed int y;
@@ -263,9 +263,9 @@ void spell_hexenknoten(void)
 		return;
 	}
 
-	fighter = FIG_get_fighter(get_spelluser()->fighter_id);
-	x = fighter->cbx;
-	y = fighter->cby;
+	p_fighter = FIG_get_fighter(get_spelluser()->fighter_id);
+	x = p_fighter->cbx;
+	y = p_fighter->cby;
 
 	if (!get_spelluser()->viewdir) {
 		x++;

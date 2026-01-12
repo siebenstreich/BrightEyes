@@ -68,7 +68,7 @@ void FIG_menu(struct struct_hero *hero, const signed int hero_pos, signed int x,
 	signed int weapon_id;
 	signed int radio_i;
 	signed int i; /* dual use: mod_slot, enemy_id */
-	struct struct_fighter *ptr;
+	struct struct_fighter *p_fighter;
 	signed int tw_bak;
 	signed int inventary_slot_knapsack[16];
 
@@ -589,15 +589,15 @@ void FIG_menu(struct struct_hero *hero, const signed int hero_pos, signed int x,
 
 								if (weapon_gfx_id_1 != weapon_gfx_id_ranged_2) {
 
-									ptr = FIG_get_fighter(hero->fighter_id);
+									p_fighter = FIG_get_fighter(hero->fighter_id);
 
 									if (weapon_gfx_id_ranged_2 != WEAPON_GFX_ID_NONE) {
-										ptr->nvf_no = g_nvftab_figures_rangeweapon[hero->actor_sprite_id - 1][weapon_gfx_id_ranged_2][hero->viewdir];
+										p_fighter->nvf_no = g_nvftab_figures_rangeweapon[hero->actor_sprite_id - 1][weapon_gfx_id_ranged_2][hero->viewdir];
 									} else {
-										ptr->nvf_no = hero->viewdir;
+										p_fighter->nvf_no = hero->viewdir;
 									}
 
-									ptr->reload = -1;
+									p_fighter->reload = -1;
 
 									draw_fight_screen_pal(0);
 								}

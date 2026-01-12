@@ -642,7 +642,7 @@ void spell_kraehenruf(void)
 
 void spell_skelettarius(void)
 {
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	signed int x;
 	signed int y;
 	signed char unk;
@@ -671,13 +671,13 @@ void spell_skelettarius(void)
 			INFLECT_NAME_TYPE_MONSTER
 		));
 
-		fighter = FIG_get_fighter(g_spelltarget_e->fighter_id);
+		p_fighter = FIG_get_fighter(g_spelltarget_e->fighter_id);
 
-		x = fighter->cbx;
-		y = fighter->cby;
+		x = p_fighter->cbx;
+		y = p_fighter->cby;
 
-		if (fighter->double_size != -1) {
-			FIG_remove_from_list(g_fig_double_size_fighter_id_table[fighter->double_size], 0);
+		if (p_fighter->double_size != -1) {
+			FIG_remove_from_list(g_fig_double_size_fighter_id_table[p_fighter->double_size], 0);
 		}
 #ifdef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 1:
@@ -685,7 +685,7 @@ void spell_skelettarius(void)
 		 * after the 'Skelettarius' the other body is still displayed, but cannot be selected for 'Skelettarius'.
 		 *
 		 * Fix: store and restore the fighter.object_id value. */
-		signed char object_id_bak = fighter->object_id;
+		signed char object_id_bak = p_fighter->object_id;
 #endif
 #ifdef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 2:
@@ -701,7 +701,7 @@ void spell_skelettarius(void)
 		 * https://www.crystals-dsa-foren.de/showthread.php?tid=5191&pid=166097#pid166097
 		 * */
                 uint8_t* buf_seek_ptr_bak = g_fightobj_buf_seek_ptr; /* backup the entry of FIGHTOBJ_BUF_SEEK_PTR */
-		g_fightobj_buf_seek_ptr = fighter->gfxbuf;
+		g_fightobj_buf_seek_ptr = p_fighter->gfxbuf;
 #endif
 
 		FIG_remove_from_list(g_spelltarget_e->fighter_id, 0);
@@ -726,8 +726,8 @@ void spell_skelettarius(void)
 #ifdef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 1:
 		 * restore the fighter.object_id value. */
-		fighter = FIG_get_fighter(g_spelltarget_e->fighter_id);
-		fighter->object_id = object_id_bak;
+		p_fighter = FIG_get_fighter(g_spelltarget_e->fighter_id);
+		p_fighter->object_id = object_id_bak;
 #endif
 	}
 }

@@ -30,19 +30,19 @@ signed int g_fight_figs_index = -1; // ds:0x4b9e
 
 struct struct_fighter* FIG_get_fighter(const signed char fighter_id)
 {
-	struct struct_fighter *list_i = g_fig_list_head;
+	struct struct_fighter *p_fighter_iter = g_fig_list_head;
 
-	while (list_i->id != fighter_id) {
+	while (p_fighter_iter->id != fighter_id) {
 
-		if (list_i->next == NULL) {
+		if (p_fighter_iter->next == NULL) {
 			return g_fig_list_head;	/* TODO: Should be NULL ? */
 		}
 
 		/* set fighter_ptr to the next element */
-		list_i = list_i->next;
+		p_fighter_iter = p_fighter_iter->next;
 	}
 
-	return list_i;
+	return p_fighter_iter;
 }
 
 static signed char FIG_set_array(void)
@@ -66,7 +66,7 @@ void FIG_draw_figures(void)
 {
 	signed int l1 = 10;
 	signed int l2 = 118;
-	struct struct_fighter *list_i;
+	struct struct_fighter *p_fighter_iter;
 	struct struct_rect rect_bak;
 	uint8_t* gfx_dst_bak;
 
@@ -77,39 +77,39 @@ void FIG_draw_figures(void)
 	/* backup a structure */
 	rect_bak = g_pic_copy_rect;
 
-	list_i = g_fig_list_head;
+	p_fighter_iter = g_fig_list_head;
 
 	do {
-		if (list_i->visible == 1) {
+		if (p_fighter_iter->visible == 1) {
 
-			signed int x1 = (l1 - list_i->width / 2) + 10 * (list_i->cbx + list_i->cby);
-			signed int y1 = (l2 - list_i->height) +	5 * (list_i->cbx - list_i->cby);
+			signed int x1 = (l1 - p_fighter_iter->width / 2) + 10 * (p_fighter_iter->cbx + p_fighter_iter->cby);
+			signed int y1 = (l2 - p_fighter_iter->height) +	5 * (p_fighter_iter->cbx - p_fighter_iter->cby);
 
-			x1 += list_i->offsetx;
-			y1 += list_i->offsety;
+			x1 += p_fighter_iter->offsetx;
+			y1 += p_fighter_iter->offsety;
 
 			g_pic_copy.x1 = x1;
 			g_pic_copy.y1 = y1;
-			g_pic_copy.x2 = x1 + list_i->width - 1;
-			g_pic_copy.y2 = y1 + list_i->height - 1;
-			g_pic_copy.src = list_i->gfxbuf;
+			g_pic_copy.x2 = x1 + p_fighter_iter->width - 1;
+			g_pic_copy.y2 = y1 + p_fighter_iter->height - 1;
+			g_pic_copy.src = p_fighter_iter->gfxbuf;
 
-			g_pic_copy_rect.y1 = y1 + list_i->y1;
+			g_pic_copy_rect.y1 = y1 + p_fighter_iter->y1;
 			if (g_pic_copy_rect.y1 < 0) g_pic_copy_rect.y1 = 0;
 
-			g_pic_copy_rect.x1 = x1 + list_i->x1;
+			g_pic_copy_rect.x1 = x1 + p_fighter_iter->x1;
 			if (g_pic_copy_rect.x1 < 0) g_pic_copy_rect.x1 = 0;
 
-			g_pic_copy_rect.y2 = y1 + list_i->y2;
+			g_pic_copy_rect.y2 = y1 + p_fighter_iter->y2;
 			if (g_pic_copy_rect.y2 > (200 - 1)) g_pic_copy_rect.y2 = (200 - 1);
 
-			g_pic_copy_rect.x2 = x1 + list_i->x2;
+			g_pic_copy_rect.x2 = x1 + p_fighter_iter->x2;
 			if (g_pic_copy_rect.x2 > (320 - 1)) g_pic_copy_rect.x2 = (320 - 1);
 
 			do_pic_copy(2);
 		}
 
-	} while ((list_i = list_i->next));
+	} while ((p_fighter_iter = p_fighter_iter->next));
 
 	/* restore two structures */
 	g_pic_copy_rect = rect_bak;
@@ -183,23 +183,23 @@ struct enemy_sheet* FIG_get_enemy_sheet(const signed int fighter_id)
 
 void FIG_set_ani_track_id_base(const signed char fighter_id, const signed char ani_track_id_base)
 {
-	struct struct_fighter *list_i = g_fig_list_head;
+	struct struct_fighter *p_fighter_iter = g_fig_list_head;
 
-	while (list_i->id != fighter_id) {
+	while (p_fighter_iter->id != fighter_id) {
 
 		/* check for end of list */
-		if (list_i->next == NULL) {
+		if (p_fighter_iter->next == NULL) {
 			return;
 		}
 
 		/* set ptr to ptr->next */
-		list_i = list_i->next;
+		p_fighter_iter = p_fighter_iter->next;
 	}
 
-	list_i->ani_track_id_base = ani_track_id_base;
+	p_fighter_iter->ani_track_id_base = ani_track_id_base;
 
 	/* set presence flag */
-	list_i->visible = 1;
+	p_fighter_iter->visible = 1;
 }
 
 /**
@@ -208,30 +208,30 @@ void FIG_set_ani_track_id_base(const signed char fighter_id, const signed char a
  */
 void FIG_make_invisible(const signed char fighter_id)
 {
-	struct struct_fighter *list_i;
-	struct struct_fighter *ptr2;
+	struct struct_fighter *p_fighter_iter;
+	struct struct_fighter *p_fighter_iter_ds;
 
-	list_i = g_fig_list_head;
+	p_fighter_iter = g_fig_list_head;
 
-	while (list_i->id != fighter_id) {
+	while (p_fighter_iter->id != fighter_id) {
 
-		if (list_i->next == NULL) {
+		if (p_fighter_iter->next == NULL) {
 			return;
 		}
 
-		list_i = list_i->next;
+		p_fighter_iter = p_fighter_iter->next;
 	}
 
-	list_i->visible = 0;
+	p_fighter_iter->visible = 0;
 
-	if (list_i->double_size != -1) {
+	if (p_fighter_iter->double_size != -1) {
 
-		ptr2 = g_fig_list_head;
+		p_fighter_iter_ds = g_fig_list_head;
 
-		while (g_fig_double_size_fighter_id_table[list_i->double_size] != ptr2->id) {
-			ptr2 = ptr2->next;
+		while (g_fig_double_size_fighter_id_table[p_fighter_iter->double_size] != p_fighter_iter_ds->id) {
+			p_fighter_iter_ds = p_fighter_iter_ds->next;
 		}
-		ptr2->visible = 0;
+		p_fighter_iter_ds->visible = 0;
 	}
 }
 
@@ -242,49 +242,49 @@ void FIG_make_invisible(const signed char fighter_id)
  */
 void FIG_make_visible(const signed int fighter_id)
 {
-	struct struct_fighter *list_i;
-	struct struct_fighter *ptr2;
+	struct struct_fighter *p_fighter_iter;
+	struct struct_fighter *p_fighter_iter_ds;
 
-	list_i = g_fig_list_head;
+	p_fighter_iter = g_fig_list_head;
 
-	while (list_i->id != (signed char)fighter_id) {
+	while (p_fighter_iter->id != (signed char)fighter_id) {
 
-		if (list_i->next == NULL) {
+		if (p_fighter_iter->next == NULL) {
 			return;
 		}
 
-		list_i = list_i->next;
+		p_fighter_iter = p_fighter_iter->next;
 	}
 
-	list_i->visible = 1;
+	p_fighter_iter->visible = 1;
 
-	if (list_i->double_size != -1) {
+	if (p_fighter_iter->double_size != -1) {
 
-		ptr2 = g_fig_list_head;
+		p_fighter_iter_ds = g_fig_list_head;
 
-		while (g_fig_double_size_fighter_id_table[list_i->double_size] != ptr2->id) {
+		while (g_fig_double_size_fighter_id_table[p_fighter_iter->double_size] != p_fighter_iter_ds->id) {
 
-			ptr2 = ptr2->next;
+			p_fighter_iter_ds = p_fighter_iter_ds->next;
 		}
 
-		ptr2->visible = 1;
+		p_fighter_iter_ds->visible = 1;
 	}
 }
 
 void FIG_set_ani_track_id_weapon(const signed char fighter_id, const signed char ani_track_id_weapon)
 {
-	struct struct_fighter *list_i = g_fig_list_head;
+	struct struct_fighter *p_fighter_iter = g_fig_list_head;
 
-	while (list_i->id != fighter_id) {
+	while (p_fighter_iter->id != fighter_id) {
 
-		if (list_i->next == NULL) {
+		if (p_fighter_iter->next == NULL) {
 			return;
 		}
 
-		list_i = list_i->next;
+		p_fighter_iter = p_fighter_iter->next;
 	}
 
-	list_i->ani_track_id_weapon = ani_track_id_weapon;
+	p_fighter_iter->ani_track_id_weapon = ani_track_id_weapon;
 }
 
 /**
@@ -295,49 +295,49 @@ void FIG_set_ani_track_id_weapon(const signed char fighter_id, const signed char
  */
 void FIG_remove_from_list(const signed char fighter_id, const signed char keep_in_memory)
 {
-	struct struct_fighter *list_i = g_fig_list_head;
+	struct struct_fighter *p_fighter_iter = g_fig_list_head;
 
-	if (!list_i) return;
+	if (!p_fighter_iter) return;
 
-	while (list_i->id != fighter_id) {
+	while (p_fighter_iter->id != fighter_id) {
 
-		if (list_i->next == NULL) {
+		if (p_fighter_iter->next == NULL) {
 			return;
 		}
 
 		/* ptr = ptr->next; */
-		list_i = list_i->next;
+		p_fighter_iter = p_fighter_iter->next;
 	}
 
 	if (!keep_in_memory) {
 		g_fig_list_array[fighter_id] = 0;
 	} else {
-		g_fig_list_elem = *list_i;
+		g_fig_list_elem = *p_fighter_iter;
 	}
 
 	/* check if p == HEAD */
-	if (list_i == g_fig_list_head) {
+	if (p_fighter_iter == g_fig_list_head) {
 		/* Set HEAD: head = p->next;*/
-		g_fig_list_head = list_i->next;
+		g_fig_list_head = p_fighter_iter->next;
 
 		if (g_fig_list_head) {
 			g_fig_list_head->prev = NULL;
 		}
 	} else {
 		/* check if p == tail */
-		if (list_i->next == NULL) {
-			/* list_i->prev->next = NULL */
-			list_i->prev->next = NULL;
+		if (p_fighter_iter->next == NULL) {
+			/* p_fighter_iter->prev->next = NULL */
+			p_fighter_iter->prev->next = NULL;
 		} else {
 			/* remove ptr from list */
-			list_i->prev->next = list_i->next;
-			list_i->next->prev = list_i->prev;
+			p_fighter_iter->prev->next = p_fighter_iter->next;
+			p_fighter_iter->next->prev = p_fighter_iter->prev;
 		}
 	}
 
-	memset(list_i, 0, sizeof(struct struct_fighter));
+	memset(p_fighter_iter, 0, sizeof(struct struct_fighter));
 
-	list_i->id = -1;
+	p_fighter_iter->id = -1;
 }
 
 /**
@@ -348,8 +348,8 @@ void FIG_remove_from_list(const signed char fighter_id, const signed char keep_i
  */
 signed char FIG_add_to_list(const signed char fighter_id)
 {
-	struct struct_fighter* p1 = g_fig_list_buffer;
-	struct struct_fighter* p2;
+	struct struct_fighter* p_fighter_1 = g_fig_list_buffer;
+	struct struct_fighter* p_fighter_2;
 	signed int x = g_fig_list_elem.cbx;
 	signed int y = g_fig_list_elem.cby;
 
@@ -373,19 +373,19 @@ signed char FIG_add_to_list(const signed char fighter_id)
 		return g_fig_list_head->id;
 	}
 
-	while (p1->id != -1) {
-		p1++;
+	while (p_fighter_1->id != -1) {
+		p_fighter_1++;
 	}
 
-	*p1 = g_fig_list_elem;
+	*p_fighter_1 = g_fig_list_elem;
 
 	if (fighter_id == -1) {
-		p1->id = FIG_set_array();
+		p_fighter_1->id = FIG_set_array();
 	} else {
-		p1->id = fighter_id;
+		p_fighter_1->id = fighter_id;
 	}
 
-	p2 = g_fig_list_head;
+	p_fighter_2 = g_fig_list_head;
 
 	/* The list is filled in the order of rendering, i.e. from rear to front:
 	 * (x1,y1) is rendered before (x2,y2) if (x1 < x2) || (x1 == x2 && y1 > y2)
@@ -393,42 +393,42 @@ signed char FIG_add_to_list(const signed char fighter_id)
 	 */
 	if (g_fig_list_elem.z != -1) {
 
-		while ((p2->cbx <= x) && (p2->cbx != x || p2->cby >= y) &&
-		((p2->cbx != x) || (p2->cby != y) || (p2->z <= g_fig_list_elem.z)))
+		while ((p_fighter_2->cbx <= x) && (p_fighter_2->cbx != x || p_fighter_2->cby >= y) &&
+		((p_fighter_2->cbx != x) || (p_fighter_2->cby != y) || (p_fighter_2->z <= g_fig_list_elem.z)))
 		{
-			if (p2->next == 0) {
+			if (p_fighter_2->next == 0) {
 
 				/* append to end of the list */
 
-				p2->next = p1;
-				p1->prev = p2;
-				p1->next = NULL;
+				p_fighter_2->next = p_fighter_1;
+				p_fighter_1->prev = p_fighter_2;
+				p_fighter_1->next = NULL;
 
 #if !defined(__BORLANDC__)
 				D1_LOG("\tlist appended x = %d, y = %d\n", x, y);
 #endif
-				return p1->id;
+				return p_fighter_1->id;
 			}
 
-			p2 = p2->next;
+			p_fighter_2 = p_fighter_2->next;
 		}
 	}
 
-	p1->prev = p2->prev;
+	p_fighter_1->prev = p_fighter_2->prev;
 
-	if (p2->prev != 0)
-		p2->prev->next = p1;
+	if (p_fighter_2->prev != 0)
+		p_fighter_2->prev->next = p_fighter_1;
 	else
-		g_fig_list_head = p1;
+		g_fig_list_head = p_fighter_1;
 
-	p2->prev = p1;
-	p1->next = p2;
+	p_fighter_2->prev = p_fighter_1;
+	p_fighter_1->next = p_fighter_2;
 
 #if !defined(__BORLANDC__)
 	D1_LOG("\tlist insert x = %d, y = %d\n", x, y);
 #endif
 
-	return p1->id;
+	return p_fighter_1->id;
 }
 
 /**

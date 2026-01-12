@@ -84,7 +84,7 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 	signed char dir2;
 	signed char dir3;
 	int8_t *p_ani_clip_base;
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	int16_t *ani_index_ptr;
 
 	signed int i;
@@ -162,9 +162,9 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 
 		memcpy(&g_fig_ani_tracks[FANI_TRACK_ID_ACTOR_1_TAIL], &g_fig_ani_tracks[FANI_TRACK_ID_ACTOR_1_BASE], 243);
 
-		fighter = FIG_get_fighter(enemy->fighter_id);
+		p_fighter = FIG_get_fighter(enemy->fighter_id);
 
-		FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[fighter->double_size], FANI_TRACK_ID_ACTOR_1_TAIL);
+		FIG_set_ani_track_id_base(g_fig_double_size_fighter_id_table[p_fighter->double_size], FANI_TRACK_ID_ACTOR_1_TAIL);
 	}
 
 	/* draw_fight_screen */

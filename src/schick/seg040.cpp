@@ -119,7 +119,7 @@ void FIG_chessboard_init(void)
 
 void FIG_preload_gfx(void)
 {
-	struct struct_fighter *fighter;
+	struct struct_fighter *p_fighter;
 	signed int i;
 	struct nvf_extract_desc nvf;
 	signed int handle;
@@ -129,11 +129,11 @@ void FIG_preload_gfx(void)
 	g_fig_list_buffer = (struct struct_fighter*)(((HugePt)g_fig_figure2_buf) - 0x115d);
 
 	memset(g_fig_list_buffer, 0, 0x115d);
-	fighter = g_fig_list_buffer;
+	p_fighter = g_fig_list_buffer;
 
 	for (i = 0; i < 127; i++) {
-		fighter->id = -1;
-		fighter++;
+		p_fighter->id = -1;
+		p_fighter++;
 		g_fig_list_array[i] = 0;
 	}
 
