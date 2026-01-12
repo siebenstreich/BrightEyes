@@ -187,17 +187,21 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
  */
 signed int FIG_enemy_can_attack_neighbour(const signed int x, const signed int y, const signed int dx, const signed int dy, const signed int mode)
 {
-	const signed char target = get_cb_val(x + dx, y + dy);
+	const signed char target_object_id = get_cb_val(x + dx, y + dy);
 
 	if (mode == 0) {
 
-		if ( ((target > 0) && (target < 10) && !get_hero(target - 1)->flags.dead && !get_hero(target - 1)->flags.unconscious) ||
+		if (
 			(
-			(target >= 10) && (target < 30) && !g_enemy_sheets[target - 10].flags.dead &&
-			//g_enemy_sheets[target - 10].flags.renegade
-				((struct enemy_flags*)(target * sizeof(enemy_sheet) + (uint8_t*)g_enemy_sheets - 10 * sizeof(enemy_sheet) + 0x31))->renegade
-			))
-		{
+				(target_object_id > 0) && (target_object_id < 10)
+				&& !get_hero(target_object_id - 1)->flags.dead && !get_hero(target_object_id - 1)->flags.unconscious
+			) || (
+				(target_object_id >= 10) && (target_object_id < 30)
+				&& !g_enemy_sheets[target_object_id - 10].flags.dead
+			//	&& g_enemy_sheets[target_object_id - 10].flags.renegade
+				&& ((struct enemy_flags*)(target_object_id * sizeof(enemy_sheet) + (uint8_t*)g_enemy_sheets - 10 * sizeof(enemy_sheet) + 0x31))->renegade
+			)
+		) {
 			return 1;
 		} else {
 			return 0;
@@ -206,8 +210,10 @@ signed int FIG_enemy_can_attack_neighbour(const signed int x, const signed int y
 	} else if (mode == 1) {
 
 		/* is a living enemy */
-		if ((target >= 10) && (target < 30) && !g_enemy_sheets[target - 10].flags.dead)
-		{
+		if (
+			(target_object_id >= 10) && (target_object_id < 30)
+			&& !g_enemy_sheets[target_object_id - 10].flags.dead
+		) {
 			return 1;
 		} else {
 			return 0;
@@ -216,8 +222,11 @@ signed int FIG_enemy_can_attack_neighbour(const signed int x, const signed int y
 	} else if (mode == 2) {
 
 		/* is a living, conscious hero */
-		if ((target > 0) && (target < 10) && !get_hero(target - 1)->flags.dead && !get_hero(target - 1)->flags.unconscious)
-		{
+		if (
+			(target_object_id > 0) && (target_object_id < 10)
+			&& !get_hero(target_object_id - 1)->flags.dead
+			&& !get_hero(target_object_id - 1)->flags.unconscious
+		) {
 			return 1;
 		} else {
 			return 0;
@@ -244,6 +253,7 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 {
 	signed int done;
 	signed int x_diff;	/* run variables in viewdir */
+	signed char target_object_id;
 	signed char target;
 	signed int y_diff;	/* run variables in viewdir */
 	signed int can_attack;
@@ -256,13 +266,13 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 	while (!done) {
 
 		/* go one field further */
-		if (viewdir == FIG_VIEWDIR_RIGHT) {		/* RIGHT-BOTTOM */
+		if (viewdir == FIG_VIEWDIR_RIGHT) {
 			x_diff++;
-		} else if (viewdir == FIG_VIEWDIR_DOWN) {	/* LEFT-BOTTOM */
+		} else if (viewdir == FIG_VIEWDIR_DOWN) {
 			y_diff--;
-		} else if (viewdir == FIG_VIEWDIR_LEFT) {	/* LEFT-UP */
+		} else if (viewdir == FIG_VIEWDIR_LEFT) {
 			x_diff--;
-		} else {		/* RIGHT-UP */
+		} else {
 			y_diff++;
 		}
 
@@ -271,84 +281,113 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 			done = 1;
 		} else {
 
-			/* get value from current field */
-			target = get_cb_val(x + x_diff, y + y_diff);
+			target_object_id = get_cb_val(x + x_diff, y + y_diff);
 
 			if (mode == 0) {
 				/* hero or enemy reacheable from enemies position */
-				if ( ((target > 0) && (target < 10) && !get_hero(target - 1)->flags.dead && !get_hero(target - 1)->flags.unconscious) ||
-					((target >= 10) && (target < 30) && !g_enemy_sheets[target - 10].flags.dead &&
-					// g_enemy_sheets[target - 10].flags.renegade
-					((struct enemy_flags*)(target * sizeof(enemy_sheet) + (uint8_t*)g_enemy_sheets - 10 * sizeof(enemy_sheet) + 0x31))->renegade
-					))
-				{
+				if (
+					(
+						(target_object_id > 0) && (target_object_id < 10)
+						&& !get_hero(target_object_id - 1)->flags.dead
+						&& !get_hero(target_object_id - 1)->flags.unconscious
+					) || (
+						(target_object_id >= 10) && (target_object_id < 30)
+						&& !g_enemy_sheets[target_object_id - 10].flags.dead
+					//	&& g_enemy_sheets[target_object_id - 10].flags.renegade
+						&& ((struct enemy_flags*)(target_object_id * sizeof(enemy_sheet) + (uint8_t*)g_enemy_sheets - 10 * sizeof(enemy_sheet) + 0x31))->renegade
+					)
+				) {
 					can_attack = 1;
 					done = 1;
 
 				} else
 
 				/* if field is not empty */
-				if (target != 0) {
+				if (target_object_id != 0) {
 
 					/* an enemy or another object */
-					if ( ((target >= 10) && (target < 30) && !g_enemy_sheets[target - 10].flags.dead) ||
-						((target >= 50) && !is_in_int_array(target - 50, g_cb_obj_nonobstacle)))
-					{
+					if (
+						(
+							(target_object_id >= 10) && (target_object_id < 30)
+							&& !g_enemy_sheets[target_object_id - 10].flags.dead
+						) || (
+							(target_object_id >= 50)
+							&& !is_in_int_array(target_object_id - 50, g_cb_obj_nonobstacle)
+						)
+					) {
 							done = 1;
 					}
 				}
 
 			} else if (mode == 1) {
 				/* attack foe first */
-				if ((target >= 10) && (target < 30) && !g_enemy_sheets[target - 10].flags.dead)
-				{
+				if (
+					(target_object_id >= 10) && (target_object_id < 30)
+					&& !g_enemy_sheets[target_object_id - 10].flags.dead
+				) {
 					can_attack = 1;
 					done = 1;
 				} else
 				/* skip zeros */
-				if (target != 0) {
+				if (target_object_id != 0) {
 
 #ifdef M302de_ORIGINAL_BUGFIX
 					/* Original-Bugfix: the next if assumes
-						that a negative target is a hero -> SEGFAULT*/
-					if (target < 0) {
+						that a negative target_object_id is a hero -> SEGFAULT*/
+					if (target_object_id < 0) {
 						done = 1;
 					} else
 #endif
 
 					/* handle heroes or walls */
-					if (((target < 10) && !get_hero(target - 1)->flags.dead && !get_hero(target - 1)->flags.unconscious) ||
-						((target >= 50) && !is_in_int_array(target - 50, g_cb_obj_nonobstacle)))
-					{
+					if (
+						(
+							(target_object_id < 10)
+							&& !get_hero(target_object_id - 1)->flags.dead
+							&& !get_hero(target_object_id - 1)->flags.unconscious
+						) || (
+							(target_object_id >= 50)
+							&& !is_in_int_array(target_object_id - 50, g_cb_obj_nonobstacle)
+						)
+					) {
 						done = 1;
 					}
 				}
 
 			} else if (mode == 2) {
 				/* attack hero */
-				if ((target > 0) && (target < 10) && !get_hero(target - 1)->flags.dead && !get_hero(target - 1)->flags.unconscious)
-				{
+				if (
+					(target_object_id > 0) && (target_object_id < 10)
+					&& !get_hero(target_object_id - 1)->flags.dead
+					&& !get_hero(target_object_id - 1)->flags.unconscious
+				) {
 					can_attack = 1;
 					done = 1;
-				} else
-
-				/* skip zeros */
-				if (target != 0) {
+				} else if (target_object_id != 0) {
 
 #ifdef M302de_ORIGINAL_BUGFIX
-					if (target < 0) {
+					if (target_object_id < 0) {
 						done = 1;
 					} else
 #endif
 
-					if ( ((target < 10) && !get_hero(target - 1)->flags.dead && !get_hero(target - 1)->flags.unconscious) ||
-						((target >= 50) && !is_in_int_array(target - 50, g_cb_obj_nonobstacle)) ||
-						((target >= 10) && (target < 30) && !g_enemy_sheets[target - 10].flags.dead))
-					{
+					if (
+						(
+							(target_object_id < 10)
+							&& !get_hero(target_object_id - 1)->flags.dead
+							&& !get_hero(target_object_id - 1)->flags.unconscious
+						) || (
+							(target_object_id >= 50)
+							&& !is_in_int_array(target_object_id - 50, g_cb_obj_nonobstacle)
+						) || (
+							(target_object_id >= 10)
+							&& (target_object_id < 30)
+							&& !g_enemy_sheets[target_object_id - 10].flags.dead
+						)
+					) {
 						done = 1;
 					}
 				}
-
 			}
 		}
 	}
@@ -356,7 +395,7 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 	if (can_attack == 0)
 		return 0;
 	else
-		return target;
+		return target_object_id;
 }
 
 
@@ -441,102 +480,101 @@ signed int FIG_select_mspell(struct enemy_sheet* enemy, const signed int enemy_i
  				enemy->mspell_id = mspell_id;
 				retval = 1;
 				done = 1;
-			} else {
+			} else if (!g_mon_spell_descriptions[mspell_id].unkn1) {
 
-				if (!g_mon_spell_descriptions[mspell_id].unkn1) {
+				while (enemy->bp && (done == 0)) {
 
-					while (enemy->bp && (done == 0)) {
+					i = enemy->viewdir;
+					cnt = 0;
 
-						i = enemy->viewdir;
-						cnt = 0;
+					while (!enemy->target_object_id && (cnt < 4)) {
 
-						while (!enemy->target_object_id && (cnt < 4)) {
-
-							if (FIG_enemy_can_attack_neighbour(x, y, diff.offset[i].x, diff.offset[i].y, mode)) {
-								enemy->target_object_id = get_cb_val(x + diff.offset[i].x, y + diff.offset[i].y);
-							}
-
-							cnt++;
-							if (++i == 4) {
-								i = 0;
-							}
+						if (FIG_enemy_can_attack_neighbour(x, y, diff.offset[i].x, diff.offset[i].y, mode)) {
+							enemy->target_object_id = get_cb_val(x + diff.offset[i].x, y + diff.offset[i].y);
 						}
 
-						if (enemy->target_object_id) {
-
-							enemy->mspell_id = mspell_id;
-							retval = 1;
-							done = 1;
-
-						} else if (enemy->bp > 0) {
-
-							if (!enemy->flags.tied) {
-
-								if (mode == 1)
-									target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 2);
-								else
-									target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 0);
-
-								if (target_found != -1) {
-									prepare_enemy_ani(enemy, enemy_id);
-									FIG_search_obj_on_cb(enemy_id + 10, &x, &y);
-
-									if (enemy->bp < 3) {
-										enemy->bp = 0;
-									}
-								} else {
-									enemy->bp = 0;
-								}
-							} else {
-								enemy->bp = 0;
-							}
+						cnt++;
+						if (++i == 4) {
+							i = 0;
 						}
 					}
-				} else {
 
-					while ((done == 0) && (enemy->bp > 0)) {
+					if (enemy->target_object_id) {
 
-						i = enemy->viewdir;
-						cnt = 0;
+						enemy->mspell_id = mspell_id;
+						retval = 1;
+						done = 1;
 
-						while (!enemy->target_object_id && (cnt < 4)) {
+					} else if (enemy->bp > 0) {
 
-							enemy->target_object_id = FIG_search_range_target(x, y, i, mode);
+						if (!enemy->flags.tied) {
 
-							cnt++;
-							if (++i == 4) {
-								i = 0;
+							if (mode == 1) {
+								target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 2);
+							} else {
+								target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 0);
 							}
-						}
 
-						if (enemy->target_object_id) {
+							if (target_found != -1) {
+								prepare_enemy_ani(enemy, enemy_id);
+								FIG_search_obj_on_cb(enemy_id + 10, &x, &y);
 
-							enemy->mspell_id = mspell_id;
-							retval = 1;
-							done = 1;
-
-						} else if (enemy->bp > 0) {
-
-							if (!enemy->flags.tied) {
-
-								if (mode == 1)
-									target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 7);
-								else
-									target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 6);
-
-								if (target_found != -1) {
-									prepare_enemy_ani(enemy, enemy_id);
-									FIG_search_obj_on_cb(enemy_id + 10, &x, &y);
-
-									if (enemy->bp < 5) {
-										enemy->bp = 0;
-									}
-								} else {
+								if (enemy->bp < 3) {
 									enemy->bp = 0;
 								}
 							} else {
 								enemy->bp = 0;
 							}
+						} else {
+							enemy->bp = 0;
+						}
+					}
+				}
+			} else {
+
+				while ((done == 0) && (enemy->bp > 0)) {
+
+					i = enemy->viewdir;
+					cnt = 0;
+
+					while (!enemy->target_object_id && (cnt < 4)) {
+
+						enemy->target_object_id = FIG_search_range_target(x, y, i, mode);
+
+						cnt++;
+						if (++i == 4) {
+							i = 0;
+						}
+					}
+
+					if (enemy->target_object_id) {
+
+						enemy->mspell_id = mspell_id;
+						retval = 1;
+						done = 1;
+
+					} else if (enemy->bp > 0) {
+
+						if (!enemy->flags.tied) {
+
+							if (mode == 1) {
+								target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 7);
+							} else {
+								target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 6);
+							}
+
+							if (target_found != -1) {
+								prepare_enemy_ani(enemy, enemy_id);
+								FIG_search_obj_on_cb(enemy_id + 10, &x, &y);
+
+								if (enemy->bp < 5) {
+									enemy->bp = 0;
+								}
+							} else {
+								enemy->bp = 0;
+							}
+						} else {
+							enemy->bp = 0;
 						}
 					}
 				}
@@ -596,26 +634,27 @@ signed int FIG_enemy_range_attack(struct enemy_sheet *enemy, const signed int en
 
 			} else if (enemy->bp > 0) {
 
-					if (!enemy->flags.tied) {
+				if (!enemy->flags.tied) {
 
-						if (attack_foe == 0)
-							target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 6);
-						else
-							target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 7);
+					if (attack_foe == 0) {
+						target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 6);
+					} else {
+						target_found = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 7);
+					}
 
-						if (target_found != -1) {
-							prepare_enemy_ani(enemy, enemy_id);
-							FIG_search_obj_on_cb(enemy_id + 10, &x, &y);
+					if (target_found != -1) {
+						prepare_enemy_ani(enemy, enemy_id);
+						FIG_search_obj_on_cb(enemy_id + 10, &x, &y);
 
-							if (enemy->bp < 3) {
-								enemy->bp = 0;
-							}
-						} else {
+						if (enemy->bp < 3) {
 							enemy->bp = 0;
 						}
 					} else {
 						enemy->bp = 0;
 					}
+				} else {
+					enemy->bp = 0;
+				}
 			}
 		}
 	}
@@ -634,7 +673,7 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 	signed int flag;
 	signed int x_bak;
 	signed int y_bak;
-	signed int target;
+	signed int target_object_id;
 
 	struct viewdir_offsets diff = g_fig_viewdir_offsets6;
 
@@ -715,8 +754,10 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 			}
 
 			/* enemy can cast spells and has AE >= 5 left */
-			if ((enemy->spellbook_id != -1) && (enemy->ae >= 5) && FIG_select_mspell(enemy, enemy_id, attack_foe, x, y))
-			{
+			if (
+				(enemy->spellbook_id != -1) && (enemy->ae >= 5)
+				&& FIG_select_mspell(enemy, enemy_id, attack_foe, x, y)
+			) {
 				/* REMARK: enemy can still cast a spell with less than 5 BP. */
 				enemy->action_id = FIG_ACTION_SPELL;
 
@@ -730,8 +771,10 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 			}
 
 			/* enemy has range weapons */
-			if ( ((enemy->shots > 0) || (enemy->throws > 0)) && FIG_enemy_range_attack(enemy, enemy_id, attack_foe, x, y))
-			{
+			if (
+				((enemy->shots > 0) || (enemy->throws > 0))
+				&& FIG_enemy_range_attack(enemy, enemy_id, attack_foe, x, y)
+			) {
 				/* REMARK: enemy can still attack with less than 3 BP. */
 				enemy->action_id = FIG_ACTION_RANGE_ATTACK;
 
@@ -753,16 +796,23 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 
 					flag = 1;
 
-					if (is_in_byte_array(enemy->actor_sprite_id, g_double_size_actor_sprite_id_table))
-					{
+					if (is_in_byte_array(enemy->actor_sprite_id, g_double_size_actor_sprite_id_table)) {
 
-						target = get_cb_val(x - diff.offset[viewdir].x, y - diff.offset[viewdir].y);
+						target_object_id = get_cb_val(x - diff.offset[viewdir].x, y - diff.offset[viewdir].y);
 
-						if (target && (enemy_id + 30 != target)) {
+						if (target_object_id && (enemy_id + 30 != target_object_id)) {
 
-							if ((target < 0) || (target >= 50) || (target >= 30) ||
-								((target > 0) && (target < 10) && !get_hero(target - 1)->flags.dead) ||
-								((target < 30) && (target >= 10) && !g_enemy_sheets[target - 10].flags.dead))
+							if (
+								(target_object_id < 0) || (target_object_id >= 50) || (target_object_id >= 30)
+								// (target_object_id >= 50) is redundant and could be removed
+
+								|| (
+									(target_object_id > 0) && (target_object_id < 10)
+									&& !get_hero(target_object_id - 1)->flags.dead
+								) || (
+									(target_object_id < 30) && (target_object_id >= 10)
+									&& !g_enemy_sheets[target_object_id - 10].flags.dead)
+								)
 							{
 								flag = 0;
 							}
@@ -794,11 +844,10 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 				if (enemy->flags.scared) {
 					target_reachable = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 4);
 					enemy->bp = 0;
+				} else if (enemy->flags.renegade) {
+					target_reachable = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 2);
 				} else {
-					if (enemy->flags.renegade)
-						target_reachable = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 2);
-					else
-						target_reachable = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 0);
+					target_reachable = FIG_find_path_to_target((uint8_t*)enemy, enemy_id, x, y, 0);
 				}
 
 				if (target_reachable != -1) {
