@@ -716,11 +716,39 @@ const signed int *g_forbidden_item_ids_table[12] = {
 
 const struct ranged_weapon_stats g_ranged_weapon_stats_table[RANGED_WEAPON_STATS_ID__END + 1] = {
 	{  1,  0,  0, -1,-99,-99,-99,  6 }, // RANGED_WEAPON_STATS_ID_WURFSTERN_WURFMESSER == 0
+#ifndef M302de_FEATURE_MOD
 	{  1,  1,  0,  0, -1,-99,-99,  6 }, // RANGED_WEAPON_STATS_ID_SCHLEUDER            == 1
 	{  2,  1,  0,  0,  0,-99,-99,  7 }, // RANGED_WEAPON_STATS_ID_WURFBEIL_WURFAXT     == 2
 	{  1,  1,  0,  0,  0, -1,-99,  4 }, // RANGED_WEAPON_STATS_ID_KURZBOGEN            == 3
 	{  2,  2,  1,  0,  0, -1, -2,  4 }, // RANGED_WEAPON_STATS_ID_LANGBOGEN            == 4
 	{  2,  2,  1,  0, -1, -2, -3,  3 }, // RANGED_WEAPON_STATS_ID_ARMBRUST             == 5
+#else
+	/* Feature mod 10:
+	 * Update weapon/armor stats to match the established original DAS3 rules ("Mit Mantel, Schwert und Zauberstab" and "Kaiser Retos Waffenkammer").
+	 */
+
+	/* The following adjusts the distance-based damage modifiers.
+	 * The base difficulty (last value in the arrays) stays unchanged, since
+	 * MSZ and Kaiser Reto use a more refined table for the difficulty.
+	 * A better study of the original rulebooks is needed to find out if there is an official source
+	 * for the simplified difficulty computation in the game. */
+
+	{  1,  0,  0,  0, -1,-99,-99,  6 }, // RANGED_WEAPON_STATS_ID_SCHLEUDER            == 1
+	/* For the weapon "Schleuder", "Mantel, Schwert und Zauberstab" and "Kaiser Retos Waffenkammer" give the
+	 * distance-based damage modifiers as (-1, 0, 0, 0, -1).
+	 * But the leading -1 does not make sense:
+	 * As long as the projectile is fully accelerated, the closer, the higher the damage.
+	 * We assume that the first "-1" is a typo and should actually read "+1".
+	 */
+
+	{  3,  1,  0, -1,-99,-99,-99,  7 }, // RANGED_WEAPON_STATS_ID_WURFBEIL_WURFAXT     == 2
+	{  1,  1,  0,  0,  0, -1,-99,  4 }, // RANGED_WEAPON_STATS_ID_KURZBOGEN            == 3
+	{  3,  2,  1,  0,  0,  0, -1,  4 }, // RANGED_WEAPON_STATS_ID_LANGBOGEN            == 4
+
+	{  1,  1,  0,  0,  0, -1,-99,  3 }, // RANGED_WEAPON_STATS_ID_ARMBRUST             == 5
+	/* The item "Armbrust" is read as "leichte Armbrust" in the DSA3 rules (by far the best and most natural fit). */
+#endif
+
 #ifndef M302de_ORIGINAL_BUGFIX
 	/* Original-Bug 60: Speer is a melee weapon.
 	 * Original-Bug 61: missing distance-based damage modifier table for the throwing weapon Schneidzahn. */
@@ -756,7 +784,19 @@ struct weapon_stats g_weapon_stats_table[WEAPON_STATS_ID__END + 1] = {
 	{ 1, 4,  14,   5, -1,                                           0, -3 }, // WEAPON_STATS_ID_KRIEGSBEIL__SPECIAL   ==  6
 	{ 1, 3,  99,   0, RANGED_WEAPON_STATS_ID_KURZBOGEN,             0,  0 }, // WEAPON_STATS_ID_KURZBOGEN             ==  7
 	{ 2, 4,  14,   3, -1,                                          -1, -4 }, // WEAPON_STATS_ID_STREITAXT             ==  8
+
+#ifndef M302de_ORIGINAL_BUGFIX
 	{ 1, 6,  99,   0, RANGED_WEAPON_STATS_ID_ARMBRUST,              0,  0 }, // WEAPON_STATS_ID_ARMBRUST              ==  9
+#else
+	/* Feature mod 10:
+	 * Update weapon/armor stats to match the established original DAS3 rules ("Mit Mantel, Schwert und Zauberstab" and "Kaiser Retos Waffenkammer").
+	 */
+
+	/* The item "Armbrust" is read as "leichte Armbrust" in the DSA3 rules (by far the best and most natural fit).
+	 * According to MSZ or "Kaiser Retos Waffenkammer", its damage roll is 2D6 + 2.
+	 */
+	{ 2, 2,  99,   0, RANGED_WEAPON_STATS_ID_ARMBRUST,              0,  0 }, // WEAPON_STATS_ID_ARMBRUST              ==  9
+#endif
 
 	{ 1, 1,  15,   3, -1,                                          -2, -3 }, // WEAPON_STATS_ID_DOLCH                 == 10
 										 /* WEAPON_STATS_ID_DOLCH, WEAPON_STATS_ID_KUKRISDOLCH */
