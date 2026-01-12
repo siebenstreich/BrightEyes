@@ -80,9 +80,9 @@ static signed int copy_ani_sequence(int8_t *dst, const signed int ani_num, const
 
 void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 {
-	signed char dir1;
-	signed char dir2;
-	signed char dir3;
+	signed char viewdir_1;
+	signed char viewdir_2;
+	signed char viewdir_3;
 	int8_t *p_ani_clip_base;
 	struct struct_fighter *p_fighter;
 	int16_t *ani_index_ptr;
@@ -100,39 +100,39 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 
 		if (enemy->viewdir != g_fig_move_pathdir[i]) {
 
-			dir2 = dir1 = -1;
-			dir3 = enemy->viewdir;
-			dir2 = dir3;
-			dir3++;
+			viewdir_2 = viewdir_1 = -1;
+			viewdir_3 = enemy->viewdir;
+			viewdir_2 = viewdir_3;
+			viewdir_3++;
 
-			if (dir3 == 4) {
-				dir3 = 0;
+			if (viewdir_3 == 4) {
+				viewdir_3 = 0;
 			}
 
-			if (g_fig_move_pathdir[i] != dir3) {
+			if (g_fig_move_pathdir[i] != viewdir_3) {
 
-				dir1 = dir3;
-				dir3++;
+				viewdir_1 = viewdir_3;
+				viewdir_3++;
 
-				if (dir3 == 4) {
-					dir3 = 0;
+				if (viewdir_3 == 4) {
+					viewdir_3 = 0;
 				}
 
-				if (g_fig_move_pathdir[i] != dir3) {
+				if (g_fig_move_pathdir[i] != viewdir_3) {
 
-					dir2 = enemy->viewdir + 4;
-					dir1 = -1;
+					viewdir_2 = enemy->viewdir + 4;
+					viewdir_1 = -1;
 				}
 
 			}
 
 			enemy->viewdir = g_fig_move_pathdir[i];
 
-			p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[dir2], 1);
+			p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
 
-			if (dir1 != -1) {
+			if (viewdir_1 != -1) {
 
-				p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[dir1], 1);
+				p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
 			}
 		}
 
@@ -240,12 +240,12 @@ signed int FIG_enemy_can_attack_neighbour(const signed int x, const signed int y
 /*
  * Original-Bug: range attack of enemies is possible with direct contact
  */
-signed int FIG_search_range_target(const signed int x, const signed int y, const signed int dir, const signed int mode)
+signed int FIG_search_range_target(const signed int x, const signed int y, const signed int viewdir, const signed int mode)
 {
 	signed int done;
-	signed int x_diff;	/* run variables in dir */
+	signed int x_diff;	/* run variables in viewdir */
 	signed char target;
-	signed int y_diff;	/* run variables in dir */
+	signed int y_diff;	/* run variables in viewdir */
 	signed int can_attack;
 
 	done = 0;
@@ -256,11 +256,11 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 	while (!done) {
 
 		/* go one field further */
-		if (dir == 0) {		/* RIGHT-BOTTOM */
+		if (viewdir == FIG_VIEWDIR_RIGHT) {		/* RIGHT-BOTTOM */
 			x_diff++;
-		} else if (dir == 1) {	/* LEFT-BOTTOM */
+		} else if (viewdir == FIG_VIEWDIR_DOWN) {	/* LEFT-BOTTOM */
 			y_diff--;
-		} else if (dir == 2) {	/* LEFT-UP */
+		} else if (viewdir == FIG_VIEWDIR_LEFT) {	/* LEFT-UP */
 			x_diff--;
 		} else {		/* RIGHT-UP */
 			y_diff++;
@@ -562,7 +562,7 @@ signed int FIG_enemy_range_attack(struct enemy_sheet *enemy, const signed int en
 	signed int done;
 	signed int retval;
 	signed int target_found;
-	signed int dir;
+	signed int viewdir;
 
 	retval = 0;
 
@@ -575,16 +575,16 @@ signed int FIG_enemy_range_attack(struct enemy_sheet *enemy, const signed int en
 
 		while ( (done == 0) && (enemy->bp > 0) ) {
 
-			dir = enemy->viewdir;
+			viewdir = enemy->viewdir;
 			cnt = 0;
 
 			/* check clockwise for someone to attack */
 			while (!enemy->target_object_id && (cnt < 4)) {
 
-				enemy->target_object_id = FIG_search_range_target(x, y, dir, attack_foe);
+				enemy->target_object_id = FIG_search_range_target(x, y, viewdir, attack_foe);
 				cnt++;
-				if (++dir == 4) {
-					dir = 0;
+				if (++viewdir == 4) {
+					viewdir = 0;
 				}
 			}
 
@@ -628,7 +628,7 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 {
 	signed int target_reachable;
 	signed int attack_foe;
-	signed int i;
+	signed int viewdir;
 	signed int cnt;
 	signed int done = 0;
 	signed int flag;
@@ -745,18 +745,18 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 			}
 
 			enemy->target_object_id = 0;
-			i = enemy->viewdir;
+			viewdir = enemy->viewdir;
 			cnt = 0;
 			while (!enemy->target_object_id && (cnt < 4)) {
 
-				if (FIG_enemy_can_attack_neighbour(x, y, diff.offset[i].x, diff.offset[i].y, attack_foe)) {
+				if (FIG_enemy_can_attack_neighbour(x, y, diff.offset[viewdir].x, diff.offset[viewdir].y, attack_foe)) {
 
 					flag = 1;
 
 					if (is_in_byte_array(enemy->actor_sprite_id, g_double_size_actor_sprite_id_table))
 					{
 
-						target = get_cb_val(x - diff.offset[i].x, y - diff.offset[i].y);
+						target = get_cb_val(x - diff.offset[viewdir].x, y - diff.offset[viewdir].y);
 
 						if (target && (enemy_id + 30 != target)) {
 
@@ -770,13 +770,13 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 					}
 
 					if (flag != 0) {
-						enemy->target_object_id = get_cb_val(x + diff.offset[i].x, y + diff.offset[i].y);
+						enemy->target_object_id = get_cb_val(x + diff.offset[viewdir].x, y + diff.offset[viewdir].y);
 					}
 				}
 
 				cnt++;
-				if (++i == 4) {
-					i = 0;
+				if (++viewdir == 4) {
+					viewdir = 0;
 				}
 			}
 		}

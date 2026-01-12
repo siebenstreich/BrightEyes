@@ -648,30 +648,52 @@ void draw_fight_screen(const signed int val)
 							FIG_set_cb_object(p_fighter->cby, p_fighter->cbx, p_fighter->object_id);
 
 							/* update CBX depending on the view direction */
-							if ( ((viewdir_after == 2) && ((viewdir_before == 1) || (viewdir_before == 3))) ||
-								(((viewdir_after == 3) || (viewdir_after == 1)) && (viewdir_before == 0)))
-							{
+							if (
+								(
+									 (viewdir_after == FIG_VIEWDIR_LEFT)
+									 && ((viewdir_before == FIG_VIEWDIR_DOWN) || (viewdir_before == FIG_VIEWDIR_UP))
+								 ) || (
+									 ((viewdir_after == FIG_VIEWDIR_UP) || (viewdir_after == FIG_VIEWDIR_DOWN))
+									 && (viewdir_before == FIG_VIEWDIR_RIGHT)
+								 )
+							) {
 								p_fighter->cbx++;
 
-							} else if ( ((viewdir_after == 0) && ((viewdir_before == 1) || (viewdir_before == 3))) ||
-									(((viewdir_after == 3) || (viewdir_after == 1)) && (viewdir_before == 2)))
-							{
+							} else if (
+								(
+									(viewdir_after == FIG_VIEWDIR_RIGHT)
+									&& ((viewdir_before == FIG_VIEWDIR_DOWN) || (viewdir_before == FIG_VIEWDIR_UP))
+								) || (
+									((viewdir_after == FIG_VIEWDIR_UP) || (viewdir_after == FIG_VIEWDIR_DOWN))
+									&& (viewdir_before == FIG_VIEWDIR_LEFT)
+								)
+							) {
 								p_fighter->cbx--;
 							}
 
 							/* update CBY depending on the view direction */
-							if ( ((viewdir_after == 3) && ((viewdir_before == 0) || (viewdir_before == 2))) ||
-								(((viewdir_after == 0) || (viewdir_after == 2)) && (viewdir_before == 1)))
-							{
+							if (
+								(
+									(viewdir_after == FIG_VIEWDIR_UP)
+									&& ((viewdir_before == FIG_VIEWDIR_RIGHT) || (viewdir_before == FIG_VIEWDIR_LEFT))
+								) || (
+									((viewdir_after == FIG_VIEWDIR_RIGHT) || (viewdir_after == FIG_VIEWDIR_LEFT))
+									&& (viewdir_before == FIG_VIEWDIR_DOWN)
+								)
+							) {
 								p_fighter->cby--;
 
-							} else	if ( ((viewdir_after == 1) && ((viewdir_before == 0) || (viewdir_before == 2))) ||
-									(((viewdir_after == 0) || (viewdir_after == 2)) && (viewdir_before == 3)))
-							{
+							} else if (
+								(
+									 (viewdir_after == FIG_VIEWDIR_DOWN)
+									 && ((viewdir_before == FIG_VIEWDIR_RIGHT) || (viewdir_before == FIG_VIEWDIR_LEFT))
+								 ) || (
+									 ((viewdir_after == FIG_VIEWDIR_RIGHT) || (viewdir_after == FIG_VIEWDIR_LEFT))
+									 && (viewdir_before == FIG_VIEWDIR_UP)
+								 )
+							) {
 								p_fighter->cby++;
-
-							} else if ((viewdir_after == 1) && (viewdir_before == 3))
-							{
+							} else if ((viewdir_after == FIG_VIEWDIR_DOWN) && (viewdir_before == FIG_VIEWDIR_UP)) {
 								p_fighter->cby = (p_fighter->cby + 2);
 							}
 
@@ -778,7 +800,7 @@ void draw_fight_screen(const signed int val)
 												 * Note: Apparently, this is done in any fight, including seafights and wilderness fights where it doesn't make sense.
 												 * The distinction is done only later. */
 												hero->escape_position =
-													g_fig_escape_position[hero->viewdir == 3 ? NORTH : (hero->viewdir + 1)];
+													g_fig_escape_position[hero->viewdir == FIG_VIEWDIR_UP ? NORTH : (hero->viewdir + 1)];
 												figlist_remove[p_fighter->ani_track_id_base] = hero->fighter_id;
 
 											}

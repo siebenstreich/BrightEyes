@@ -8,15 +8,18 @@ enum {
 	WEST	= 3
 };
 
-/* viewing directions in fight mode, according to keyboard input in fight,
+/* Viewing directions in fight mode, according to keyboard input in fight,
  * and also according to the chessboard x- and y-coordinates,
  * i.e. positive x-direction is "right", positive y-direction is "up" etc.
+ *
+ * Dungeon fight maps usually follow the dungeon layout,
+ * oriented such that FIGHT_VIEWDIR_UP corresponds to NORTH, FIGHT_VIEWDIR_RIGHT corresponds to EAST etc.
  */
 enum {
-	FIG_VIEWDIR_RIGHT = 0,
-	FIG_VIEWDIR_DOWN  = 1,
-	FIG_VIEWDIR_LEFT  = 2,
-	FIG_VIEWDIR_UP    = 3
+	FIG_VIEWDIR_RIGHT = 0, /* on screen: toward the bottom right */
+	FIG_VIEWDIR_DOWN  = 1, /* on screen: toward the bottom left */
+	FIG_VIEWDIR_LEFT  = 2, /* on screen: toward the top left */
+	FIG_VIEWDIR_UP    = 3  /* on screen: toward the top right */
 };
 
 enum {

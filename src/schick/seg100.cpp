@@ -270,13 +270,13 @@ void spell_hexenknoten(void)
 	if (!get_spelluser()->viewdir) {
 		x++;
 	}
-	if (get_spelluser()->viewdir == 1) {
+	if (get_spelluser()->viewdir == FIG_VIEWDIR_DOWN) {
 		y--;
 	}
-	if (get_spelluser()->viewdir == 2) {
+	if (get_spelluser()->viewdir == FIG_VIEWDIR_LEFT) {
 		x--;
 	}
-	if (get_spelluser()->viewdir == 3) {
+	if (get_spelluser()->viewdir == FIG_VIEWDIR_UP) {
 		y++;
 	}
 

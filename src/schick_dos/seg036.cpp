@@ -104,10 +104,10 @@ static signed int load_ani_clip_from_file(int8_t *dst, const signed int clip_num
 void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 {
 	signed int i;
-	signed char dir1;
-	signed char dir2;
+	signed char viewdir_1;
+	signed char viewdir_2;
 	int8_t *p_ani_clip_base;
-	signed char dir3;
+	signed char viewdir_3;
 	int16_t *ani_index_ptr;
 
 	g_fig_ani_tracks[FANI_TRACK_ID_ACTOR_0_BASE][0] = 0;
@@ -122,38 +122,38 @@ void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 
 		if (hero->viewdir != g_fig_move_pathdir[i]) {
 
-			dir2 = dir1 = -1;
-			dir3 = hero->viewdir;
-			dir2 = dir3;
-			dir3++;
+			viewdir_2 = viewdir_1 = -1;
+			viewdir_3 = hero->viewdir;
+			viewdir_2 = viewdir_3;
+			viewdir_3++;
 
-			if (dir3 == 4) {
-				dir3 = 0;
+			if (viewdir_3 == 4) {
+				viewdir_3 = 0;
 			}
 
-			if (g_fig_move_pathdir[i] != dir3) {
+			if (g_fig_move_pathdir[i] != viewdir_3) {
 
-				dir1 = dir3;
-				dir3++;
+				viewdir_1 = viewdir_3;
+				viewdir_3++;
 
-				if (dir3 == 4) {
-					dir3 = 0;
+				if (viewdir_3 == 4) {
+					viewdir_3 = 0;
 				}
 
-				if (g_fig_move_pathdir[i] != dir3) {
+				if (g_fig_move_pathdir[i] != viewdir_3) {
 
-					dir2 = hero->viewdir + 4;
-					dir1 = -1;
+					viewdir_2 = hero->viewdir + 4;
+					viewdir_1 = -1;
 				}
 			}
 
 			/* set heroes looking direction */
 			hero->viewdir = g_fig_move_pathdir[i];
 
-			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[dir2], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-			if (dir1 != -1) {
-				p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[dir1], ANI_SRC_FILE_ID_ANI_DAT);
+			if (viewdir_1 != -1) {
+				p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
 			}
 		}
 
@@ -404,7 +404,7 @@ signed int AFIG_search_spell_target(const signed int x, const signed int y, cons
  */
 signed int AFIG_select_range_target(struct struct_hero *hero, const signed int hero_pos, const signed int renegade, signed int x, signed int y)
 {
-	signed int dir;
+	signed int viewdir;
 	signed int count;
 	signed int done;
 	signed int retval;
@@ -423,19 +423,19 @@ signed int AFIG_select_range_target(struct struct_hero *hero, const signed int h
 		/* REMARK: spells usually require 5 BP */
 		if (hero->fight_bp_left >= 3) {
 
-			dir = hero->viewdir;
+			viewdir = hero->viewdir;
 
 			count = 0;
 
 			/* try to find a target clockwise from current direction */
 			while (!hero->target_object_id && (count < 4)) {
 
-				hero->target_object_id = AFIG_search_spell_target(x, y, dir, renegade);
+				hero->target_object_id = AFIG_search_spell_target(x, y, viewdir, renegade);
 
 				count++;
 
-				if (++dir == 4) {
-					dir = 0;
+				if (++viewdir == 4) {
+					viewdir = 0;
 				}
 			}
 		}
