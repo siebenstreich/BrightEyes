@@ -768,7 +768,7 @@ void draw_fight_screen(const signed int val)
 													p_fighter_tmp = FIG_get_fighter(g_fig_double_size_fighter_id_table[p_fighter->double_size]);
 													FIG_set_cb_object(p_fighter_tmp->cby, p_fighter_tmp->cbx, p_fighter_tmp->object_id);
 #endif
-													figlist_remove[2 + p_fighter->ani_track_id_base] = g_fig_double_size_fighter_id_table[p_fighter->double_size];
+													figlist_remove[FANI_TRACK_ID_BASE_TO_TAIL(p_fighter->ani_track_id_base)] = g_fig_double_size_fighter_id_table[p_fighter->double_size];
 												}
 											}
 										} else {
@@ -795,9 +795,9 @@ void draw_fight_screen(const signed int val)
 
 										if (p_fighter->double_size != -1) {
 
-											g_fig_ani_tracks[FANI_TRACK_ID_BASE_TO_TAIL(p_fighter->ani_track_id_base)][4 + 3 * g_fig_ani_state[2 + p_fighter->ani_track_id_base]] = -1; // the two '2 + p_fighter->ani_track_id_base' are the wrong way round and cannot be replaced by FANI_TRACK_ID_BASE_TO_TAIL
+											g_fig_ani_tracks[FANI_TRACK_ID_BASE_TO_TAIL(p_fighter->ani_track_id_base)][4 + 3 * g_fig_ani_state[FANI_TRACK_ID_BASE_TO_TAIL(p_fighter->ani_track_id_base)]] = -1;
 
-											g_fig_ani_state[2 + p_fighter->ani_track_id_base] = -1;
+											g_fig_ani_state[FANI_TRACK_ID_BASE_TO_TAIL(p_fighter->ani_track_id_base)] = -1;
 										}
 
 								} else {
