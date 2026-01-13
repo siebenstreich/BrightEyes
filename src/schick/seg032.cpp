@@ -1014,12 +1014,14 @@ signed int do_fight(const signed int fight_id)
 	disable_ani();
 	call_mouse_bg();
 
-	if (g_scenario_buf->fig_background_id > FIG_BACKGROUND_ID_3) {
+	if (g_scenario_buf->fig_background_id > FIG_BACKGROUND_ID_SHIP_BORDERED) {
 
+		/* fig_background_id == 4, 5, 6, 7 corresponds to archive_file_id 201, 202, 203, 204 */
 		load_fightbg(g_scenario_buf->fig_background_id + 197);
 
 	} else {
 
+		/* fig_background_id == 0, 1, 2, 3 corresponds to archive_file_id 1, 2, 3, 4 */
 		load_fightbg(g_scenario_buf->fig_background_id + 1);
 
 	}
