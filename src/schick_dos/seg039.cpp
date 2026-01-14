@@ -316,7 +316,7 @@ void FIG_load_enemy_sprites(struct enemy_sheet *enemy, const signed int x, const
 	g_fightobj_buf_seek_ptr += 0x508;
 
 	g_fightobj_buf_freespace -= 0x508;
-	g_fig_list_elem.z = 0x63;
+	g_fig_list_elem.z = 99;
 
 	/* check presence in the first round */
 	g_fig_list_elem.visible = (enemy->round_appear == 0 ? 1 : 0);
