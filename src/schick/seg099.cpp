@@ -435,7 +435,7 @@ void spell_herrdertiere(void)
 	g_spelltarget_e = &g_enemy_sheets[get_spelluser()->target_object_id - 10];
 
 	if (!g_spelltarget_e->is_animal) {
-		/* spell does not work on animals */
+		/* spell does not work on non-animals */
 
 		g_spell_special_aecost = 0;
 
