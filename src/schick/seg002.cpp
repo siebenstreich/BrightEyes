@@ -3483,7 +3483,7 @@ void herokeeping(void)
 
 static void check_level_up(void)
 {
-	signed int i;
+	signed int hero_pos;
 	signed int not_done;
 	struct struct_hero *hero;
 
@@ -3494,7 +3494,7 @@ static void check_level_up(void)
 	do {
 		not_done = 0;
 		hero = get_hero(0);
-		for (i = 0; i <= 6; i++, hero++) {
+		for (hero_pos = 0; hero_pos <= 6; hero_pos++, hero++) {
 
 			if ((hero->typus != HERO_TYPE_NONE) && !hero->flags.dead && (hero->level < 20) &&
 
@@ -3510,7 +3510,7 @@ static void check_level_up(void)
 				/* while we're at it, avoid accessing the data segment... */
 #endif
 			) {
-				level_up(i);
+				level_up(hero_pos);
 				not_done = 1;
 			}
 		}
