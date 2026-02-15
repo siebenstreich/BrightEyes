@@ -13,4 +13,4 @@ signed int get_max_light_time(void);
 /* 0x3e */
 void equip_belt_ani(void);
 /* 0x43 */
-signed int get_full_waterskin_pos(const struct struct_hero*);
+signed int get_full_waterskin_inv_slot(const struct struct_hero*);

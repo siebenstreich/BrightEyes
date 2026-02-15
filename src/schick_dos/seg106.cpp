@@ -915,7 +915,7 @@ void equip_belt_ani(void)
  * \return              position of a non-empty waterskin
  */
 /* Borlandified and identical */
-signed int get_full_waterskin_pos(const struct struct_hero *hero)
+signed int get_full_waterskin_inv_slot(const struct struct_hero *hero)
 {
 	signed int inv_pos = -1;
 	signed int i;

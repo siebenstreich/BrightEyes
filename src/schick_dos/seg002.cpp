@@ -3177,7 +3177,7 @@ void herokeeping(void)
 
 							/* and then for water */
 							if (inv_slot == -1) {
-								inv_slot = get_full_waterskin_pos(hero);
+								inv_slot = get_full_waterskin_inv_slot(hero);
 							}
 
 							if (inv_slot != -1) {
@@ -3188,7 +3188,7 @@ void herokeeping(void)
 #endif
 								/* nothing to drink message */
 								if ((inv_slot_of_item(hero, ITEM_ID_BIER) == -1)
-									&& (get_full_waterskin_pos(hero) == -1)) {
+									&& (get_full_waterskin_inv_slot(hero) == -1)) {
 									gs_food_message[hero_pos] = 5;
 								}
 
