@@ -38,7 +38,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 	signed int disease_id;
 	signed int poison_id;
 	signed int tw_bak;
-	signed int consumer_idx;
+	signed int consumer_hero_pos;
 
 	signed int tmp; /* multiple use: mod_slot, random_le_gain */
 	signed int tmp2; /* multiple use: talent_id, flag, attrib_id, etc. */
@@ -48,7 +48,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 		return;
 	}
 
-	consumer_idx = get_hero_index(consumer);
+	consumer_hero_pos = get_hero_index(consumer);
 
 	/* get item id */
 	item_id = owner->inventory[inv_slot].item_id;
@@ -172,7 +172,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 
 					/* KK+2 for 12h */
 					tmp = get_free_mod_slot();
-					set_mod_slot(tmp, HOURS(12), (uint8_t*)(&consumer->attrib[ATTRIB_KK].current), 2, (signed char)consumer_idx);
+					set_mod_slot(tmp, HOURS(12), (uint8_t*)(&consumer->attrib[ATTRIB_KK].current), 2, (signed char)consumer_hero_pos);
 
 					/* LE + 2 */
 					add_hero_le(consumer, 2);
@@ -209,7 +209,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 
 					/* dummy: consumer->herbs is write-only */
 					tmp = get_free_mod_slot();
-					set_mod_slot(tmp, DAYS(1), (uint8_t*)(&consumer->herbs), 1, (signed char)consumer_idx);
+					set_mod_slot(tmp, DAYS(1), (uint8_t*)(&consumer->herbs), 1, (signed char)consumer_hero_pos);
 
 					sprintf(g_dtp2, get_ttx(503), consumer->alias);
 					// %s IST JETZT DEUTLICH WIDERSTANDSFÄHIGER GEGENÜBER KRANKHEITEN UND GIFTEN.
@@ -227,7 +227,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 
 					/* dummy: consumer->herbs is write-only */
 					tmp = get_free_mod_slot();
-					set_mod_slot(tmp, DAYS(1), (uint8_t*)(&consumer->herbs), 2, (signed char)consumer_idx);
+					set_mod_slot(tmp, DAYS(1), (uint8_t*)(&consumer->herbs), 2, (signed char)consumer_hero_pos);
 
 					sprintf(g_dtp2, get_ttx(503), consumer->alias);
 					// %s IST JETZT DEUTLICH WIDERSTANDSFÄHIGER GEGENÜBER KRANKHEITEN UND GIFTEN.
@@ -238,7 +238,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 					for (tmp2 = 9; tmp2 < 19; tmp2++) {
 						/* All body talents + 2 for 5h */
 						tmp = get_free_mod_slot();
-						set_mod_slot(tmp, HOURS(5), (uint8_t*)(&consumer->talents[tmp2]), 2, (signed char)consumer_idx);
+						set_mod_slot(tmp, HOURS(5), (uint8_t*)(&consumer->talents[tmp2]), 2, (signed char)consumer_hero_pos);
 					}
 
 					/* prepare output */
@@ -285,7 +285,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 
 				/* Attribute +5 for 1h */
 				tmp = get_free_mod_slot();
-				set_mod_slot(tmp, HOURS(1), (uint8_t*)(&consumer->attrib[tmp2 - 1].current), 5, (signed char)consumer_idx);
+				set_mod_slot(tmp, HOURS(1), (uint8_t*)(&consumer->attrib[tmp2 - 1].current), 5, (signed char)consumer_hero_pos);
 
 				/* prepare output */
 				sprintf(g_dtp2, get_ttx(509), consumer->alias, get_ttx(411 + tmp2), 5);
@@ -304,7 +304,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 
 				/* Attribute -7 for 1h */
 				tmp = get_free_mod_slot();
-				set_mod_slot(tmp, HOURS(1), (uint8_t*)(&consumer->attrib[bad_elixir_item_id - 1].current), -7, (signed char)consumer_idx);
+				set_mod_slot(tmp, HOURS(1), (uint8_t*)(&consumer->attrib[bad_elixir_item_id - 1].current), -7, (signed char)consumer_hero_pos);
 
 				/* prepare output */
 				sprintf(g_dtp2, get_ttx(656), consumer->alias, get_ttx(411 + bad_elixir_item_id), 7);
