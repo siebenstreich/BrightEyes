@@ -687,17 +687,17 @@ void spell_skelettarius(void)
 #ifdef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 2:
 		 * reported at https://www.crystals-dsa-foren.de/showthread.php?tid=5039&pid=148171#pid148171
-		 * Every 'Skelettarius' spell adds 1288 (=0x508) bytes at the end of FIGHTOBJ_BUF for the animation of the fighter.
+		 * Every 'Skelettarius' spell adds 1288 (=0x508) bytes at the end of g_fightobj_buf for the animation of the fighter.
 		 * If too many Skelettarius spells are cast, this causes an overflow in FIG_load_enemy_sprites(..)
 		 *
 		 * Hacky fix by NRS:
-		 * modify FIGHTOBJ_BUF_SEEK_PTR to point to the buffer entry of the enemy which is replaced by 'Skelettarius',
+		 * modify g_fightobj_buf_seek_ptr to point to the buffer entry of the enemy which is replaced by 'Skelettarius',
 		 * such that the buffer space is reused.
 		 * restore the pointer later, and adjust FIGHTOBJ_BUF_FREESPACE to the right value
 		 * https://www.crystals-dsa-foren.de/showthread.php?tid=5039&pid=148252#pid148252
 		 * https://www.crystals-dsa-foren.de/showthread.php?tid=5191&pid=166097#pid166097
 		 * */
-                uint8_t* buf_seek_ptr_bak = g_fightobj_buf_seek_ptr; /* backup the entry of FIGHTOBJ_BUF_SEEK_PTR */
+                uint8_t* buf_seek_ptr_bak = g_fightobj_buf_seek_ptr; /* backup the entry of g_fightobj_buf_seek_ptr */
 		g_fightobj_buf_seek_ptr = p_fighter->gfxbuf;
 #endif
 
@@ -710,7 +710,7 @@ void spell_skelettarius(void)
 		FIG_load_enemy_sprites(g_spelltarget_e, x, y);
 #ifdef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 2:
-		 * set FIGHTOBJ_BUF_FREESPACE and FIGHTOBJ_BUF_SEEK_PTR to the correct values as discussed above */
+		 * set g_fightobj_buf_freespace and g_fightobj_buf_seek_ptr to the correct values as discussed above */
 		g_fightobj_buf_freespace += 0x508L;
 		g_fightobj_buf_seek_ptr = buf_seek_ptr_bak;
 #endif
