@@ -334,7 +334,7 @@ static void passages_reset(void);
 static void ul_save(void);
 static void ul_blit(void);
 static signed int check_hero_no3(const struct struct_hero *hero);
-static void do_starve_damage(struct struct_hero *hero, const signed int index, const signed int type);
+static void do_starve_damage(struct struct_hero *hero, const signed int hero_pos, const signed int type);
 static signed int copy_protection(void);
 
 static void play_music_file(const signed int index)
@@ -4777,7 +4777,7 @@ void add_group_le(const signed int le)
  * \param   index       the index number of the hero
  * \param   type        the type of message which should be printed (0 = hunger / 1 = thirst)
  */
-static void do_starve_damage(struct struct_hero *hero, const signed int index, const signed int type)
+static void do_starve_damage(struct struct_hero *hero, const signed int hero_pos, const signed int type)
 {
 	/* check if the hero is dead */
 	if (!hero->flags.dead) {
@@ -4790,7 +4790,7 @@ static void do_starve_damage(struct struct_hero *hero, const signed int index, c
 		hero->le--;
 
 		/* set the critical message type for the hero */
-		gs_food_message[index] = (type != 0 ? 1 : 2);
+		gs_food_message[hero_pos] = (type != 0 ? 1 : 2);
 
 		if (hero->le <= 0) {
 
