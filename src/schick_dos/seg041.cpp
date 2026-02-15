@@ -292,7 +292,7 @@ signed int FIG_get_hero_weapon_attack_damage(struct struct_hero* hero, struct st
 
 			/* weapon does ranged damage */
 
-			hero_pos = get_hero_index(hero);
+			hero_pos = get_hero_pos(hero);
 
 			FIG_search_obj_on_cb(hero_pos + 1, &x_hero, &y_hero);
 			FIG_search_obj_on_cb(hero->target_object_id, &x_target, &y_target);

@@ -1070,7 +1070,7 @@ void spell_adleraug(void)
 	signed int mod_slot;
 	signed int hero_pos;
 
-	hero_pos = get_hero_index(get_spelluser());
+	hero_pos = get_hero_pos(get_spelluser());
 
 	mod_slot = get_free_mod_slot();
 

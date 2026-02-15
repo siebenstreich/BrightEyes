@@ -408,7 +408,7 @@ void DNG08_search_bed(void)
 
 	mod_slot = get_free_mod_slot();
 
-	set_mod_slot(mod_slot, HOURS(6), (uint8_t*)&hero->attrib[ATTRIB_CH].current, -2, (signed char)get_hero_index(hero));
+	set_mod_slot(mod_slot, HOURS(6), (uint8_t*)&hero->attrib[ATTRIB_CH].current, -2, (signed char)get_hero_pos(hero));
 
 	if (random_schick(100) <= 10)
 	{

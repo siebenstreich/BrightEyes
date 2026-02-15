@@ -48,7 +48,7 @@ void consume(struct struct_hero *owner, struct struct_hero *consumer, const sign
 		return;
 	}
 
-	consumer_hero_pos = get_hero_index(consumer);
+	consumer_hero_pos = get_hero_pos(consumer);
 
 	/* get item id */
 	item_id = owner->inventory[inv_slot].item_id;

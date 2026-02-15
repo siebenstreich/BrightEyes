@@ -4726,7 +4726,7 @@ void sub_ae_splash(struct struct_hero *hero, signed int ae_cost)
 		hero->ae -= ae_cost;
 
 		/* Draw the splash */
-		draw_splash(get_hero_index(hero), 1);
+		draw_splash(get_hero_pos(hero), 1);
 
 		/* set AE to 0 if they have gotten lower than 0 */
 		if (hero->ae < 0) {
@@ -4739,7 +4739,7 @@ void sub_ae_splash(struct struct_hero *hero, signed int ae_cost)
 		/* AE bar was not updated in pseudo 3D mode */
 		if (!g_in_fight && g_mouse1_doubleclick) {
 			/* redraw AE bar */
-			draw_bar(1, get_hero_index(hero), hero->ae, hero->ae_max, 0);
+			draw_bar(1, get_hero_pos(hero), hero->ae, hero->ae_max, 0);
 		}
 #endif
 	}
@@ -4810,7 +4810,7 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 			}
 		}
 
-		draw_splash(get_hero_index(hero), 0);
+		draw_splash(get_hero_pos(hero), 0);
 
 		if (hero->le <= 0) {
 
@@ -4820,7 +4820,7 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 			/* mark hero as dead */
 			hero->flags.dead = 1;
 
-			gs_unconscious_message[get_hero_index(hero)] = 0;
+			gs_unconscious_message[get_hero_pos(hero)] = 0;
 
 			/* this is strange... */
 			hero->action_id = FIG_ACTION_PARRY;
@@ -4876,7 +4876,7 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 				hero->action_id = FIG_ACTION_WAIT;
 
 				/* unknown yet */
-				gs_unconscious_message[get_hero_index(hero)] = 1;
+				gs_unconscious_message[get_hero_pos(hero)] = 1;
 
 				/* in fight mode */
 				if (g_in_fight) {
@@ -5502,7 +5502,7 @@ void sub_hero_ap_all(const signed int ap)
  * \param   hero        pointer to the hero
  * \return              position of the hero
  */
-signed int get_hero_index(const struct struct_hero *hero)
+signed int get_hero_pos(const struct struct_hero *hero)
 {
 	signed int i = 0;
 	struct struct_hero *p;

@@ -102,7 +102,7 @@ void add_hero_ap(struct struct_hero*, const int32_t);
 void add_group_ap(int32_t);
 void add_hero_ap_all(const signed int);
 void sub_hero_ap_all(const signed int);
-signed int get_hero_index(const struct struct_hero*);
+signed int get_hero_pos(const struct struct_hero*);
 signed int inv_slot_of_item(const struct struct_hero*, const signed int);
 
 signed int get_first_hero_with_item(const signed int);
