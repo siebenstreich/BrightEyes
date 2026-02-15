@@ -3264,7 +3264,7 @@ static void magical_chainmail_damage(void)
 void herokeeping(void)
 {
 	signed int i;
-	signed int pos;
+	signed int inv_slot;
 	struct struct_hero *hero;
 	char buffer[100];
 
@@ -3297,12 +3297,12 @@ void herokeeping(void)
 					if (hero->hunger > 90) {
 
 						/* search for Lunchpack */
-						pos = inv_slot_of_item(hero, ITEM_ID_PROVIANTPAKET);
+						inv_slot = inv_slot_of_item(hero, ITEM_ID_PROVIANTPAKET);
 
-						if (pos != -1) {
+						if (inv_slot != -1) {
 							/* Lunchpack found, consume quiet */
 							g_consume_quiet = 1;
-							consume(hero, hero, pos);
+							consume(hero, hero, inv_slot);
 #if !defined(__BORLANDC__)
 							D1_INFO("%s isst etwas\n", hero->alias);
 #endif
@@ -3371,16 +3371,16 @@ void herokeeping(void)
 							g_consume_quiet = 1;
 
 							/* first check for beer :) */
-							pos = inv_slot_of_item(hero, ITEM_ID_BIER);
+							inv_slot = inv_slot_of_item(hero, ITEM_ID_BIER);
 
 							/* and then for water */
-							if (pos == -1) {
-								pos = get_full_waterskin_pos(hero);
+							if (inv_slot == -1) {
+								inv_slot = get_full_waterskin_pos(hero);
 							}
 
-							if (pos != -1) {
+							if (inv_slot != -1) {
 								/* drink it */
-								consume(hero, hero, pos);
+								consume(hero, hero, inv_slot);
 #if !defined(__BORLANDC__)
 								D1_INFO("%s trinkt etwas\n", hero->alias);
 #endif
