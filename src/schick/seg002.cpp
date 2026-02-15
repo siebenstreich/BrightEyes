@@ -3263,7 +3263,7 @@ static void magical_chainmail_damage(void)
  */
 void herokeeping(void)
 {
-	signed int i;
+	signed int hero_pos;
 	signed int inv_slot;
 	struct struct_hero *hero;
 	char buffer[100];
@@ -3277,7 +3277,7 @@ void herokeeping(void)
 
 	/* for each hero ..*/
 	hero = get_hero(0);
-	for (i = 0; i <= 6; i++, hero++) {
+	for (hero_pos = 0; hero_pos <= 6; hero_pos++, hero++) {
 
 		/* consume food and set messages */
 		/* must be vital */
@@ -3311,12 +3311,12 @@ void herokeeping(void)
 							/* search for another Lunchpack */
 							/* print last ration message */
 							if (inv_slot_of_item(hero, ITEM_ID_PROVIANTPAKET) == -1) {
-								gs_food_message[i] = 6;
+								gs_food_message[hero_pos] = 6;
 							}
 						} else {
 							/* print ration warning */
 							if (hero->hunger < 100) {
-								gs_food_message[i] = 4;
+								gs_food_message[hero_pos] = 4;
 							}
 						}
 
@@ -3341,7 +3341,7 @@ void herokeeping(void)
 
 						/* */
 						if (hero->hunger_timer <= 0) {
-							do_starve_damage(hero, i, 0);
+							do_starve_damage(hero, hero_pos, 0);
 						}
 					}
 				}
@@ -3387,13 +3387,13 @@ void herokeeping(void)
 								/* nothing to drink message */
 								if ((inv_slot_of_item(hero, ITEM_ID_BIER) == -1)
 									&& (get_full_waterskin_pos(hero) == -1)) {
-									gs_food_message[i] = 5;
+									gs_food_message[hero_pos] = 5;
 								}
 
 							} else {
 								/* hero has nothing to drink */
 								if (hero->thirst < 100) {
-									gs_food_message[i] = 3;
+									gs_food_message[hero_pos] = 3;
 								}
 							}
 
@@ -3420,7 +3420,7 @@ void herokeeping(void)
 
 						} else {
 							if (hero->hunger_timer <= 0) {
-								do_starve_damage(hero, i, 1);
+								do_starve_damage(hero, hero_pos, 1);
 							}
 						}
 					}
@@ -3434,20 +3434,20 @@ void herokeeping(void)
 		}
 
 		/* print hero message */
-		if (gs_food_message[i] && !g_dialogbox_lock &&	!g_in_fight && !g_freeze_timers)
+		if (gs_food_message[hero_pos] && !g_dialogbox_lock && !g_in_fight && !g_freeze_timers)
 		{
 			if ((hero->typus != HERO_TYPE_NONE) && (hero->group_id == gs_active_group_id) && !hero->flags.dead &&
-				(!gs_show_travel_map || (g_food_message_shown[i] != gs_food_message[i]))) {
+				(!gs_show_travel_map || (g_food_message_shown[hero_pos] != gs_food_message[hero_pos]))) {
 
-					sprintf(buffer,	 (gs_food_message[i] == 1) ? get_ttx(224):
-							((gs_food_message[i] == 2) ? get_ttx(223) :
-							((gs_food_message[i] == 3) ? get_ttx(797) :
-							((gs_food_message[i] == 4) ? get_ttx(798) :
-							((gs_food_message[i] == 5) ? get_ttx(799) :
+					sprintf(buffer,	 (gs_food_message[hero_pos] == 1) ? get_ttx(224):
+							((gs_food_message[hero_pos] == 2) ? get_ttx(223) :
+							((gs_food_message[hero_pos] == 3) ? get_ttx(797) :
+							((gs_food_message[hero_pos] == 4) ? get_ttx(798) :
+							((gs_food_message[hero_pos] == 5) ? get_ttx(799) :
 							get_ttx(800))))),
 							hero->alias, GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_2ND));
 
-					g_food_message_shown[i] = gs_food_message[i];
+					g_food_message_shown[hero_pos] = gs_food_message[hero_pos];
 
 					GUI_output(buffer);
 
@@ -3456,12 +3456,12 @@ void herokeeping(void)
 					}
 			}
 
-			gs_food_message[i] = 0;
+			gs_food_message[hero_pos] = 0;
 		}
 
 
 		/* print unconscious message */
-		if (gs_unconscious_message[i] && !g_dialogbox_lock) {
+		if (gs_unconscious_message[hero_pos] && !g_dialogbox_lock) {
 
 			if ((hero->typus != HERO_TYPE_NONE) && (hero->group_id == gs_active_group_id) && !hero->flags.dead)
 			{
@@ -3474,7 +3474,7 @@ void herokeeping(void)
 			}
 
 			/* reset condition */
-			gs_unconscious_message[i] = 0;
+			gs_unconscious_message[hero_pos] = 0;
 		}
 	}
 
