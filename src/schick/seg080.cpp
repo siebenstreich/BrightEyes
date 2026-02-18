@@ -40,7 +40,7 @@ int16_t g_dng05_trash_flag = 0; // ds:0x960e
  */
 signed int DNG04_handler(void)
 {
-	signed int pos;
+	signed int target_pos;
 	signed int i; /* dual use: mod_slot, hero_pos */
 	signed int tw_bak;
 	struct struct_hero *hero;
@@ -48,14 +48,14 @@ signed int DNG04_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
 
-	if (pos == DNG_POS(0,6,7) && pos != gs_dng_handled_pos && !gs_dng04_corpse0_flag)
+	if (target_pos == DNG_POS(0,6,7) && target_pos != gs_dng_handled_pos && !gs_dng04_corpse0_flag)
 	{
 		/* DNG04_corpse0 */
 		loot_special_chest(0);
 
-	} else if (pos == DNG_POS(0,8,8) && pos != gs_dng_handled_pos && !gs_dng04_gap_flag)
+	} else if (target_pos == DNG_POS(0,8,8) && target_pos != gs_dng_handled_pos && !gs_dng04_gap_flag)
 	{
 		/* do you want to grab into the gap ? */
 		do {
@@ -78,7 +78,7 @@ signed int DNG04_handler(void)
 			gs_dng04_gap_flag = 1;
 		}
 
-	} else if (pos == DNG_POS(0,5,11) && pos != gs_dng_handled_pos && !gs_dng04_helmet_flag)
+	} else if (target_pos == DNG_POS(0,5,11) && target_pos != gs_dng_handled_pos && !gs_dng04_helmet_flag)
 	{
 		/* do you want the SILVER HELMET? */
 		if (GUI_bool(get_tx(7)))
@@ -91,12 +91,12 @@ signed int DNG04_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(0,1,12) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,1,12) && target_pos != gs_dng_handled_pos)
 	{
 		/* DNG04_corpse1 */
 		loot_special_chest(0);
 
-	} else if (pos == DNG_POS(0,8,3) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,8,3) && target_pos != gs_dng_handled_pos)
 	{
 		/* the ceiling may drop on your head */
 		GUI_output(get_tx(9));
@@ -118,15 +118,15 @@ signed int DNG04_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(0,7,3) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,7,3) && target_pos != gs_dng_handled_pos)
 	{
 		GUI_output(get_tx(11));
 
-	} else if (pos == DNG_POS(0,5,5) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,5,5) && target_pos != gs_dng_handled_pos)
 	{
 		GUI_output(get_tx(12));
 
-	} else if (pos == DNG_POS(0,10,13) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,10,13) && target_pos != gs_dng_handled_pos)
 	{
 		/* dig into a heap of dirt? */
 		if (GUI_bool(get_tx(13)) && GUI_bool(get_tx(14)))
@@ -140,7 +140,7 @@ signed int DNG04_handler(void)
 			set_mod_slot(i, DAYS(1), (uint8_t*)&get_hero(0)->attrib[ATTRIB_CH].current, -5, 0);
 		}
 
-	} else if (pos == DNG_POS(0,14,14) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,14,14) && target_pos != gs_dng_handled_pos)
 	{
 		/* the ceiling may drop on your head */
 		GUI_output(get_tx(9));
@@ -162,7 +162,7 @@ signed int DNG04_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(0,10,6) && pos != gs_dng_handled_pos && !gs_dng04_lantern_flag)
+	} else if (target_pos == DNG_POS(0,10,6) && target_pos != gs_dng_handled_pos && !gs_dng04_lantern_flag)
 	{
 		/* do you want a LANTERN? */
 		if (GUI_bool(get_tx(16)))
@@ -175,7 +175,7 @@ signed int DNG04_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(0,10,2) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,10,2) && target_pos != gs_dng_handled_pos)
 	{
 		/* a very deep gap */
 		i = 1;
@@ -209,12 +209,12 @@ signed int DNG04_handler(void)
 		}
 	}
 
-	if (pos == DNG_POS(0,6,1) && pos != gs_dng_handled_pos && !gs_dng04_corpse2_flag)
+	if (target_pos == DNG_POS(0,6,1) && target_pos != gs_dng_handled_pos && !gs_dng04_corpse2_flag)
 	{
 		/* DNG04_corpse2 */
 		loot_special_chest(0);
 
-	} else if ((pos == DNG_POS(0,13,6) || pos == DNG_POS(0,14,6) || pos == DNG_POS(0,14,5)) && pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,13,6) || target_pos == DNG_POS(0,14,6) || target_pos == DNG_POS(0,14,5)) && target_pos != gs_dng_handled_pos)
 	{
 		/* Probability of 5% to get bitten by a rat */
 		if (mod_day_timer(MINUTES(10)))
@@ -256,7 +256,7 @@ signed int DNG04_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(0,7,15) && pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,7,15) && target_pos != gs_dng_handled_pos)
 	{
 		/* the exit of this dungeon */
 		leave_dungeon();
@@ -276,7 +276,7 @@ signed int DNG04_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = pos;
+	gs_dng_handled_pos = target_pos;
 
 	return 0;
 }

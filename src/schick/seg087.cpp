@@ -29,7 +29,7 @@
 
 signed int DNG14_handler(void)
 {
-	signed int pos;
+	signed int target_pos;
 	signed int tmp; /* multiple use: mod_slot, item_count, result of talent test */
 	signed int hero_pos;
 	signed int tw_bak;
@@ -42,25 +42,25 @@ signed int DNG14_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
 
 	hero = get_first_hero_available_in_group();
 
 	if (!(gs_day_timer % MINUTES(10)) &&
 		(gs_dng14_poisontrap == 2) &&
-		(pos == DNG_POS(0,13,6) || pos == DNG_POS(0,14,6) || pos == DNG_POS(0,13,7) || pos == DNG_POS(0,14,7)))
+		(target_pos == DNG_POS(0,13,6) || target_pos == DNG_POS(0,14,6) || target_pos == DNG_POS(0,13,7) || target_pos == DNG_POS(0,14,7)))
 	{
 		sub_group_le(1);
 	}
 
-	if (pos == DNG_POS(0,2,11) && pos != gs_dng_handled_pos && random_schick(100) <= 10) {
+	if (target_pos == DNG_POS(0,2,11) && target_pos != gs_dng_handled_pos && random_schick(100) <= 10) {
 
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = DNG_POS_DIR(0,3,8,EAST);
 		g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(0,2,14,SOUTH);
 
 		do_fight(FIGHT_ID_DTHO03);
 
-	} else if (pos == DNG_POS(0,2,4) && pos != gs_dng_handled_pos && !gs_dng14_money_flag) {
+	} else if (target_pos == DNG_POS(0,2,4) && target_pos != gs_dng_handled_pos && !gs_dng14_money_flag) {
 
 		if (GUI_bool(get_tx(1))) {
 
@@ -78,7 +78,7 @@ signed int DNG14_handler(void)
 			GUI_output(get_tx(2));
 		}
 
-	} else if (pos == DNG_POS(0,5,3) && pos != gs_dng_handled_pos && !gs_dng14_alarm_flag) {
+	} else if (target_pos == DNG_POS(0,5,3) && target_pos != gs_dng_handled_pos && !gs_dng14_alarm_flag) {
 
 		if (test_talent(hero, TA_SINNESSCHAERFE, 6) <= 0) {
 
@@ -87,21 +87,21 @@ signed int DNG14_handler(void)
 			gs_dng14_alarm_flag = 1;
 		}
 
-	} else if (pos == DNG_POS(0,6,2) && pos != gs_dng_handled_pos && gs_dng14_alarm_flag) {
+	} else if (target_pos == DNG_POS(0,6,2) && target_pos != gs_dng_handled_pos && gs_dng14_alarm_flag) {
 
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(0,5,4,SOUTH);
 
 		do_fight(FIGHT_ID_DTHO06);
 
-	} else if (pos == DNG_POS(0,7,6) && pos != gs_dng_handled_pos && gs_direction == NORTH) {
+	} else if (target_pos == DNG_POS(0,7,6) && target_pos != gs_dng_handled_pos && gs_direction == NORTH) {
 
 		loot_multi_chest(gs_dng14_chest_pantry, get_tx(4));
 
-	} else if (pos == DNG_POS(0,6,11) && pos != gs_dng_handled_pos && gs_direction == EAST) {
+	} else if (target_pos == DNG_POS(0,6,11) && target_pos != gs_dng_handled_pos && gs_direction == EAST) {
 
 		loot_multi_chest(gs_dng14_chest_gear, get_tx(5));
 
-	} else if ((pos == DNG_POS(0,9,13) || pos == DNG_POS(0,9,9)) && pos != gs_dng_handled_pos && random_schick(100) <= 20) {
+	} else if ((target_pos == DNG_POS(0,9,13) || target_pos == DNG_POS(0,9,9)) && target_pos != gs_dng_handled_pos && random_schick(100) <= 20) {
 
 		g_fig_escape_position[NORTH] = DNG_POS_DIR(0,9,8,NORTH);
 		g_fig_escape_position[EAST] = DNG_POS_DIR(0,11,11,EAST);
@@ -109,17 +109,17 @@ signed int DNG14_handler(void)
 
 		do_fight(FIGHT_ID_DTHO09);
 
-	} else if (pos == DNG_POS(0,11,14) && pos != gs_dng_handled_pos && random_schick(100) <= 10) {
+	} else if (target_pos == DNG_POS(0,11,14) && target_pos != gs_dng_handled_pos && random_schick(100) <= 10) {
 
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(0,8,14,WEST);
 
 		do_fight(FIGHT_ID_DTHO10);
 
-	} else if (pos == DNG_POS(0,11,14) && pos != gs_dng_handled_pos && gs_direction == EAST) {
+	} else if (target_pos == DNG_POS(0,11,14) && target_pos != gs_dng_handled_pos && gs_direction == EAST) {
 
 		GUI_output(get_tx(6));
 
-	} else if (pos == DNG_POS(0,13,7) && pos != gs_dng_handled_pos && (gs_dng14_poisontrap != 0)) {
+	} else if (target_pos == DNG_POS(0,13,7) && target_pos != gs_dng_handled_pos && (gs_dng14_poisontrap != 0)) {
 
 		GUI_output(get_tx(10));
 
@@ -129,21 +129,21 @@ signed int DNG14_handler(void)
 
 		amap_ptr[MAP_POS(12,7)] |= DNG_TILE_REMOVABLE_WALL << 4;
 
-	} else if (pos == DNG_POS(0,13,5) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(0,13,5) && target_pos != gs_dng_handled_pos) {
 
 		gs_dng14_poisontrap = 0;
 
-	} else if (pos == DNG_POS(0,11,10) && pos != gs_dng_handled_pos && random_schick(100) <= 10) {
+	} else if (target_pos == DNG_POS(0,11,10) && target_pos != gs_dng_handled_pos && random_schick(100) <= 10) {
 
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(0,9,11,WEST);
 
 		do_fight(FIGHT_ID_DTHO13);
 
-	} else if (pos == DNG_POS(0,10,3) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(0,10,3) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(12));
 
-	} else if (pos == DNG_POS(0,4,11) && (pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
+	} else if (target_pos == DNG_POS(0,4,11) && (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
 			gs_direction == EAST && gs_dng14_secretdoor1 != 2) {
 
 		if (gs_dng14_secretdoor1 != 0 || test_talent(hero, TA_SINNESSCHAERFE, 4) > 0) {
@@ -168,8 +168,7 @@ signed int DNG14_handler(void)
 			gs_direction_bak = gs_direction;
 		}
 
-	} else if (pos == DNG_POS(0,11,7) &&
-			(pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
+	} else if (target_pos == DNG_POS(0,11,7) && (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
 			gs_direction == EAST &&
 			gs_dng14_secretdoor2 != 2) {
 
@@ -197,20 +196,20 @@ signed int DNG14_handler(void)
 			gs_direction_bak = gs_direction;
 		}
 
-	} else if (pos == DNG_POS(1,1,8) && pos != gs_dng_handled_pos && random_schick(100) <= 30) {
+	} else if (target_pos == DNG_POS(1,1,8) && target_pos != gs_dng_handled_pos && random_schick(100) <= 30) {
 
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(1,1,6,NORTH);
 
 		do_fight(FIGHT_ID_DTHO18);
 
-	} else if (pos == DNG_POS(1,1,11) && pos != gs_dng_handled_pos && random_schick(100) <= 5) {
+	} else if (target_pos == DNG_POS(1,1,11) && target_pos != gs_dng_handled_pos && random_schick(100) <= 5) {
 
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = DNG_POS_DIR(1,1,9,NORTH);
 		g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(1,1,14,SOUTH);
 
 		do_fight(FIGHT_ID_DTHO19);
 
-	} else if (pos == DNG_POS(1,1,14) && pos != gs_dng_handled_pos && random_schick(100) <= 10) {
+	} else if (target_pos == DNG_POS(1,1,14) && target_pos != gs_dng_handled_pos && random_schick(100) <= 10) {
 
 		g_fig_escape_position[NORTH] = DNG_POS_DIR(1,1,12,NORTH);
 		g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = DNG_POS_DIR(1,5,14,EAST);
@@ -218,7 +217,7 @@ signed int DNG14_handler(void)
 
 		do_fight(FIGHT_ID_DTHO20);
 
-	} else if (pos == DNG_POS(1,13,13) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(1,13,13) && target_pos != gs_dng_handled_pos) {
 
 		/* a Ladder */
 
@@ -231,8 +230,8 @@ signed int DNG14_handler(void)
 			DNG_update_pos();
 		}
 
-	} else if ((pos == DNG_POS(1,10,8) || pos == DNG_POS(1,11,10) || pos == DNG_POS(1,7,10) || pos == DNG_POS(1,9,12)) &&
-		 pos != gs_dng_handled_pos && !gs_dng14_lvl2_fight) {
+	} else if ((target_pos == DNG_POS(1,10,8) || target_pos == DNG_POS(1,11,10) || target_pos == DNG_POS(1,7,10) || target_pos == DNG_POS(1,9,12)) &&
+		 target_pos != gs_dng_handled_pos && !gs_dng14_lvl2_fight) {
 
 		/* the main fight in Level 2 */
 
@@ -245,11 +244,11 @@ signed int DNG14_handler(void)
 			gs_dng14_lvl2_fight = 1;
 		}
 
-	} else if (pos == DNG_POS(1,8,9) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(1,8,9) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(15));
 
-	} else if (pos == DNG_POS(1,10,6) && pos != gs_dng_handled_pos && random_schick(100) <= 50) {
+	} else if (target_pos == DNG_POS(1,10,6) && target_pos != gs_dng_handled_pos && random_schick(100) <= 50) {
 
 		g_fig_escape_position[NORTH] = DNG_POS_DIR(1,10,1,NORTH);
 		g_fig_escape_position[EAST] = DNG_POS_DIR(1,12,6,EAST);
@@ -257,15 +256,15 @@ signed int DNG14_handler(void)
 
 		do_fight(FIGHT_ID_DTHO23);
 
-	} else if ((pos == DNG_POS(1,8,2) || pos == DNG_POS(1,8,5)) && pos != gs_dng_handled_pos && gs_direction == WEST) {
+	} else if ((target_pos == DNG_POS(1,8,2) || target_pos == DNG_POS(1,8,5)) && target_pos != gs_dng_handled_pos && gs_direction == WEST) {
 
 		GUI_output(get_tx(16));
 
-	} else if (pos == DNG_POS(1,12,2) && pos != gs_dng_handled_pos && gs_direction == EAST) {
+	} else if (target_pos == DNG_POS(1,12,2) && target_pos != gs_dng_handled_pos && gs_direction == EAST) {
 
 		GUI_output(get_tx(16));
 
-	} else if (pos == DNG_POS(1,12,6) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(1,12,6) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(16));
 
@@ -276,11 +275,11 @@ signed int DNG14_handler(void)
 			gs_dng14_booty_flag = 1;
 		}
 
-	} else if (pos == DNG_POS(1,12,10) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(1,12,10) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(18));
 
-	} else if (pos == DNG_POS(1,13,10) && pos != gs_dng_handled_pos && !gs_dng14_ugdalf_done) {
+	} else if (target_pos == DNG_POS(1,13,10) && target_pos != gs_dng_handled_pos && !gs_dng14_ugdalf_done) {
 
 		GUI_output(get_tx(19));
 
@@ -288,8 +287,8 @@ signed int DNG14_handler(void)
 
 		gs_quest_ugdalf = 3;
 
-	} else if (pos == DNG_POS(1,1,9) &&
-		(pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
+	} else if (target_pos == DNG_POS(1,1,9) &&
+		(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
 		gs_direction == SOUTH && gs_dng14_secretdoor3 != 2) {
 
 		if (gs_dng14_secretdoor3 != 0 || test_talent(hero, TA_SINNESSCHAERFE, 4) > 0) {
@@ -318,8 +317,8 @@ signed int DNG14_handler(void)
 			gs_direction_bak = gs_direction;
 		}
 
-	} else if (pos == DNG_POS(1,7,10) &&
-		(pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
+	} else if (target_pos == DNG_POS(1,7,10) &&
+		(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
 		gs_direction == WEST && gs_dng14_secretdoor4 != 2) {
 
 		if (gs_dng14_secretdoor4 != 0 || test_talent(hero, TA_SINNESSCHAERFE, 8) > 0) {
@@ -348,12 +347,12 @@ signed int DNG14_handler(void)
 			gs_direction_bak = gs_direction;
 		}
 
-	} else if (pos == DNG_POS(2,3,6) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(2,3,6) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(20));
 
 
-	} else if (pos == DNG_POS(2,4,13) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(2,4,13) && target_pos != gs_dng_handled_pos) {
 
 		if (GUI_bool(get_tx(21))) {
 
@@ -421,7 +420,7 @@ signed int DNG14_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(2,2,14) && pos != gs_dng_handled_pos && !gs_dng14_torches_flag) {
+	} else if (target_pos == DNG_POS(2,2,14) && target_pos != gs_dng_handled_pos && !gs_dng14_torches_flag) {
 
 		if (GUI_bool(get_tx(28))) {
 
@@ -430,7 +429,7 @@ signed int DNG14_handler(void)
 			give_new_item_to_group(ITEM_ID_FACKEL__UNLIT, 1, 4);
 		}
 
-	} else if (pos == DNG_POS(2,3,1) && pos != gs_dng_handled_pos && !gs_dng14_spooky_flag) {
+	} else if (target_pos == DNG_POS(2,3,1) && target_pos != gs_dng_handled_pos && !gs_dng14_spooky_flag) {
 		gs_dng14_spooky_flag = 1;
 
 		GUI_output(get_tx(29));
@@ -447,7 +446,7 @@ signed int DNG14_handler(void)
 			}
 		}
 
-	} else if (pos == DNG_POS(2,1,2) && pos != gs_dng_handled_pos && !gs_dng14_spear_flag) {
+	} else if (target_pos == DNG_POS(2,1,2) && target_pos != gs_dng_handled_pos && !gs_dng14_spear_flag) {
 
 		if (GUI_bool(get_tx(30))) {
 
@@ -457,7 +456,7 @@ signed int DNG14_handler(void)
 		}
 
 
-	} else if (pos == DNG_POS(2,9,7) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(2,9,7) && target_pos != gs_dng_handled_pos) {
 
 		if (GUI_bool(get_tx(31))) {
 
@@ -469,27 +468,27 @@ signed int DNG14_handler(void)
 		gs_x_target = gs_x_target_bak;
 		gs_y_target = gs_y_target_bak;
 
-	} else if (pos == DNG_POS(2,7,7) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(2,7,7) && target_pos != gs_dng_handled_pos) {
 
 		GUI_dialog_na(60, get_tx(33));
 
-	} else if (pos == DNG_POS(2,13,7) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(2,13,7) && target_pos != gs_dng_handled_pos) {
 
 		GUI_dialog_na(60, get_tx(34));
 
-	} else if (pos == DNG_POS(2,14,5) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(2,14,5) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(36));
 
 		/* each hero gets 2W6 damage */
 		sub_group_le(dice_roll(2, 6, 0));
 
-	} else if (pos == DNG_POS(2,14,3) && pos != gs_dng_handled_pos && gs_direction == NORTH) {
+	} else if (target_pos == DNG_POS(2,14,3) && target_pos != gs_dng_handled_pos && gs_direction == NORTH) {
 
 		GUI_output(get_tx(37));
 
-	} else if (pos == DNG_POS(2,14,5) &&
-			(pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
+	} else if (target_pos == DNG_POS(2,14,5) &&
+			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
 			gs_direction == NORTH &&
 			gs_dng14_secretdoor5 != 2 &&
 			(gs_dng14_secretdoor5 != 0 || test_talent(hero, TA_SINNESSCHAERFE, 6) > 0))
@@ -518,12 +517,12 @@ signed int DNG14_handler(void)
 			gs_direction_bak = gs_direction;
 	}
 
-	if (pos == DNG_POS(3,4,12) && pos != gs_dng_handled_pos) {
+	if (target_pos == DNG_POS(3,4,12) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(35));
 
-	} else if (((pos == DNG_POS(3,10,10) && gs_direction == EAST) || (pos == 0x3e0a && gs_direction == WEST)) &&
-			pos != gs_dng_handled_pos)
+	} else if (((target_pos == DNG_POS(3,10,10) && gs_direction == EAST) || (target_pos == DNG_POS(3,14,10) && gs_direction == WEST)) &&
+			target_pos != gs_dng_handled_pos)
 	{
 		if (GUI_bool(get_tx(38))) {
 
@@ -542,7 +541,7 @@ signed int DNG14_handler(void)
 						/* 1W6 damage */
 						sub_hero_le(hero, random_schick(6));
 
-						gs_x_target = (pos == DNG_POS(3,10,10) ? 9 : 13);
+						gs_x_target = (target_pos == DNG_POS(3,10,10) ? 9 : 13);
 
 						if (hero->flags.dead) {
 
@@ -555,28 +554,28 @@ signed int DNG14_handler(void)
 						sprintf(g_dtp2, get_tx(41), hero->alias, GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
 						GUI_output(g_dtp2);
 
-						DNG14_dive(hero_pos, 2, (pos == DNG_POS(3,10,10) ? 13 : 9));
+						DNG14_dive(hero_pos, 2, (target_pos == DNG_POS(3,10,10) ? 13 : 9));
 					}
 				}
 			} else {
 				/* no tools for diving */
-				DNG14_dive(-1, 8, (pos == DNG_POS(3,10,10) ? 13 : 9));
+				DNG14_dive(-1, 8, (target_pos == DNG_POS(3,10,10) ? 13 : 9));
 			}
 		}
 
-	} else if (pos == DNG_POS(3,6,11) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(3,6,11) && target_pos != gs_dng_handled_pos) {
 
 		GUI_dialog_na(55, get_tx(44));
 
-	} else if ((pos == DNG_POS(3,4,1) || pos == DNG_POS(3,12,7) || pos == DNG_POS(3,1,3) || pos == DNG_POS(3,6,7)) && pos != gs_dng_handled_pos) {
+	} else if ((target_pos == DNG_POS(3,4,1) || target_pos == DNG_POS(3,12,7) || target_pos == DNG_POS(3,1,3) || target_pos == DNG_POS(3,6,7)) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(45));
 
-	} else if (pos == DNG_POS(3,4,13) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(3,4,13) && target_pos != gs_dng_handled_pos) {
 
 		GUI_output(get_tx(47));
 
-	} else if (pos == DNG_POS(3,3,3) && pos != gs_dng_handled_pos && !gs_dng14_hatchet_flag) {
+	} else if (target_pos == DNG_POS(3,3,3) && target_pos != gs_dng_handled_pos && !gs_dng14_hatchet_flag) {
 
 		if (GUI_bool(get_tx(46))) {
 
@@ -585,11 +584,11 @@ signed int DNG14_handler(void)
 			give_new_item_to_group(ITEM_ID_HACKE, 1, 1);
 		}
 
-	} else if (pos == DNG_POS(3,11,13) && pos != gs_dng_handled_pos && gs_direction == EAST) {
+	} else if (target_pos == DNG_POS(3,11,13) && target_pos != gs_dng_handled_pos && gs_direction == EAST) {
 
 		GUI_output(get_tx(48));
 
-	} else if (pos == DNG_POS(3,12,12) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(3,12,12) && target_pos != gs_dng_handled_pos) {
 
 		sprintf(g_dtp2, get_tx(49), hero->alias, hero->alias);
 		GUI_output(g_dtp2);
@@ -597,7 +596,7 @@ signed int DNG14_handler(void)
 		/* 1W6 damage */
 		sub_hero_le(hero, 3);
 
-	} else if (pos == DNG_POS(3,7,3) && pos != gs_dng_handled_pos && !gs_dng14_ring_flag) {
+	} else if (target_pos == DNG_POS(3,7,3) && target_pos != gs_dng_handled_pos && !gs_dng14_ring_flag) {
 
 		if (GUI_bool(get_tx(50))) {
 
@@ -606,7 +605,7 @@ signed int DNG14_handler(void)
 			give_new_item_to_group(ITEM_ID_RING__BLUE, 1, 1);
 		}
 
-	} else if (pos == DNG_POS(3,11,1) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(3,11,1) && target_pos != gs_dng_handled_pos) {
 
 		if (GUI_bool(get_tx(51))) {
 
@@ -630,7 +629,7 @@ signed int DNG14_handler(void)
 			gs_direction = SOUTH;
 		}
 
-	} else if (pos == DNG_POS(4,5,13) && pos != gs_dng_handled_pos && !gs_dng14_orknase_flag) {
+	} else if (target_pos == DNG_POS(4,5,13) && target_pos != gs_dng_handled_pos && !gs_dng14_orknase_flag) {
 
 		if (GUI_bool(get_tx(57))) {
 
@@ -639,11 +638,11 @@ signed int DNG14_handler(void)
 			give_new_item_to_group(ITEM_ID_ORKNASE, 1, 1);
 		}
 
-	} else if (pos == DNG_POS(4,12,9) && pos != gs_dng_handled_pos && gs_direction == SOUTH) {
+	} else if (target_pos == DNG_POS(4,12,9) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH) {
 
 		GUI_output(get_tx(58));
 
-	} else if (pos == DNG_POS(4,5,9) && pos != gs_dng_handled_pos && gs_direction == NORTH) {
+	} else if (target_pos == DNG_POS(4,5,9) && target_pos != gs_dng_handled_pos && gs_direction == NORTH) {
 
 		if (!GUI_bool(get_tx(59))) {
 
@@ -653,7 +652,7 @@ signed int DNG14_handler(void)
 			GUI_output(get_tx(60));
 		}
 
-	} else if (pos == DNG_POS(0,0,14) && pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(0,0,14) && target_pos != gs_dng_handled_pos) {
 		/* regular exit */
 		leave_dungeon();
 		gs_x_target = 2;
@@ -663,7 +662,7 @@ signed int DNG14_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = pos;
+	gs_dng_handled_pos = target_pos;
 
 	return 0;
 }
