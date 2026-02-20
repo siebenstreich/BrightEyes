@@ -71,7 +71,7 @@ signed int DNG01_handler(void)
 
 	} else if (target_pos == DNG_POS(2,7,6) || target_pos == DNG_POS(2,7,9))
 	{
-		DNG_stub6();
+		DNG01_pitfall();
 
 	} else if (target_pos == DNG_POS(3,14,7))
 	{

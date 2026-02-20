@@ -31,7 +31,7 @@ signed int DNG_fallpit(const signed int);
 /* 0x6b */
 signed int is_staff_lvl2_in_group(void);
 /* 0x70 */
-void DNG_stub6(void);
+void DNG01_pitfall(void);
 /* 0x75 */
 signed int DNG_check_climb_tools(void);
 /* 0x7a */

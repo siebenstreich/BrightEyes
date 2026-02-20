@@ -1081,7 +1081,7 @@ void DNG_close_door(void)
 	call_mouse();
 }
 
-void DNG_stub6(void)
+void DNG01_pitfall(void)
 {
 	play_voc(ARCHIVE_FILE_FX18_VOC);
 
