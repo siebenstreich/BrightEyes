@@ -1087,7 +1087,7 @@ void DNG01_pitfall(void)
 
 	if (gs_dungeon_light) {
 
-		if (DNG_fallpit(6)) {
+		if (DNG_pitfall(6)) {
 			gs_x_target = gs_x_target_bak;
 			gs_y_target = gs_y_target_bak;
 		}
@@ -1193,7 +1193,7 @@ signed int DNG_check_climb_tools(void)
 	return ((get_first_hero_with_item(ITEM_ID_SEIL) != -1) || (get_first_hero_with_item(ITEM_ID_STRICKLEITER) != -1)) ? 0 : -1;
 }
 
-signed int DNG_fallpit(const signed int max_damage)
+signed int DNG_pitfall(const signed int max_damage)
 {
 	signed int hero_pos;
 	signed int i;

@@ -172,18 +172,18 @@ signed int DNG06_handler(void)
 
 				if (!gs_dng06_pitdoor_flag)
 				{
-					DNG_fallpit_test(6);
+					DNG_pitfall_test(6);
 				}
 			} else {
 				if (!gs_dng06_pitdoor_flag)
 				{
-					DNG_fallpit_test(6);
+					DNG_pitfall_test(6);
 				}
 			}
 		} else {
 			if (!gs_dng06_pitdoor_flag)
 			{
-				DNG_fallpit_test(6);
+				DNG_pitfall_test(6);
 			}
 		}
 

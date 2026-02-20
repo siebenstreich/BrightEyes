@@ -120,7 +120,7 @@ signed int DNG02_handler(void)
 
 	} else if (target_pos == DNG_POS(0,6,10))
 	{
-		DNG_fallpit_test(2);
+		DNG_pitfall_test(2);
 
 	} else if (target_pos == DNG_POS(0,14,14) && target_pos != gs_dng_handled_pos)
 	{
@@ -134,7 +134,7 @@ signed int DNG02_handler(void)
 
 		if (weight_sum >= 7000L)
 		{
-			DNG_fallpit(6);
+			DNG_pitfall(6);
 		}
 
 	} else if ((target_pos == DNG_POS(0,10,12) || target_pos == DNG_POS(0,10,10)) && target_pos != gs_dng_handled_pos)

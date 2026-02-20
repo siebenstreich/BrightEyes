@@ -27,7 +27,7 @@ void DNG_close_door(void);
 /* 0x61 */
 void DNG_lights(void);
 /* 0x66 */
-signed int DNG_fallpit(const signed int);
+signed int DNG_pitfall(const signed int);
 /* 0x6b */
 signed int is_staff_lvl2_in_group(void);
 /* 0x70 */

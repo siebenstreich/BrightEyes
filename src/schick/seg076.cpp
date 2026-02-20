@@ -349,11 +349,11 @@ void print_msg_with_first_hero(char *msg)
 }
 
 /**
- * \brief   fallpit logic for the current group in dungeons
+ * \brief   pitfall logic for the current group in dungeons
  *
- * \param   max_damage  maximum damage if a hero drops in the fallpit
+ * \param   max_damage  maximum damage if a hero drops in the pitfall
  */
-void DNG_fallpit_test(const signed int max_damage)
+void DNG_pitfall_test(const signed int max_damage)
 {
 	play_voc(ARCHIVE_FILE_FX18_VOC);
 
@@ -387,7 +387,7 @@ void DNG_fallpit_test(const signed int max_damage)
 		}
 	} else {
 		/* light is off */
-		if (DNG_fallpit(max_damage))
+		if (DNG_pitfall(max_damage))
 		{
 			/* drop one level down */
 			gs_dungeon_level++;

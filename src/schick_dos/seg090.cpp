@@ -228,7 +228,7 @@ signed int DNG12_handler(void)
 	} else if (target_pos == DNG_POS(0,5,3) && target_pos != gs_dng_handled_pos) {
 		/* trap door */
 		GUI_output(get_tx(11));
-		DNG_fallpit(6);
+		DNG_pitfall(6);
 	} else if (target_pos == DNG_POS(0,4,6) && target_pos != gs_dng_handled_pos) {
 		/* trap door */
 		GUI_output(get_tx(11));
