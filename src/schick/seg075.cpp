@@ -1193,59 +1193,67 @@ signed int DNG_check_climb_tools(void)
 	return ((get_first_hero_with_item(ITEM_ID_SEIL) != -1) || (get_first_hero_with_item(ITEM_ID_STRICKLEITER) != -1)) ? 0 : -1;
 }
 
+/**
+ * \brief   A random number of heroes falls to the next lower dungeon level.
+ *
+ * \param   max_damage  Each fallen hero takes a random amount of LE damage in the range [1 .. max_damage].
+ * \return  0: all heroes fell. / 1: only some heroes fell (forming a new group).
+ */
 signed int DNG_pitfall(const signed int max_damage)
 {
 	signed int hero_pos;
 	signed int i;
-	signed int nr_fallen_heroes;
-	signed int new_group;
+	signed int num_fallen_heroes;
+	signed int new_group_id;
 	signed int retval;
 
-	new_group = 0;
+	new_group_id = 0;
 	retval = 0;
 
 	g_dng_level_changed = 1;
-	nr_fallen_heroes = random_schick(gs_group_member_counts[gs_active_group_id]);
+	num_fallen_heroes = random_schick(gs_group_member_counts[gs_active_group_id]);
 
-	/* If the result was rolled that all but one hero of the active group should fall down, all heroes will fall down.
-	 * Reason probably: Avoid that the NPC gets separated into a single group (as he might be the single hero not falling down) */
+	/* If the roll indicates that all but one hero of the active group should fall, then all heroes will fall instead.
+	 * Reason (probably): Prevent the NPC from ending up isolated as a single‑hero group.
+	 */
 
-	if (gs_group_member_counts[gs_active_group_id] - 1 == nr_fallen_heroes) {
-		nr_fallen_heroes = gs_group_member_counts[gs_active_group_id];
+	if (gs_group_member_counts[gs_active_group_id] - 1 == num_fallen_heroes) {
+		num_fallen_heroes = gs_group_member_counts[gs_active_group_id];
 	}
 
-	if (gs_group_member_counts[gs_active_group_id] != nr_fallen_heroes) {
-		/* only a part of the heroes of the active group falls down */
+	if (gs_group_member_counts[gs_active_group_id] != num_fallen_heroes) {
+		/* Only part of the heroes in the active group falls. -> new group is needed */
 
 		/* find empty group */
-		while (gs_group_member_counts[new_group]) {
-			new_group++;
+		while (gs_group_member_counts[new_group_id]) {
+			new_group_id++;
 		}
 
-		for (i = 0; i < nr_fallen_heroes; i++) {
+		for (i = 0; i < num_fallen_heroes; i++) {
 
 			do {
 				hero_pos = random_schick(7) - 1;
 
 			} while (!get_hero(hero_pos)->typus || (get_hero(hero_pos)->group_id != gs_active_group_id) ||
-					((nr_fallen_heroes == 1) && (hero_pos == 6))); /* avoid that the NPC gets separated into a single group */
+					((num_fallen_heroes == 1) && (hero_pos == 6))); /* avoid that the NPC gets separated into a single group */
 
-			get_hero(hero_pos)->group_id = (unsigned char)new_group;
-			gs_group_member_counts[new_group]++;
+			get_hero(hero_pos)->group_id = (unsigned char)new_group_id;
+			gs_group_member_counts[new_group_id]++;
 			gs_group_member_counts[gs_active_group_id]--;
 			sub_hero_le(get_hero(hero_pos), random_schick(max_damage));
 		}
 
-		GRP_save_pos(new_group);
-		gs_groups_dng_level[new_group] = gs_dungeon_level + 1;
+		GRP_save_pos(new_group_id);
+		gs_groups_dng_level[new_group_id] = gs_dungeon_level + 1;
 
 		retval = 1;
 
 	} else {
+		/* all heroes fall */
 
 		hero_pos = 0;
 
-		for (i = 0; i < nr_fallen_heroes; i++) {
+		for (i = 0; i < num_fallen_heroes; i++) {
 
 			while (!get_hero(hero_pos)->typus || (get_hero(hero_pos)->group_id != gs_active_group_id))
 			{

@@ -349,31 +349,37 @@ void print_msg_with_first_hero(char *msg)
 }
 
 /**
- * \brief   pitfall logic for the current group in dungeons
+ * \brief   A random number of heroes falls to the next lower dungeon level.
+ *          A pit in the floor or ceiling is added to the dungeon tile in the
+ *          upper or lower level, respectively.
  *
- * \param   max_damage  maximum damage if a hero drops in the pitfall
+ * \param   max_damage  Each fallen hero takes a random amount of LE damage
+ *                      in the range [1 .. max_damage].
  */
 void DNG_pitfall_test(const signed int max_damage)
 {
 	play_voc(ARCHIVE_FILE_FX18_VOC);
 
+	/* add a pit in the floor to the dungeon tile */
 	*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
 	*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT << 4);
 
 	if (gs_dungeon_light != 0)
 	{
+		/* light is on */
+
 		signed int i;
 		struct struct_hero *hero;
 
-		/* light is on */
 		GUI_output(get_ttx(517));
+		// Floor fails under your weight; you drop below.
 
 		/* drop one level down */
 		DNG_inc_level();
 
+		/* add a pit in the ceiling to the dungeon tile */
 		*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
 		*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT_IN_CEILING << 4);
-		/* effect: 0101.... */
 
 		/* damage the heroes */
 		hero = get_hero(0);
@@ -387,16 +393,20 @@ void DNG_pitfall_test(const signed int max_damage)
 		}
 	} else {
 		/* light is off */
+
 		if (DNG_pitfall(max_damage))
 		{
-			/* drop one level down */
+			/* Only some of the heroes fell; the active group consists of those remaining on the upper level. */
+
+			/* move one level down */
 			gs_dungeon_level++;
 			load_area_description(1);
 
+			/* add a pit in the ceiling to the dungeon tile */
 			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
 			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT_IN_CEILING << 4);
 
-			/* move one level up. */
+			/* move one level up */
 			gs_dungeon_level--;
 
 			gs_x_target = gs_x_target_bak;
@@ -406,9 +416,11 @@ void DNG_pitfall_test(const signed int max_damage)
 
 			DNG_update_pos();
 		} else {
+			/* All heroes fell. So they form the active group on the lower floor. */
+
+			/* add a pit in the ceiling to the dungeon tile */
 			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
 			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT_IN_CEILING << 4);
-			/* effect: 0101.... */
 		}
 	}
 }
