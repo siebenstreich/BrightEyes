@@ -57,17 +57,17 @@ signed int DNG01_handler(void)
 
 	if (target_pos == DNG_POS(0,1,8))
 	{
-		DNG_pitfall_test(6);
+		DNG_pitfall_add_pit(6);
 
 	} else if (target_pos == DNG_POS(1,3,9))
 	{
 		gs_x_target--;
-		DNG_pitfall_test(6);
+		DNG_pitfall_add_pit(6);
 
 	} else if (target_pos == DNG_POS(1,14,5))
 	{
 		gs_y_target++;
-		DNG_pitfall_test(6);
+		DNG_pitfall_add_pit(6);
 
 	} else if (target_pos == DNG_POS(2,7,6) || target_pos == DNG_POS(2,7,9))
 	{
@@ -75,11 +75,11 @@ signed int DNG01_handler(void)
 
 	} else if (target_pos == DNG_POS(3,14,7))
 	{
-		DNG_pitfall_test(6);
+		DNG_pitfall_add_pit(6);
 
 	} else if (target_pos == DNG_POS(4,7,6))
 	{
-		DNG_pitfall_test(6);
+		DNG_pitfall_add_pit(6);
 		gs_y_target++;
 
 	} else if ((target_pos == DNG_POS(1,13,5)) && (target_pos != gs_dng_handled_pos) && !gs_dng01_sabre_taken)

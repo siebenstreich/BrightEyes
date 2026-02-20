@@ -356,7 +356,7 @@ void print_msg_with_first_hero(char *msg)
  * \param   max_damage  Each fallen hero takes a random amount of LE damage
  *                      in the range [1 .. max_damage].
  */
-void DNG_pitfall_test(const signed int max_damage)
+void DNG_pitfall_add_pit(const signed int max_damage)
 {
 	play_voc(ARCHIVE_FILE_FX18_VOC);
 

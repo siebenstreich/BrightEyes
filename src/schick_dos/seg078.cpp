@@ -120,7 +120,7 @@ signed int DNG02_handler(void)
 
 	} else if (target_pos == DNG_POS(0,6,10))
 	{
-		DNG_pitfall_test(2);
+		DNG_pitfall_add_pit(2);
 
 	} else if (target_pos == DNG_POS(0,14,14) && target_pos != gs_dng_handled_pos)
 	{

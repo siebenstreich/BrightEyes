@@ -1,7 +1,7 @@
 /* 0x20 */
 void do_dungeon(void);
 /* 0x25 */
-void DNG_pitfall_test(const signed int);
+void DNG_pitfall_add_pit(const signed int);
 /* 0x2a */
 void DNG_see_stairs(void);
 /* 0x2f */
