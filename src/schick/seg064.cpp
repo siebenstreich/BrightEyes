@@ -264,7 +264,7 @@ signed int passage_arrival(void)
 	struct trv_start_point *harbor_ptr;
 	struct location *locations_tab_ptr;
 	sea_route *p_sea_route;
-	signed int si;
+	signed int si; /* multi use */
 	signed int harbor_typeindex;
 
 	harbor_typeindex = 0;
@@ -322,9 +322,9 @@ signed int passage_arrival(void)
 		/* set the position of the party */
 		si = locations_tab_ptr->locdata;
 
-		gs_travel_destination_x = (si >> 8) & 0xff;		/* = (si / 256) % 255 */
-		gs_travel_destination_y = si & 0x0f;			/* = si % 15 */
-		gs_travel_destination_viewdir = (si >> 4) & 0x0f;	/* = (si / 16) % 15 */
+		gs_travel_destination_x = (si >> 8) & 0xff;		/* bits 8..15 */
+		gs_travel_destination_y = si & 0x0f;			/* bits 0..3 */
+		gs_travel_destination_viewdir = (si >> 4) & 0x0f;	/* bits 4..7 */
 
 		/* restore the old town area / TODO: a bit bogus */
 		gs_town_id = tmp;
