@@ -892,9 +892,13 @@ signed int do_travel_mode(void)
 					route_id = signpost_ptr->linked_travel_routes[tmp2];
 					gs_journey_destination_town_id = gs_trv_signpost_menu_town_ids[tmp2];
 
-					if (!get_current_season() &&
-						(route_id == 31 || route_id == 41 || route_id == 47 || route_id == 48 || route_id == 49))
-					{
+					if (!get_current_season() && (
+						route_id == LROUTE_ID_OTTARJE_ORVIL
+						|| route_id == LROUTE_ID_FELSTEYN_ORKANGER
+						|| route_id == LROUTE_ID_RYBON_THOSS
+						|| route_id == LROUTE_ID_SKJAL_ORVIL
+						|| route_id == LROUTE_ID_SKELELLE_PHEXCAER
+					)) {
 						/* routes not available in winter */
 						GUI_input(get_tx(69), 0);
 						break;
