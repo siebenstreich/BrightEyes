@@ -176,6 +176,11 @@ signed int DNG02_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(0,10,12) || target_pos == DNG_POS(0,10,10)) && target_pos != gs_dng_handled_pos)
+		// Besides the obvious main purpose of this code branch -- handling entry into squares (0,10,12) and (0,10,12) --
+		// it also covers the effect of leaving square (0,10,11):
+		// A group there might have prevented the wall at (0,10,11) from reappearing.
+		//
+		// Original-Bug: groups teleporting away from (0,10,11) are not detected.
 	{
 		hero = get_hero(0);
 		for (i = (signed int)(weight_sum = 0); i <= 6; i++, hero++)
