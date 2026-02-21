@@ -1526,6 +1526,12 @@ enum {
 };
 
 enum {
+	DNG_SECRET_DOOR_STATUS_HIDDEN = 0,
+	DNG_SECRET_DOOR_STATUS_DISCOVERED = 1, /* discovered, but still closed */
+	DNG_SECRET_DOOR_STATUS_OPEN = 2
+};
+
+enum {
 	MAP_TILE_BLACK        =  0,
 	MAP_TILE_RED          =  1,
 	MAP_TILE_BRIGHT_GREEN =  2,

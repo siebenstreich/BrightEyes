@@ -527,7 +527,7 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(0,1,8) &&
 			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
 			(gs_viewdir == SOUTH) &&
-			(gs_dng02_secret_door_status_1 != 2))
+			(gs_dng02_secret_door_status_1 != DNG_SECRET_DOOR_STATUS_OPEN))
 	{
 #ifndef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 66:
@@ -539,7 +539,7 @@ signed int DNG02_handler(void)
 
 		if (gs_dng02_secret_door_status_1 || test_talent(hero, TA_SINNESSCHAERFE, 6) > 0)
 		{
-			gs_dng02_secret_door_status_1 = 1;
+			gs_dng02_secret_door_status_1 = DNG_SECRET_DOOR_STATUS_DISCOVERED;
 
 			sprintf(g_dtp2, get_tx(37), hero->alias);
 			// you find a secret door
@@ -561,7 +561,7 @@ signed int DNG02_handler(void)
 
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(1,9)] &= (DNG_TILE_CORRIDOR << 4) + 0x0f;
-				gs_dng02_secret_door_status_1 = 2;
+				gs_dng02_secret_door_status_1 = DNG_SECRET_DOOR_STATUS_OPEN;
 				DNG_update_pos();
 			}
 
@@ -571,7 +571,7 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(0,4,8) &&
 			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
 			(gs_viewdir == SOUTH) &&
-			(gs_dng02_secret_door_status_2 != 2))
+			(gs_dng02_secret_door_status_2 != DNG_SECRET_DOOR_STATUS_OPEN))
 	{
 #ifndef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 66:
@@ -583,7 +583,7 @@ signed int DNG02_handler(void)
 
 		if (gs_dng02_secret_door_status_2 || test_talent(hero, TA_SINNESSCHAERFE, 2) > 0)
 		{
-			gs_dng02_secret_door_status_2 = 1;
+			gs_dng02_secret_door_status_2 = DNG_SECRET_DOOR_STATUS_DISCOVERED;
 
 			sprintf(g_dtp2,	get_tx(37), hero->alias);
 			// you find a secret door
@@ -605,7 +605,7 @@ signed int DNG02_handler(void)
 
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(4,9)] = DNG_TILE_CORRIDOR << 4;
-				gs_dng02_secret_door_status_2 = 2;
+				gs_dng02_secret_door_status_2 = DNG_SECRET_DOOR_STATUS_OPEN;
 				DNG_update_pos();
 			}
 
@@ -615,13 +615,13 @@ signed int DNG02_handler(void)
 	} else if (((target_pos == DNG_POS(1,4,9) && gs_viewdir == EAST) ||
 			(target_pos == DNG_POS(1,6,9) && gs_viewdir == WEST)) &&
 			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
-			(gs_dng02_secret_door_status_3 != 2))
+			(gs_dng02_secret_door_status_3 != DNG_SECRET_DOOR_STATUS_OPEN))
 	{
 		hero = get_first_hero_available_in_group();
 
 		if (gs_dng02_secret_door_status_3 || (test_talent(hero, TA_SINNESSCHAERFE, 5) > 0))
 		{
-			gs_dng02_secret_door_status_3 = 1;
+			gs_dng02_secret_door_status_3 = DNG_SECRET_DOOR_STATUS_DISCOVERED;
 
 			sprintf(g_dtp2,	get_tx(37), hero->alias);
 			// you find a secret door
@@ -641,7 +641,7 @@ signed int DNG02_handler(void)
 
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(5,9)] = DNG_TILE_CORRIDOR << 4;
-				gs_dng02_secret_door_status_3 = 2;
+				gs_dng02_secret_door_status_3 = DNG_SECRET_DOOR_STATUS_OPEN;
 				DNG_update_pos();
 			}
 

@@ -1271,7 +1271,7 @@ extern uint8_t  gs_dng08_timer2;			//ds:0x3cc7; seg002, seg083
 extern uint8_t  gs_dng08_bundles_done;		//ds:0x3cc8; seg083
 extern uint8_t  gs_dng08_ballista_done;		//ds:0x3cc9; seg083
 extern uint8_t  gs_dng08_chest2_looted;		//ds:0x3cca; seg083
-extern uint8_t  gs_dng08_secret_door;		//ds:0x3ccb; seg083
+extern uint8_t  gs_dng08_secret_door_status;		//ds:0x3ccb; seg083
 extern uint8_t  gs_dng08_chest0_looted;		//ds:0x3ccc; seg083
 extern uint8_t  gs_dng08_chest35_looted;		//ds:0x3ccd; seg083
 extern uint8_t  gs_daspota_location01_loot[29];	//ds:0x3cce; seg???

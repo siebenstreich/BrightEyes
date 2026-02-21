@@ -325,12 +325,12 @@ signed int DNG08_handler(void)
 	} else if (target_pos == DNG_POS(0,5,8) && target_pos != gs_dng_handled_pos &&
 			gs_viewdir != gs_viewdir_bak &&
 			gs_viewdir == WEST &&
-			gs_dng08_secret_door != 2)
+			gs_dng08_secret_door_status != DNG_SECRET_DOOR_STATUS_OPEN)
 	{
-		if (gs_dng08_secret_door ||
+		if (gs_dng08_secret_door_status ||
 			test_talent((hero = get_first_hero_available_in_group()), TA_SINNESSCHAERFE, 1) > 0)
 		{
-			gs_dng08_secret_door = 1;
+			gs_dng08_secret_door_status = DNG_SECRET_DOOR_STATUS_DISCOVERED;
 
 			sprintf(g_dtp2, get_tx(29), hero->alias);
 
@@ -346,7 +346,7 @@ signed int DNG08_handler(void)
 			{
 				/* open the secret door */
 				amap_ptr[MAP_POS(4,8)] = 0;
-				gs_dng08_secret_door = 2;
+				gs_dng08_secret_door_status = DNG_SECRET_DOOR_STATUS_OPEN;
 				DNG_update_pos();
 			}
 

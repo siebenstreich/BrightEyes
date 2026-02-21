@@ -2534,9 +2534,9 @@ uint8_t  gs_dng02_apparatus_destroyed = 0; // ds:0x3c96
 uint8_t  gs_dng02_sphaerenriss_timer_hours = 0; // ds:0x3c97, {0,...,7}
 uint8_t  gs_dng02_sphaerenriss_activated = 0; // ds:0x3c98
 uint8_t  gs_dng02_raven_destroyed = 0; // ds:0x3c99
-uint8_t  gs_dng02_secret_door_status_1 = 0; // ds:0x3c9a
-uint8_t  gs_dng02_secret_door_status_2 = 0; // ds:0x3c9b
-uint8_t  gs_dng02_secret_door_status_3 = 0; // ds:0x3c9c
+uint8_t  gs_dng02_secret_door_status_1 = DNG_SECRET_DOOR_STATUS_HIDDEN; // ds:0x3c9a
+uint8_t  gs_dng02_secret_door_status_2 = DNG_SECRET_DOOR_STATUS_HIDDEN; // ds:0x3c9b
+uint8_t  gs_dng02_secret_door_status_3 = DNG_SECRET_DOOR_STATUS_HIDDEN; // ds:0x3c9c
 uint8_t  gs_dng03_lever_trap = 1; // ds:0x3c9d
 uint8_t  gs_dng03_lever_chest11 = 1; // ds:0x3c9e
 uint8_t  gs_dng03_sanctum_smashed = 0; // ds:0x3c9f
@@ -2580,7 +2580,7 @@ uint8_t  gs_dng08_timer2 = 0; // ds:0x3cc7, {0, 1, ..., 24}
 uint8_t  gs_dng08_bundles_done = 0; // ds:0x3cc8
 uint8_t  gs_dng08_ballista_done = 0; // ds:0x3cc9
 uint8_t  gs_dng08_chest2_looted = 0; // ds:0x3cca
-uint8_t  gs_dng08_secret_door = 0; // ds:0x3ccb, {0,1 = found,2 = opened}
+uint8_t  gs_dng08_secret_door_status = DNG_SECRET_DOOR_STATUS_HIDDEN; // ds:0x3ccb, {0,1 = found,2 = opened}
 uint8_t  gs_dng08_chest0_looted = 0; // ds:0x3ccc
 uint8_t  gs_dng08_chest35_looted = 0; // ds:0x3ccd
 
