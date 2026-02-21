@@ -84,7 +84,7 @@ signed int DNG15_handler(void)
 
 	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
 
-	dir = gs_direction;
+	dir = gs_viewdir;
 
 	hero = get_first_hero_available_in_group(); /* UNNEEDED */
 
@@ -160,12 +160,12 @@ signed int DNG15_handler(void)
 		if (GUI_bool(get_tx(17))) {
 
 			DNG_dec_level();
-			gs_direction = WEST;
+			gs_viewdir = WEST;
 			gs_x_target--;
 		}
 
 	} else if (target_pos == DNG_POS(1,8,1) &&
-			(target_pos != gs_dng_handled_pos || gs_direction_bak != dir) &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir_bak != dir) &&
 			(!gs_dng15_lever_south || !gs_dng15_lever_north))
 	{
 		tmp = dir;
@@ -186,10 +186,10 @@ signed int DNG15_handler(void)
 		strcat(g_dtp2, (char*)(tmp == 0 ? get_tx(24) : get_tx(25)));
 		GUI_output(g_dtp2);
 
-		gs_direction_bak = (signed char)dir;
+		gs_viewdir_bak = (signed char)dir;
 
 	} else if (target_pos == DNG_POS(1,8,5) &&
-			(target_pos != gs_dng_handled_pos || gs_direction_bak != dir) &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir_bak != dir) &&
 			(!gs_dng15_lever_south || !gs_dng15_lever_north))
 	{
 		tmp = dir;
@@ -211,7 +211,7 @@ signed int DNG15_handler(void)
 
 		GUI_output(g_dtp2);
 
-		gs_direction_bak = (signed char)dir;
+		gs_viewdir_bak = (signed char)dir;
 
 	} else if (target_pos == DNG_POS(1,8,2) && target_pos != gs_dng_handled_pos)
 	{
@@ -478,7 +478,7 @@ signed int DNG15_handler(void)
 			gs_x_target = gs_travel_destination_x;
 			gs_y_target = gs_travel_destination_y;
 			gs_town_loc_type = LOCTYPE_NONE;
-			gs_direction = ((gs_travel_destination_viewdir + 2) & 0x03);
+			gs_viewdir = ((gs_travel_destination_viewdir + 2) & 0x03);
 
 			sprintf(g_dtp2, get_tx(55), get_ttx(gs_journey_destination_town_id + 0xeb));
 			GUI_output(g_dtp2);
@@ -541,7 +541,7 @@ void DNG15_debris(const signed int ladder)
 
 			if (GUI_bool(get_tx(13)))
 			{
-				gs_direction = WEST;
+				gs_viewdir = WEST;
 				gs_x_target--;
 				DNG_inc_level();
 			}

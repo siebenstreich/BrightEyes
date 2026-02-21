@@ -410,7 +410,7 @@ void loot_special_chest(const signed int check_dir)
 	y = gs_y_target;
 
 	if (check_dir != 0) {
-		switch (gs_direction) {
+		switch (gs_viewdir) {
 			case NORTH: y--; break;
 			case EAST: x++; break;
 			case SOUTH: y++; break;

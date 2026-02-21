@@ -242,8 +242,8 @@ signed int DNG08_handler(void)
 		GUI_output(get_tx(12));
 
 	} else if (target_pos == DNG_POS(0,11,11) &&
-			 (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == WEST)
+			 (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == WEST)
 	{
 		/* lever, opens door at (8,13)  */
 		do {
@@ -269,7 +269,7 @@ signed int DNG08_handler(void)
 
 			if (gs_group_member_counts[gs_active_group_id] > 1) {
 
-				gs_direction_bak = gs_direction;
+				gs_viewdir_bak = gs_viewdir;
 
 				for (tmp = 0; gs_group_member_counts[tmp] != 0; tmp++); /* find empty group */
 
@@ -281,7 +281,7 @@ signed int DNG08_handler(void)
 			}
 
 		} else {
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if ((target_pos == DNG_POS(0,11,10) || target_pos == DNG_POS(0,11,12)) && target_pos != gs_dng_handled_pos)
@@ -323,8 +323,8 @@ signed int DNG08_handler(void)
 		}
 
 	} else if (target_pos == DNG_POS(0,5,8) && target_pos != gs_dng_handled_pos &&
-			gs_direction != gs_direction_bak &&
-			gs_direction == WEST &&
+			gs_viewdir != gs_viewdir_bak &&
+			gs_viewdir == WEST &&
 			gs_dng08_secret_door != 2)
 	{
 		if (gs_dng08_secret_door ||
@@ -350,7 +350,7 @@ signed int DNG08_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,5,7) && target_pos != gs_dng_handled_pos)
@@ -375,7 +375,7 @@ signed int DNG08_handler(void)
 		gs_x_target = gs_travel_destination_x;
 		gs_y_target = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 		sprintf(g_dtp2,	get_tx(33), get_ttx(gs_journey_destination_town_id + 0xeb));
 		GUI_output(g_dtp2);

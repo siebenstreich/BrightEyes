@@ -755,7 +755,7 @@ void leave_location(void)
 	gs_y_target = gs_y_target_bak;
 
 	/* rotate party by 180 degrees */
-	gs_direction = (gs_direction + 2) % 4;
+	gs_viewdir = (gs_viewdir + 2) % 4;
 
 	clear_menu_icons();
 

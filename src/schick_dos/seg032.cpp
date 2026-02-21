@@ -1209,12 +1209,12 @@ signed int do_fight(const signed int fight_id)
 					group_size = gs_group_member_counts[gs_active_group_id];
 					x_target_bak = gs_x_target;
 					y_target_bak = gs_y_target;
-					direction_bak = gs_direction;
+					direction_bak = gs_viewdir;
 					dungeon_level_bak = gs_dungeon_level;
 
 					gs_x_target = ((escape_positions[i] >> 8) & 0x0f); /* bits 8..11 */
 					gs_y_target = (escape_positions[i] & 0x0f); /* bits 0..3 */
-					gs_direction = ((escape_positions[i] & 0xf0) >> 4); /* bits 4..7 */
+					gs_viewdir = ((escape_positions[i] & 0xf0) >> 4); /* bits 4..7 */
 					gs_dungeon_level = (escape_positions[i] >> 12); /* bits 12..15 */
 
 					for (j = 0; j < group_size; j++) {
@@ -1233,7 +1233,7 @@ signed int do_fight(const signed int fight_id)
 					GRP_save_pos(group_id | 0x8000);
 					gs_x_target = x_target_bak;
 					gs_y_target = y_target_bak;
-					gs_direction = (signed char)direction_bak;
+					gs_viewdir = (signed char)direction_bak;
 					gs_dungeon_level = dungeon_level_bak;
 				}
 
@@ -1245,7 +1245,7 @@ signed int do_fight(const signed int fight_id)
 
 				gs_x_target = ((escape_positions[i] >> 8) & 0x0f);
 				gs_y_target = (escape_positions[i] & 0x0f);
-				gs_direction = ((escape_positions[i] & 0xf0) >> 4);
+				gs_viewdir = ((escape_positions[i] & 0xf0) >> 4);
 
 				gs_dungeon_level_bak = gs_dungeon_level;
 				gs_dungeon_level = (escape_positions[i] >> 12);

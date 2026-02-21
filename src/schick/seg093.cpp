@@ -889,7 +889,7 @@ signed int do_travel_mode(void)
 					if (i - 1 == tmp2 || tmp2 == -2)
 					{
 						gs_show_travel_map = 0;
-						gs_direction = ((gs_direction + 2) & 3);
+						gs_viewdir = ((gs_viewdir + 2) & 3);
 						break;
 					}
 
@@ -938,7 +938,7 @@ signed int do_travel_mode(void)
 						gs_town_id = gs_travel_destination_town_id;
 						gs_x_target_bak = gs_travel_destination_x;
 						gs_y_target_bak = gs_travel_destination_y;
-						gs_direction = (gs_travel_destination_viewdir + 2) & 3;
+						gs_viewdir = (gs_travel_destination_viewdir + 2) & 3;
 
 					} else if (g_game_state == GAME_STATE_MAIN && gs_travel_detour != 99)
 					{

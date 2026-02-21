@@ -300,7 +300,7 @@ void render_automap(const signed int x_off)
 	 * The reason is that the yellow arrow will be overdrawn by the purple ones, which are drawn later. */
 	if (((gs_x_target - x_off) >= 0) && ((gs_x_target - x_off) <= 16)) { /* shouldn't this always be true? */
 
-		draw_automap_square(gs_x_target - x_off, gs_y_target, MAP_TILE_YELLOW_ARROW, gs_direction);
+		draw_automap_square(gs_x_target - x_off, gs_y_target, MAP_TILE_YELLOW_ARROW, gs_viewdir);
 	}
 #endif
 
@@ -319,7 +319,7 @@ void render_automap(const signed int x_off)
 			draw_automap_square(gs_groups_x_target[group_i] - x_off,
 					gs_groups_y_target[group_i],
 					MAP_TILE_PURPLE_ARROW,
-					gs_groups_direction[group_i]);
+					gs_groups_viewdir[group_i]);
 		}
 	}
 
@@ -330,7 +330,7 @@ void render_automap(const signed int x_off)
 	 * Fix: Move the code block drawing the yellow arrow after the one drawing the purple arrows. */
 	if (((gs_x_target - x_off) >= 0) && ((gs_x_target - x_off) <= 16)) { /* shouldn't this always be true? */
 
-		draw_automap_square(gs_x_target - x_off, gs_y_target, MAP_TILE_YELLOW_ARROW, gs_direction);
+		draw_automap_square(gs_x_target - x_off, gs_y_target, MAP_TILE_YELLOW_ARROW, gs_viewdir);
 	}
 #endif
 

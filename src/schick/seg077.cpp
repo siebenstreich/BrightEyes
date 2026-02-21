@@ -215,7 +215,7 @@ signed int DNG01_handler(void)
 			gs_x_target = gs_travel_destination_x;
 			gs_y_target = gs_travel_destination_y;
 			gs_town_loc_type = LOCTYPE_NONE;
-			gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+			gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 			GUI_output(get_tx(15));
 

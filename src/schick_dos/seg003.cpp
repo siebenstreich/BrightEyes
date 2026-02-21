@@ -27,9 +27,9 @@ static const char no_way_msg[][41] = {
 signed int update_direction(const unsigned char mod)
 {
 	/* save old direction */
-	gs_direction_bak = gs_direction;
+	gs_viewdir_bak = gs_viewdir;
 	/* set new direction */
-	gs_direction = ((gs_direction + mod) & 0x3);
+	gs_viewdir = ((gs_viewdir + mod) & 0x3);
 
 	/* set bogus variable to 1 */
 	g_direction_unkn = 1;
@@ -54,13 +54,13 @@ void move(void)
 	/* direction */
 #if defined(__BORLANDC__)
 	p_vis_field = (struct point8s*)MK_FP(_DS,
-				((gs_direction == 0) ? FP_OFF(g_visual_field_dir0) :
-				((gs_direction == 1) ? FP_OFF(g_visual_field_dir1) :
-				((gs_direction == 2) ? FP_OFF(g_visual_field_dir2) : FP_OFF(g_visual_field_dir3)))));
+				((gs_viewdir == 0) ? FP_OFF(g_visual_field_dir0) :
+				((gs_viewdir == 1) ? FP_OFF(g_visual_field_dir1) :
+				((gs_viewdir == 2) ? FP_OFF(g_visual_field_dir2) : FP_OFF(g_visual_field_dir3)))));
 #else
-	p_vis_field = ((gs_direction == 0) ? g_visual_field_dir0 :
-			((gs_direction == 1) ? g_visual_field_dir1 :
-			((gs_direction == 2) ? g_visual_field_dir2 : g_visual_field_dir3)));
+	p_vis_field = ((gs_viewdir == 0) ? g_visual_field_dir0 :
+			((gs_viewdir == 1) ? g_visual_field_dir1 :
+			((gs_viewdir == 2) ? g_visual_field_dir2 : g_visual_field_dir3)));
 
 #endif
 

@@ -107,7 +107,7 @@ void DNG_door(const signed int action)
 	x = gs_x_target;
 	y = gs_y_target;
 
-	switch (gs_direction)
+	switch (gs_viewdir)
 	{
 		case NORTH: y--; break;
 		case EAST:  x++; break;
@@ -471,7 +471,7 @@ signed int DNG_step(void)
 		g_redraw_menuicons = 0;
 	}
 
-	if (gs_direction != g_dng_refresh_direction || gs_x_target != g_dng_refresh_x_target || gs_y_target != g_dng_refresh_y_target)
+	if (gs_viewdir != g_dng_refresh_direction || gs_x_target != g_dng_refresh_x_target || gs_y_target != g_dng_refresh_y_target)
 	{
 		DNG_update_pos();
 		set_automap_tiles(gs_x_target, gs_y_target);
@@ -487,7 +487,7 @@ signed int DNG_step(void)
 
 	gs_x_target_bak = gs_x_target;
 	gs_y_target_bak = gs_y_target;
-	gs_direction_bak = gs_direction;
+	gs_viewdir_bak = gs_viewdir;
 
 	handle_gui_input();
 
@@ -593,7 +593,7 @@ signed int DNG_step(void)
 	{
 		if ((dng_tile = div16(g_steptarget_front)) == DNG_TILE_SEMIPERMEABLE_WALL)
 		{
-			dng_tile = 1 << gs_direction;
+			dng_tile = 1 << gs_viewdir;
 
 			if (g_steptarget_front & dng_tile & 0x0f)
 				/* can only be entered if flag no. <direction> is set. */
@@ -641,7 +641,7 @@ signed int DNG_step(void)
 				x = gs_x_target;
 				y = gs_y_target;
 
-				switch (gs_direction)
+				switch (gs_viewdir)
 				{
 					case NORTH: y--; break;
 					case EAST:  x++; break;
@@ -701,7 +701,7 @@ void DNG_see_stairs(void)
 			/* found the current stairs */
 			gs_x_target = (stair_ptr->target_x & 0x0f);
 			gs_y_target = (stair_ptr->target_y & 0x0f);
-			gs_direction = (stair_ptr->target_y >> 4);
+			gs_viewdir = (stair_ptr->target_y >> 4);
 
 			if (stair_ptr->target_x & 0x80)
 			{

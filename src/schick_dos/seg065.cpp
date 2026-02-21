@@ -42,8 +42,8 @@ void do_market(void)
 
 	done = 0;
 	g_request_refresh = 1;
-	dir_bak_bak = gs_direction_bak;
-	dir_bak = gs_direction;
+	dir_bak_bak = gs_viewdir_bak;
+	dir_bak = gs_viewdir;
 
 	do {
 
@@ -79,8 +79,8 @@ void do_market(void)
 
 			/* clean up */
 			gs_town_typeindex = type_bak;
-			gs_direction_bak = dir_bak_bak;
-			gs_direction = dir_bak; /* by this line, the party will *not* be rotated after leaving the market */
+			gs_viewdir_bak = dir_bak_bak;
+			gs_viewdir = dir_bak; /* by this line, the party will *not* be rotated after leaving the market */
 
 			g_merchant_descr_table[MERCHANT_TYPEINDEX_MARKET].price_mod = 0;
 			g_merchant_descr_table[MERCHANT_TYPEINDEX_MARKET].sortiment = 0;

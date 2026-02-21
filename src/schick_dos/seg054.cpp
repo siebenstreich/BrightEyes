@@ -355,14 +355,14 @@ void do_inn(void)
 					*/
 
 					/* the following lines are taken (& adjusted) from function GRP_merge (seg049.cpp) */
-					gs_groups_direction[group_id] = 0;
+					gs_groups_viewdir[group_id] = 0;
 					gs_groups_x_target[group_id] = 0;
 					gs_groups_y_target[group_id] = 0; /* TODO: remove one of them */
 					gs_groups_y_target[group_id] = 0;
 					gs_groups_town_id[group_id] = 0;
 					gs_groups_dungeon_id[group_id] = 0;
 					gs_groups_dng_level[group_id] = 0;
-					gs_groups_direction_bak[group_id] = 0;
+					gs_groups_viewdir_bak[group_id] = 0;
 					gs_groups_x_target_bak[group_id] = 0;
 					gs_groups_y_target_bak[group_id] = 0;
 					gs_town_groups_loctype_bak[group_id] = LOCTYPE_NONE;

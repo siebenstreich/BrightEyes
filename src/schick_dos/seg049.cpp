@@ -131,7 +131,7 @@ void GRP_save_pos(signed int group)
 
 	GRP_sort_heroes();
 
-	gs_groups_direction[group] = gs_direction;
+	gs_groups_viewdir[group] = gs_viewdir;
 
 	gs_groups_x_target[group] = gs_x_target;
 	gs_groups_y_target[group] = gs_y_target;
@@ -140,7 +140,7 @@ void GRP_save_pos(signed int group)
 	gs_groups_town_id[group] = gs_town_id;
 	gs_groups_dungeon_id[group] = gs_dungeon_id;
 	gs_groups_dng_level[group] = gs_dungeon_level;
-	gs_groups_direction_bak[group] = gs_direction_bak;
+	gs_groups_viewdir_bak[group] = gs_viewdir_bak;
 
 	gs_groups_x_target_bak[group] = gs_x_target_bak;
 	gs_groups_y_target_bak[group] = gs_y_target_bak;
@@ -224,10 +224,10 @@ void GRP_merge(void)
 
 		do {
 
-			gs_groups_direction[answer] = gs_groups_x_target[answer]
+			gs_groups_viewdir[answer] = gs_groups_x_target[answer]
 				= gs_groups_y_target[answer] = gs_groups_town_id[answer]
 				= gs_groups_dungeon_id[answer] = gs_groups_dng_level[answer]
-				= gs_groups_direction_bak[answer] = gs_groups_x_target_bak[answer]
+				= gs_groups_viewdir_bak[answer] = gs_groups_x_target_bak[answer]
 				= gs_groups_y_target_bak[answer] = gs_town_groups_loctype_bak[answer]
 				= gs_groups_town_id_bak[answer] = gs_groups_dungeon_id_bak[answer]
 				= gs_groups_dng_level_bak[answer] = 0;
@@ -336,14 +336,14 @@ void GRP_switch_to_next(const signed int mode)
 		}
 
 		/* save positions from the old group */
-		gs_groups_direction[gs_active_group_id] = gs_direction;
+		gs_groups_viewdir[gs_active_group_id] = gs_viewdir;
 		gs_groups_x_target[gs_active_group_id] = gs_x_target;
 		gs_groups_y_target[gs_active_group_id] = gs_y_target;
 		gs_town_groups_loctype[gs_active_group_id] = gs_town_loc_type;
 		gs_groups_town_id[gs_active_group_id] = gs_town_id;
 		gs_groups_dungeon_id[gs_active_group_id] = gs_dungeon_id;
 		gs_groups_dng_level[gs_active_group_id] = gs_dungeon_level;
-		gs_groups_direction_bak[gs_active_group_id] = gs_direction_bak;
+		gs_groups_viewdir_bak[gs_active_group_id] = gs_viewdir_bak;
 		gs_groups_x_target_bak[gs_active_group_id] = gs_x_target_bak;
 		gs_groups_y_target_bak[gs_active_group_id] = gs_y_target_bak;
 		gs_town_groups_loctype_bak[gs_active_group_id] = gs_town_loc_type_bak;
@@ -353,7 +353,7 @@ void GRP_switch_to_next(const signed int mode)
 
 		/* set positions for the new group */
 		gs_active_group_id = group;
-		gs_direction = gs_groups_direction[group];
+		gs_viewdir = gs_groups_viewdir[group];
 		gs_x_target = gs_groups_x_target[group];
 		gs_y_target = gs_groups_y_target[group];
 		gs_town_loc_type = gs_town_groups_loctype[group];
@@ -366,7 +366,7 @@ void GRP_switch_to_next(const signed int mode)
 			load_area_description(1);
 		}
 
-		gs_direction_bak = gs_groups_direction_bak[group];
+		gs_viewdir_bak = gs_groups_viewdir_bak[group];
 		gs_x_target_bak = gs_groups_x_target_bak[group];
 		gs_y_target_bak = gs_groups_y_target_bak[group];
 		gs_town_loc_type_bak = gs_town_groups_loctype_bak[group];

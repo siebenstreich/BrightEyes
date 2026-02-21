@@ -1076,8 +1076,8 @@ extern int8_t  gs_datseg_status_start;		//ds:0x2d34; seg002, seg026, seg065
 extern int8_t  gs_active_group_id;			//ds:0x2d35; seg002-seg120
 extern int8_t  gs_group_member_counts[6];	//ds:0x2d36; seg002-seg118
 extern int8_t  gs_total_hero_counter;		//ds:0x2d3c; seg002-seg113
-extern int8_t  gs_direction;			//ds:0x2d3d; seg002-seg120
-extern int8_t  gs_groups_direction[6];		//ds:0x2d3e; seg049, seg054, seg074
+extern int8_t  gs_viewdir;			//ds:0x2d3d; seg002-seg120
+extern int8_t  gs_groups_viewdir[6];		//ds:0x2d3e; seg049, seg054, seg074
 extern int16_t gs_x_target;			//ds:0x2d44; seg002-seg120
 extern int16_t gs_y_target;			//ds:0x2d46; seg002-seg120
 extern int16_t gs_groups_x_target[6];		//ds:0x2d48; seg002-seg089
@@ -1090,8 +1090,8 @@ extern int8_t  gs_dungeon_id;			//ds:0x2d6e; seg002-seg120
 extern int8_t  gs_groups_dungeon_id[6];		//ds:0x2d6f; seg002, seg049
 extern int8_t  gs_dungeon_level;			//ds:0x2d75; seg002-seg107
 extern int8_t  gs_groups_dng_level[6];		//ds:0x2d76; seg002-seg084
-extern int8_t  gs_direction_bak;			//ds:0x2d7c; seg03-seg120
-extern int8_t  gs_groups_direction_bak[6];	//ds:0x2d7d; seg049, seg054
+extern int8_t  gs_viewdir_bak;			//ds:0x2d7c; seg03-seg120
+extern int8_t  gs_groups_viewdir_bak[6];	//ds:0x2d7d; seg049, seg054
 extern int16_t gs_x_target_bak;			//ds:0x2d83; seg025-seg120
 extern int16_t gs_y_target_bak;			//ds:0x2d85; seg025-seg120
 extern int16_t gs_groups_x_target_bak[6];	//ds:0x2d87; seg002, seg049, seg054

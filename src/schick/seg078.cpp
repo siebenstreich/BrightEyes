@@ -68,7 +68,7 @@ signed int DNG02_handler(void)
 			do_fight(FIGHT_ID_F046_01);
 		}
 
-	} else if (target_pos == DNG_POS(0,3,6) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH)
+	} else if (target_pos == DNG_POS(0,3,6) && target_pos != gs_dng_handled_pos && gs_viewdir == SOUTH)
 	{
 		strcpy(g_dtp2, get_tx(4));
 		// cooling cellar: room is much colder than the outside
@@ -85,7 +85,7 @@ signed int DNG02_handler(void)
 
 		GUI_output(g_dtp2);
 
-	} else if (target_pos == DNG_POS(0,4,10) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH)
+	} else if (target_pos == DNG_POS(0,4,10) && target_pos != gs_dng_handled_pos && gs_viewdir == SOUTH)
 	{
 		GUI_output(get_tx(7));
 		// former storage room for valuables
@@ -346,20 +346,20 @@ signed int DNG02_handler(void)
 
 		amap_ptr[MAP_POS(11,8)] = (weight_sum >= 4000L ? (DNG_TILE_CORRIDOR << 4) : (DNG_TILE_WALL << 4));
 
-	} else if (target_pos == DNG_POS(1,12,5) && gs_direction == NORTH &&
-			 (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak))
+	} else if (target_pos == DNG_POS(1,12,5) && gs_viewdir == NORTH &&
+			 (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
 	{
-		gs_direction_bak = gs_direction;
+		gs_viewdir_bak = gs_viewdir;
 
 		GUI_output(get_tx(16));
 		// Inscription in the northern wall: "Attention after three steps to the left."
 		// This is a hint for the secret passage at (1,8,4).
 		// Original-Bug: Shouldn't this be "three steps to the right?"
 
-	} else if (target_pos == DNG_POS(1,4,5) && gs_direction == SOUTH &&
-			 (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak))
+	} else if (target_pos == DNG_POS(1,4,5) && gs_viewdir == SOUTH &&
+			 (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
 	{
-		gs_direction_bak = gs_direction;
+		gs_viewdir_bak = gs_viewdir;
 
 		GUI_output(get_tx(17));
 		// Inscription in the southern wall: "Attention after three steps to the left."
@@ -520,13 +520,13 @@ signed int DNG02_handler(void)
 	{
 		loot_special_chest(0);
 
-	} else if (target_pos == DNG_POS(1,9,14) && target_pos != gs_dng_handled_pos && gs_direction == EAST)
+	} else if (target_pos == DNG_POS(1,9,14) && target_pos != gs_dng_handled_pos && gs_viewdir == EAST)
 	{
 		GUI_output(get_tx(35)); // A torture chamber.
 
 	} else if (target_pos == DNG_POS(0,1,8) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			(gs_direction == SOUTH) &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			(gs_viewdir == SOUTH) &&
 			(gs_dng02_secret_door1 != 2))
 	{
 #ifndef M302de_ORIGINAL_BUGFIX
@@ -565,12 +565,12 @@ signed int DNG02_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,4,8) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			(gs_direction == SOUTH) &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			(gs_viewdir == SOUTH) &&
 			(gs_dng02_secret_door2 != 2))
 	{
 #ifndef M302de_ORIGINAL_BUGFIX
@@ -609,12 +609,12 @@ signed int DNG02_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
-	} else if (((target_pos == DNG_POS(1,4,9) && gs_direction == EAST) ||
-			(target_pos == DNG_POS(1,6,9) && gs_direction == WEST)) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
+	} else if (((target_pos == DNG_POS(1,4,9) && gs_viewdir == EAST) ||
+			(target_pos == DNG_POS(1,6,9) && gs_viewdir == WEST)) &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
 			(gs_dng02_secret_door3 != 2))
 	{
 		hero = get_first_hero_available_in_group();
@@ -656,7 +656,7 @@ signed int DNG02_handler(void)
 
 			sub_hero_le(hero, i);
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,1,0) && target_pos != gs_dng_handled_pos)
@@ -668,7 +668,7 @@ signed int DNG02_handler(void)
 		gs_x_target = gs_travel_destination_x;
 		gs_y_target = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 		sprintf(g_dtp2, get_tx(44), get_ttx(gs_journey_destination_town_id + 0xeb));
 		/* You leave the dungeon and reach your true destionation, <town>, a few hours later. */

@@ -232,13 +232,13 @@ signed int DNG07_handler(void)
 	{
 		gs_x_target = 7;
 
-		gs_direction = ((gs_direction + 2) & 3);
+		gs_viewdir = ((gs_viewdir + 2) & 3);
 
 	} else if (target_pos == DNG_POS(2,8,13) && target_pos != gs_dng_handled_pos)
 	{
 		gs_x_target = 13;
 
-		gs_direction = ((gs_direction + 2) & 3);
+		gs_viewdir = ((gs_viewdir + 2) & 3);
 
 	} else if (target_pos == DNG_POS(2,1,2) && target_pos != gs_dng_handled_pos && !gs_dng07_poison_flag)
 	{
@@ -272,7 +272,7 @@ signed int DNG07_handler(void)
 			gs_x_target = gs_travel_destination_x;
 			gs_y_target = gs_travel_destination_y;
 			gs_town_loc_type = LOCTYPE_NONE;
-			gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+			gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 			sprintf(g_dtp2, get_tx(14), get_ttx(gs_journey_destination_town_id + 0xeb));
 

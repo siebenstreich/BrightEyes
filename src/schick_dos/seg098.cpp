@@ -767,7 +767,7 @@ signed int use_spell(struct struct_hero* hero, const signed int selection_menu, 
 				y = gs_y_target;
 				ptr_doors = g_dungeon_doors_buf;
 
-				switch (gs_direction)
+				switch (gs_viewdir)
 				{
 					case NORTH: y--; break;
 					case EAST:  x++; break;

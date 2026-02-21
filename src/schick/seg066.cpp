@@ -464,7 +464,7 @@ signed int enter_location(const signed int town_id)
 		// assert(g_town_num_locations_table[town_id - 1] == (locations_tab_ptr - g_locations_tab)
 		gs_town_locdata = g_town_num_locations_table[town_id - 1];
 
-		if (!((gs_direction + gs_x_target + gs_y_target) & 1)) {
+		if (!((gs_viewdir + gs_x_target + gs_y_target) & 1)) {
 			gs_town_loc_type = LOCTYPE_CITIZEN;
 		} else {
 			gs_town_loc_type = LOCTYPE_HOUSE;
@@ -950,7 +950,7 @@ signed int get_border_index(const unsigned char val)
 		i++;
 	}
 
-	g_entrance_angle = ((((val & 3) + 4) - gs_direction) & 3);
+	g_entrance_angle = ((((val & 3) + 4) - gs_viewdir) & 3);
 
 	if (i == 0)
 		i = 1;
@@ -1228,7 +1228,7 @@ void town_direction_change(void)
 	town_update_view();
 	g_town_refresh_x_target = gs_x_target;
 	g_town_refresh_y_target = gs_y_target;
-	g_town_refresh_direction = gs_direction;
+	g_town_refresh_direction = gs_viewdir;
 }
 
 signed int town_step(void)
@@ -1267,7 +1267,7 @@ signed int town_step(void)
 	}
 
 	/* check if position or direction has changed */
-	if (gs_direction != g_town_refresh_direction ||
+	if (gs_viewdir != g_town_refresh_direction ||
 		gs_x_target != g_town_refresh_x_target ||
 		gs_y_target != g_town_refresh_y_target)
 	{
@@ -1425,7 +1425,7 @@ void town_do_step(const signed int forward)
 
 	timewarp(MINUTES(2));
 
-	dir = gs_direction;
+	dir = gs_viewdir;
 
 	if (forward == 1) {
 

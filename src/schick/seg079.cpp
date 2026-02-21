@@ -68,7 +68,7 @@ signed int DNG03_handler(void)
 		gs_x_target = gs_y_target = 1;
 		DNG_inc_level();
 
-	} else if (target_pos == DNG_POS(0,3,4) && target_pos != gs_dng_handled_pos && gs_direction == NORTH)
+	} else if (target_pos == DNG_POS(0,3,4) && target_pos != gs_dng_handled_pos && gs_viewdir == NORTH)
 	{
 		GUI_input(get_tx(2), 15);
 
@@ -100,7 +100,7 @@ signed int DNG03_handler(void)
 
 		gs_x_target = 1;
 		gs_y_target = 8;
-		gs_direction = WEST;
+		gs_viewdir = WEST;
 
 		DNG_update_pos();
 
@@ -118,15 +118,15 @@ signed int DNG03_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(0,6,10) || target_pos == DNG_POS(0,7,9)) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak))
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
 	{
-		if ((target_pos == DNG_POS(0,6,10) && gs_direction == EAST) ||
-			(target_pos == DNG_POS(0,7,9) && gs_direction == SOUTH))
+		if ((target_pos == DNG_POS(0,6,10) && gs_viewdir == EAST) ||
+			(target_pos == DNG_POS(0,7,9) && gs_viewdir == SOUTH))
 		{
 			DNG_update_pos();
 			GUI_output(get_tx(3));
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if ((target_pos == DNG_POS(0,10,9) || target_pos == DNG_POS(0,9,14)) &&
@@ -150,7 +150,7 @@ signed int DNG03_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(0,5,14)) && (gs_direction != gs_direction_bak) && (gs_direction == SOUTH))
+	} else if ((target_pos == DNG_POS(0,5,14)) && (gs_viewdir != gs_viewdir_bak) && (gs_viewdir == SOUTH))
 	{
 		GUI_input(get_tx(7), 15);
 
@@ -160,7 +160,7 @@ signed int DNG03_handler(void)
 
 			gs_x_target = 3;
 			gs_y_target = 4;
-			gs_direction = SOUTH;
+			gs_viewdir = SOUTH;
 			DNG_update_pos();
 
 			hero = get_hero(0);
@@ -176,11 +176,11 @@ signed int DNG03_handler(void)
 				}
 			}
 		} else {
-			gs_direction = WEST;
+			gs_viewdir = WEST;
 		}
 
-	} else if (target_pos == DNG_POS(0,9,11) && (gs_direction == WEST) &&
-			target_pos != gs_dng_handled_pos && gs_direction != gs_direction_bak)
+	} else if (target_pos == DNG_POS(0,9,11) && (gs_viewdir == WEST) &&
+			target_pos != gs_dng_handled_pos && gs_viewdir != gs_viewdir_bak)
 	{
 		/* LEVER: */
 		if (GUI_bool(get_tx(8)))
@@ -189,8 +189,8 @@ signed int DNG03_handler(void)
 			GUI_output(get_tx(9));
 		}
 
-	} else if (target_pos == DNG_POS(1,3,11) && (gs_direction == EAST) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak))
+	} else if (target_pos == DNG_POS(1,3,11) && (gs_viewdir == EAST) &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
 	{
 		if (GUI_bool(get_tx(8)))
 		{
@@ -363,7 +363,7 @@ signed int DNG03_handler(void)
 		gs_x_target = 5;
 		gs_y_target = 14;
 		DNG_dec_level();
-		gs_direction = NORTH;
+		gs_viewdir = NORTH;
 
 		hero = get_hero(0);
 		for (i = 0; i <= 6; i++, hero++)
@@ -386,7 +386,7 @@ signed int DNG03_handler(void)
 		gs_x_target = gs_travel_destination_x;
 		gs_y_target = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 		sprintf(g_dtp2, get_tx(30), get_ttx(gs_journey_destination_town_id + 0xeb));
 

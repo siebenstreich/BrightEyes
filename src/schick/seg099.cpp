@@ -817,7 +817,7 @@ void spell_foramen(void)
 	x = gs_x_target;
 	y = gs_y_target;
 
-	switch (gs_direction) {
+	switch (gs_viewdir) {
 		case 0:	y--; break;
 		case 1:	x++; break;
 		case 2: y++; break;

@@ -153,12 +153,12 @@ signed int DNG11_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,11,3) && target_pos != gs_dng_handled_pos && gs_direction == EAST)
+	} else if (target_pos == DNG_POS(0,11,3) && target_pos != gs_dng_handled_pos && gs_viewdir == EAST)
 	{
 		GUI_output(get_tx(17));
 
-	} else if (((target_pos == DNG_POS(0,12,3) && gs_direction == EAST) ||
-			(target_pos == DNG_POS(0,11,2) && gs_direction == NORTH)) &&
+	} else if (((target_pos == DNG_POS(0,12,3) && gs_viewdir == EAST) ||
+			(target_pos == DNG_POS(0,11,2) && gs_viewdir == NORTH)) &&
 			target_pos != gs_dng_handled_pos)
 	{
 			GUI_output(get_tx(16));
@@ -196,8 +196,8 @@ signed int DNG11_handler(void)
 	} else if (target_pos == DNG_POS(0,8,12) &&
 			// possibly a bug. position (8,12) might indeed be (8,11)
 			// see https://www.crystals-dsa-foren.de/showthread.php?tid=1373&pid=96541#pid96541
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == NORTH &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == NORTH &&
 			gs_dng11_secretdoor1_flag != 2)
 	{
 		if (gs_dng11_secretdoor1_flag || test_talent(hero, TA_SINNESSCHAERFE, 8) > 0)
@@ -222,12 +222,12 @@ signed int DNG11_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,4,7) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == EAST &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == EAST &&
 			gs_dng11_secretdoor2_flag != 2)
 	{
 		if (gs_dng11_secretdoor2_flag != 0 || test_talent(hero, TA_SINNESSCHAERFE, 4) > 0)
@@ -253,12 +253,12 @@ signed int DNG11_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,9,8) &&
-			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == EAST &&
+			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == EAST &&
 			gs_dng11_secretdoor3_flag != 2)
 	{
 		if (gs_dng11_secretdoor3_flag != 0 || test_talent(hero, TA_SINNESSCHAERFE, 6) > 0)
@@ -284,7 +284,7 @@ signed int DNG11_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,8,15) && target_pos != gs_dng_handled_pos)
@@ -295,7 +295,7 @@ signed int DNG11_handler(void)
 		gs_x_target = gs_travel_destination_x;
 		gs_y_target = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_direction = ((gs_travel_destination_viewdir + 2) & 0x03);
+		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 0x03);
 
 		sprintf(g_dtp2, get_tx(29), get_ttx(gs_journey_destination_town_id + 0xeb));
 		GUI_output(g_dtp2);

@@ -115,8 +115,8 @@ signed int DNG10_handler(void)
 
 		sub_hero_le(hero, answer);
 
-	} else if (target_pos == DNG_POS(0,3,10) && (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == WEST)
+	} else if (target_pos == DNG_POS(0,3,10) && (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == WEST)
 	{
 		/* TRAP: a loose stone in a wall */
 		if (gs_dng10_hole_state || test_talent(hero, TA_SINNESSCHAERFE, 5) > 0)
@@ -149,7 +149,7 @@ signed int DNG10_handler(void)
 					}
 				}
 
-				gs_direction_bak = gs_direction;
+				gs_viewdir_bak = gs_viewdir;
 
 			} else {
 			}
@@ -205,7 +205,7 @@ signed int DNG10_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,6,12) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH)
+	} else if (target_pos == DNG_POS(0,6,12) && target_pos != gs_dng_handled_pos && gs_viewdir == SOUTH)
 	{
 		/* INFO: an empty room */
 		GUI_output(get_tx(21));
@@ -228,7 +228,7 @@ signed int DNG10_handler(void)
 
 			gs_x_target = 1;
 			gs_y_target = 3;
-			gs_direction = WEST;
+			gs_viewdir = WEST;
 			DNG_update_pos();
 		}
 
@@ -272,7 +272,7 @@ signed int DNG10_handler(void)
 
 		do_fight(FIGHT_ID_F129_21);
 
-	} else if (target_pos == DNG_POS(1,1,12) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH)
+	} else if (target_pos == DNG_POS(1,1,12) && target_pos != gs_dng_handled_pos && gs_viewdir == SOUTH)
 	{
 		/* INFO: glowing walls */
 		GUI_output(get_tx(27));
@@ -406,7 +406,7 @@ signed int DNG10_handler(void)
 		gs_x_target = gs_travel_destination_x;
 		gs_y_target = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_direction = ((gs_travel_destination_viewdir + 2) & 0x03);
+		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 0x03);
 
 		sprintf(g_dtp2,	get_tx(40), get_ttx(gs_journey_destination_town_id + 0xeb));
 		GUI_output(g_dtp2);

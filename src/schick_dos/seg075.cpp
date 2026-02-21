@@ -412,7 +412,7 @@ void DNG_floor_ceil(void)
 	/* Load ceiling */
 	nvf.dst = g_renderbuf_ptr + 0x4030;
 	nvf.src = g_buffer9_ptr3;
-	nvf.image_num = (!(gs_direction&1)) ? 1 : 2;
+	nvf.image_num = (!(gs_viewdir&1)) ? 1 : 2;
 	nvf.compression_type = !g_dng_floor_tex ? 3 : 5;
 	nvf.width = &width;
 	nvf.height = &height;
@@ -766,7 +766,7 @@ void DNG_stub4(void)
 
 			if ((j = ptr[1].x) != -1) {
 
-				if ((j & 0x4000) && ((((l5 & 3) + 2) & 3) != gs_direction)) {
+				if ((j & 0x4000) && ((((l5 & 3) + 2) & 3) != gs_viewdir)) {
 				} else {
 					DNG_draw_walls(x + ptr[0].x, y + ptr[0].y, j);
 				}
@@ -774,7 +774,7 @@ void DNG_stub4(void)
 
 			if ((j = ptr[2].y) != -1) {
 
-				if ((j & 0x4000) && ((((l5 & 3) + 2) & 3) != gs_direction)) {
+				if ((j & 0x4000) && ((((l5 & 3) + 2) & 3) != gs_viewdir)) {
 				} else {
 					DNG_draw_walls(x + ptr[1].y, y + ptr[2].x, j);
 				}
@@ -782,7 +782,7 @@ void DNG_stub4(void)
 
 			if ((j = ptr[4].x) != -1) {
 
-				if ((j & 0x4000) && ((((l5 & 3) + 2) & 3) != gs_direction)) {
+				if ((j & 0x4000) && ((((l5 & 3) + 2) & 3) != gs_viewdir)) {
 				} else {
 					DNG_draw_walls(x + ptr[3].x, y + ptr[3].y, j);
 				}
@@ -921,7 +921,7 @@ void DNG_timestep(const signed int forward)
 
 	if (g_game_state == GAME_STATE_MAIN) {
 
-		dir = gs_direction;
+		dir = gs_viewdir;
 
 		if (forward == 1) {
 
@@ -971,7 +971,7 @@ void DNG_update_pos(void)
 
 	g_dng_refresh_x_target = gs_x_target;
 	g_dng_refresh_y_target = gs_y_target;
-	g_dng_refresh_direction = gs_direction;
+	g_dng_refresh_direction = gs_viewdir;
 }
 
 void DNG_inc_level(void)
@@ -1333,7 +1333,7 @@ mark2:			   goto mark1;
 
 	gs_x_target = x_pos;
 	gs_y_target = y_pos;
-	gs_direction = viewdir;
+	gs_viewdir = viewdir;
 	gs_dungeon_level = level;
 	gs_dungeon_id = dungeon_id;
 	gs_town_loc_type_bak = gs_town_loc_type;

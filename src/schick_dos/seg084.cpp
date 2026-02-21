@@ -65,7 +65,7 @@ signed int DNG09_handler(void)
 		GUI_output(get_tx(32));
 	}
 
-	if (target_pos == DNG_POS(0,11,14) && target_pos != gs_dng_handled_pos && gs_direction == EAST)
+	if (target_pos == DNG_POS(0,11,14) && target_pos != gs_dng_handled_pos && gs_viewdir == EAST)
 	{
 		GUI_output(get_tx(1));
 
@@ -119,7 +119,7 @@ signed int DNG09_handler(void)
 			GUI_output(get_tx(15));
 
 			gs_x_target += 2;
-			gs_direction = EAST;
+			gs_viewdir = EAST;
 			DNG_inc_level();
 		}
 
@@ -255,7 +255,7 @@ signed int DNG09_handler(void)
 		if (GUI_bool(get_tx(38))) {
 			gs_x_target--;
 			gs_y_target++;
-			gs_direction = SOUTH;
+			gs_viewdir = SOUTH;
 			DNG_dec_level();
 		}
 
@@ -285,7 +285,7 @@ signed int DNG09_handler(void)
 
 				if (gs_group_member_counts[gs_active_group_id] > 1)
 				{
-					gs_direction_bak = (gs_direction);
+					gs_viewdir_bak = (gs_viewdir);
 					l3 = 0;
 					while (gs_group_member_counts[l3])
 					{
@@ -299,11 +299,11 @@ signed int DNG09_handler(void)
 					gs_dng09_lever_fast = 1;
 				}
 			} else {
-				gs_direction_bak = gs_direction;
+				gs_viewdir_bak = gs_viewdir;
 			}
 		} else
 		{
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if ((target_pos == DNG_POS(1,8,13) || target_pos == DNG_POS(1,7,14)) && target_pos != gs_dng_handled_pos)
@@ -366,8 +366,8 @@ signed int DNG09_handler(void)
 		disable_ani();
 		g_area_prepared = AREA_TYPE_NONE;
 
-	} else if (target_pos == DNG_POS(1,4,2) && (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == WEST && gs_dng09_secretdoor1 != 2)
+	} else if (target_pos == DNG_POS(1,4,2) && (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == WEST && gs_dng09_secretdoor1 != 2)
 	{
 		if (gs_dng09_secretdoor1 || test_talent((hero = get_first_hero_available_in_group()), TA_SINNESSCHAERFE, 6) > 0)
 		{
@@ -395,10 +395,10 @@ signed int DNG09_handler(void)
 				sub_hero_le(hero, dice_roll(2, 6, 0));
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
-	} else if (target_pos == DNG_POS(1,5,11) && (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
-			gs_direction == EAST && gs_dng09_secretdoor2 != 2)
+	} else if (target_pos == DNG_POS(1,5,11) && (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			gs_viewdir == EAST && gs_dng09_secretdoor2 != 2)
 	{
 		if (gs_dng09_secretdoor2 || test_talent((hero = get_first_hero_available_in_group()), TA_SINNESSCHAERFE, 8) > 0)
 		{
@@ -423,7 +423,7 @@ signed int DNG09_handler(void)
 				DNG_update_pos();
 			}
 
-			gs_direction_bak = gs_direction;
+			gs_viewdir_bak = gs_viewdir;
 		}
 
 	} else if (target_pos == DNG_POS(0,7,15) && target_pos != gs_dng_handled_pos)
@@ -433,7 +433,7 @@ signed int DNG09_handler(void)
 		gs_x_target = gs_travel_destination_x;
 		gs_y_target = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 		sprintf(g_dtp2,	get_tx(55), get_ttx(gs_journey_destination_town_id + 0xeb));
 

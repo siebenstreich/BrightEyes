@@ -503,7 +503,7 @@ void do_harbor(void)
 					gs_town_id = (signed char)gs_travel_destination_town_id;
 					gs_x_target_bak = gs_travel_destination_x;
 					gs_y_target_bak = gs_travel_destination_y;
-					gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
+					gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 				} else {
 					done = 1;

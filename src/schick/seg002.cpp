@@ -4399,7 +4399,7 @@ void draw_compass(void)
 		/* set dst */
 		nvf.src = g_buffer6_ptr;
 		/* set no */
-		nvf.image_num = gs_direction;
+		nvf.image_num = gs_viewdir;
 		/* set type*/
 		nvf.compression_type = 0;
 
