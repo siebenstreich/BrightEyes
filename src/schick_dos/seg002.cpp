@@ -2457,10 +2457,10 @@ void do_timers(void)
 			}
 
 			/* handle sphere timer */
-			if (gs_dng02_sphere_timer) {
+			if (gs_dng02_sphaerenriss_timer_hours) {
 
-				if (!(--gs_dng02_sphere_timer)) {
-					gs_dng02_sphere_active = 1;
+				if (!(--gs_dng02_sphaerenriss_timer_hours)) {
+					gs_dng02_sphaerenriss_activated = 1;
 				}
 			}
 
@@ -3663,10 +3663,10 @@ void timewarp(const int32_t time)
 		}
 
 		/* timer for Sphaerenriss in verfallene Herberge */
-		if (gs_dng02_sphere_timer) {
+		if (gs_dng02_sphaerenriss_timer_hours) {
 
-			if (!(--gs_dng02_sphere_timer)) {
-				gs_dng02_sphere_active = 1;
+			if (!(--gs_dng02_sphaerenriss_timer_hours)) {
+				gs_dng02_sphaerenriss_activated = 1;
 			}
 		}
 
@@ -3751,7 +3751,7 @@ void timewarp_until_time_of_day(const int32_t time)
 	}
 
 	/* Original-Bug:
-	 * forgotten hourly timers: UNICORN_TIMER, gs_dng02_sphere_timer, gs_dng08_timer1, gd_dng08_timer2
+	 * forgotten hourly timers: UNICORN_TIMER, gs_dng02_sphaerenriss_timer_hours, gs_dng08_timer1, gd_dng08_timer2
 	 * see do_timers(..).
 	 * For a bugfix either add code here (and in timewarp(..)), or modify do_timers(..)
 	 * */

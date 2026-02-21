@@ -228,7 +228,7 @@ signed int DNG02_handler(void)
 
 	} else if ((target_pos == DNG_POS(0,7,6) || target_pos == DNG_POS(0,8,6) || target_pos == DNG_POS(0,8,8)))
 	{
-		if (gs_dng02_sphere_active)
+		if (gs_dng02_sphaerenriss_activated)
 		{
 			/* Sphaerenriss */
 			GUI_output(get_tx(41));
@@ -366,7 +366,7 @@ signed int DNG02_handler(void)
 		// This is a hint for the secret passage at (1,8,4).
 		// Original-Bug: Shouldn't this be "three steps to the right?"
 
-	} else if (target_pos == DNG_POS(1,7,1) && !gs_dng02_sphere_known)
+	} else if (target_pos == DNG_POS(1,7,1) && !gs_dng02_sphaerenriss_timer_activated)
 	{
 		load_in_head(43);
 
@@ -374,8 +374,8 @@ signed int DNG02_handler(void)
 		// A chained, mad man babbles about the "Sphärenriss".
 
 		// The timer for the Sphärenriss is activated!
-		gs_dng02_sphere_timer = 7; // 7 hours
-		gs_dng02_sphere_known = 1;
+		gs_dng02_sphaerenriss_timer_hours = 7; // 7 hours
+		gs_dng02_sphaerenriss_timer_activated = 1;
 
 	} else if ((target_pos == DNG_POS(1,1,11) || target_pos == DNG_POS(1,1,8)) && target_pos != gs_dng_handled_pos)
 	{
@@ -393,7 +393,7 @@ signed int DNG02_handler(void)
 			// a clicking sound.
 		}
 
-	} else if (target_pos == DNG_POS(1,8,9) && target_pos != gs_dng_handled_pos && !gs_dng02_apparature_destroyed)
+	} else if (target_pos == DNG_POS(1,8,9) && target_pos != gs_dng_handled_pos && !gs_dng02_apparatus_destroyed)
 	{
 		/* petrification trap */
 
@@ -527,7 +527,7 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(0,1,8) &&
 			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
 			(gs_viewdir == SOUTH) &&
-			(gs_dng02_secret_door1 != 2))
+			(gs_dng02_secret_door_status_1 != 2))
 	{
 #ifndef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 66:
@@ -537,9 +537,9 @@ signed int DNG02_handler(void)
 		hero = get_first_hero_available_in_group();
 #endif
 
-		if (gs_dng02_secret_door1 || test_talent(hero, TA_SINNESSCHAERFE, 6) > 0)
+		if (gs_dng02_secret_door_status_1 || test_talent(hero, TA_SINNESSCHAERFE, 6) > 0)
 		{
-			gs_dng02_secret_door1 = 1;
+			gs_dng02_secret_door_status_1 = 1;
 
 			sprintf(g_dtp2, get_tx(37), hero->alias);
 			// you find a secret door
@@ -561,7 +561,7 @@ signed int DNG02_handler(void)
 
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(1,9)] &= (DNG_TILE_CORRIDOR << 4) + 0x0f;
-				gs_dng02_secret_door1 = 2;
+				gs_dng02_secret_door_status_1 = 2;
 				DNG_update_pos();
 			}
 
@@ -571,7 +571,7 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(0,4,8) &&
 			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
 			(gs_viewdir == SOUTH) &&
-			(gs_dng02_secret_door2 != 2))
+			(gs_dng02_secret_door_status_2 != 2))
 	{
 #ifndef M302de_ORIGINAL_BUGFIX
 		/* Original-Bug 66:
@@ -581,9 +581,9 @@ signed int DNG02_handler(void)
 		hero = get_first_hero_available_in_group();
 #endif
 
-		if (gs_dng02_secret_door2 || test_talent(hero, TA_SINNESSCHAERFE, 2) > 0)
+		if (gs_dng02_secret_door_status_2 || test_talent(hero, TA_SINNESSCHAERFE, 2) > 0)
 		{
-			gs_dng02_secret_door2 = 1;
+			gs_dng02_secret_door_status_2 = 1;
 
 			sprintf(g_dtp2,	get_tx(37), hero->alias);
 			// you find a secret door
@@ -605,7 +605,7 @@ signed int DNG02_handler(void)
 
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(4,9)] = DNG_TILE_CORRIDOR << 4;
-				gs_dng02_secret_door2 = 2;
+				gs_dng02_secret_door_status_2 = 2;
 				DNG_update_pos();
 			}
 
@@ -615,13 +615,13 @@ signed int DNG02_handler(void)
 	} else if (((target_pos == DNG_POS(1,4,9) && gs_viewdir == EAST) ||
 			(target_pos == DNG_POS(1,6,9) && gs_viewdir == WEST)) &&
 			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
-			(gs_dng02_secret_door3 != 2))
+			(gs_dng02_secret_door_status_3 != 2))
 	{
 		hero = get_first_hero_available_in_group();
 
-		if (gs_dng02_secret_door3 || (test_talent(hero, TA_SINNESSCHAERFE, 5) > 0))
+		if (gs_dng02_secret_door_status_3 || (test_talent(hero, TA_SINNESSCHAERFE, 5) > 0))
 		{
-			gs_dng02_secret_door3 = 1;
+			gs_dng02_secret_door_status_3 = 1;
 
 			sprintf(g_dtp2,	get_tx(37), hero->alias);
 			// you find a secret door
@@ -641,7 +641,7 @@ signed int DNG02_handler(void)
 
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(5,9)] = DNG_TILE_CORRIDOR << 4;
-				gs_dng02_secret_door3 = 2;
+				gs_dng02_secret_door_status_3 = 2;
 				DNG_update_pos();
 			}
 
@@ -739,7 +739,7 @@ void DNG02_chest04_loot(struct struct_chest*)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	if (!gs_dng02_apparature_destroyed)
+	if (!gs_dng02_apparatus_destroyed)
 	{
 		do {
 			answer = GUI_radio(
@@ -757,7 +757,7 @@ void DNG02_chest04_loot(struct struct_chest*)
 			chest_petrified();
 		} else {
 
-			gs_dng02_apparature_destroyed = 1;
+			gs_dng02_apparatus_destroyed = 1;
 
 			hero = get_hero(0);
 			for (i = 0; i <= 6; i++, hero++)
@@ -791,7 +791,7 @@ void DNG02_chest06_open(struct struct_chest* chest)
 	loot_corpse(
 		chest,
 		get_tx(19), // corpse of a wanderer, slain by zombies.
-		(int8_t*)&gs_dng02_corpse_flag
+		(int8_t*)&gs_dng02_wanderer_corpse_looted
 	);
 }
 

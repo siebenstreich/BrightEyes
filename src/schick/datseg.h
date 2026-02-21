@@ -1219,15 +1219,15 @@ extern uint8_t  gs_estorik_known;			//ds:0x3617; seg081
 extern struct struct_dialog_partner gs_dialog_partners[10];	// ds:0x3618; seg028, seg030, seg031
 extern struct struct_dialog_state gs_dialog_states[160];	// ds:0x3794; seg028, seg060
 
-extern uint8_t  gs_dng02_sphere_known;		//ds:0x3c94; seg087
-extern uint8_t  gs_dng02_corpse_flag;		//ds:0x3c95; seg078
-extern uint8_t  gs_dng02_apparature_destroyed;	//ds:0x3c96; seg078
-extern uint8_t  gs_dng02_sphere_timer;		//ds:0x3c97; seg002, seg078
-extern uint8_t  gs_dng02_sphere_active;		//ds:0x3c98; seg078
+extern uint8_t  gs_dng02_sphaerenriss_timer_activated;		//ds:0x3c94; seg087
+extern uint8_t  gs_dng02_wanderer_corpse_looted;		//ds:0x3c95; seg078
+extern uint8_t  gs_dng02_apparatus_destroyed;	//ds:0x3c96; seg078
+extern uint8_t  gs_dng02_sphaerenriss_timer_hours;		//ds:0x3c97; seg002, seg078
+extern uint8_t  gs_dng02_sphaerenriss_activated;		//ds:0x3c98; seg078
 extern uint8_t  gs_dng02_raven_destroyed;		//ds:0x3c99; seg078
-extern uint8_t  gs_dng02_secret_door1;		//ds:0x3c9a; seg078
-extern uint8_t  gs_dng02_secret_door2;		//ds:0x3c9b; seg078
-extern uint8_t  gs_dng02_secret_door3;		//ds:0x3c9c; seg078
+extern uint8_t  gs_dng02_secret_door_status_1;		//ds:0x3c9a; seg078
+extern uint8_t  gs_dng02_secret_door_status_2;		//ds:0x3c9b; seg078
+extern uint8_t  gs_dng02_secret_door_status_3;		//ds:0x3c9c; seg078
 extern uint8_t  gs_dng03_lever_trap;		//ds:0x3c9d; seg079
 extern uint8_t  gs_dng03_lever_chest11;		//ds:0x3c9e; seg079
 extern uint8_t  gs_dng03_sanctum_smashed;		//ds:0x3c9f; seg079
