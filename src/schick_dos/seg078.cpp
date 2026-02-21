@@ -529,8 +529,13 @@ signed int DNG02_handler(void)
 			(gs_direction == SOUTH) &&
 			(gs_dng02_secret_door1 != 2))
 	{
-		/* Original-Bug: this should be the leader, not hero no 0 */
+#ifndef M302de_ORIGINAL_BUGFIX
+		/* Original-Bug 66:
+		 * This should be the leader of the active group, who is not necessarily at hero_pos 0. */
 		hero = get_hero(0);
+#else
+		hero = get_first_hero_available_in_group();
+#endif
 
 		if (gs_dng02_secret_door1 || test_talent(hero, TA_SINNESSCHAERFE, 6) > 0)
 		{
@@ -568,8 +573,13 @@ signed int DNG02_handler(void)
 			(gs_direction == SOUTH) &&
 			(gs_dng02_secret_door2 != 2))
 	{
-		/* Original-Bug: this should be the leader, not hero no 0 */
+#ifndef M302de_ORIGINAL_BUGFIX
+		/* Original-Bug 66:
+		 * This should be the leader of the active group, who is not necessarily at hero_pos 0. */
 		hero = get_hero(0);
+#else
+		hero = get_first_hero_available_in_group();
+#endif
 
 		if (gs_dng02_secret_door2 || test_talent(hero, TA_SINNESSCHAERFE, 2) > 0)
 		{
