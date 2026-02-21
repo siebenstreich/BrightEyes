@@ -44,13 +44,13 @@ struct struct_chest g_dng02_specialchests[8] = {
 signed int DNG02_handler(void)
 {
 	signed int target_pos;
-	signed int mod_slot;
-	signed int i;
+	signed int mod_slot; // multi use
+	signed int i; // multi use
 	signed int hero_weight;
 	int32_t weight_sum;
 	struct struct_hero *hero;
 	uint8_t *amap_ptr;
-	signed char flag;
+	signed char success_flag;
 
 	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
 
@@ -58,6 +58,7 @@ signed int DNG02_handler(void)
 
 	if ((target_pos == DNG_POS(0,1,2) || target_pos == DNG_POS(0,2,1)))
 	{
+		// fight against two zombies. they only appear at night.
 		if (gs_day_timer >= HOURS(8) && gs_day_timer <= HOURS(20))
 		{
 		} else {
@@ -70,49 +71,64 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(0,3,6) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH)
 	{
 		strcpy(g_dtp2, get_tx(4));
+		// cooling cellar: room is much colder than the outside
 
-		strcat(g_dtp2,  (char*)((test_spell_group(SP_ODEM_ARCANUM, 0) == 0) ? get_tx(5) : get_tx(6)));
+		strcat(g_dtp2,(char*)((
+			test_spell_group(SP_ODEM_ARCANUM, 0) == 0)
+				? get_tx(5)
+				// unclear whether this is caused by magic
+
+				: get_tx(6)
+				// The walls show a bluish shimmering. (a hint to a magic cause)
+			)
+		);
 
 		GUI_output(g_dtp2);
 
 	} else if (target_pos == DNG_POS(0,4,10) && target_pos != gs_dng_handled_pos && gs_direction == SOUTH)
 	{
 		GUI_output(get_tx(7));
+		// former storage room for valuables
 
 	} else if ((target_pos == DNG_POS(0,7,13) || target_pos == DNG_POS(1,6,5) || target_pos == DNG_POS(1,4,14)) && target_pos != gs_dng_handled_pos)
 	{
 		if (test_talent((hero = get_first_hero_available_in_group()), TA_SINNESSCHAERFE, 6) > 0)
 		{
 			GUI_output(get_tx(8));
+			// sticky liquid on the floor; crossing is easy.
 
 		} else {
 
 			sprintf(g_dtp2, get_tx(9), hero->alias, GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
 			GUI_output(g_dtp2);
+			// Group leader is stuck to the floor.
 
-			flag = 0;
+			success_flag = 0;
 
-			while ((hero->le > 10) && !flag)
+			while ((hero->le > 10) && !success_flag)
 			{
-				/* KK+4 */
 				if (test_attrib(hero, ATTRIB_KK, 4) <= 0)
 				{
-					sprintf(g_dtp2, get_tx(10),hero->alias, GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
-
+					sprintf(g_dtp2, get_tx(10), hero->alias, GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
 					GUI_output(g_dtp2);
+					// Group leader fails to free himself. //
 
 					sub_hero_le(hero, 1);
 
 				} else {
-					flag = 1;
+					success_flag = 1;
 				}
 			}
 
-			if (!flag)
+			if (!success_flag)
 			{
+				// Group leader was released "out of grace" to keep his LE from dropping to 10 or below.
+
 				sprintf(g_dtp2,	get_tx(11), hero->alias);
 				GUI_output(g_dtp2);
+				// Group leader succeeds in freeing himself. //
 
+				// 1D6 extra damage to compensate for the out-of-grace release.
 				sub_hero_le(hero, (hero->le > 6 ? random_schick(6) : hero->le - 1));
 
 			}
@@ -124,6 +140,8 @@ signed int DNG02_handler(void)
 
 	} else if (target_pos == DNG_POS(0,14,14) && target_pos != gs_dng_handled_pos)
 	{
+		/* If the combined weight of the first two heroes is at least 7000 ounces, a trapdoor is triggered. */
+
 		hero = get_first_hero_available_in_group();
 		weight_sum = get_hero_weight(hero);
 
@@ -148,24 +166,37 @@ signed int DNG02_handler(void)
 			}
 		}
 
+		// Prevent the wall at (0,10,11) from appearing if there is a group on that square.
 		for (i = 0; i < 6; i++) {
 
-			if ((gs_groups_x_target[i] == 10 && gs_groups_y_target[i] == 11) &&
-				(gs_groups_dng_level[i] == gs_dungeon_level) &&
-				(gs_groups_dungeon_id[i] == gs_dungeon_id))
-			{
+			if (
+				(gs_groups_x_target[i] == 10 && gs_groups_y_target[i] == 11)
+				&& (gs_groups_dng_level[i] == gs_dungeon_level)
+				&& (gs_groups_dungeon_id[i] == gs_dungeon_id)
+			) {
 				weight_sum = 0L;
 			}
 		}
 
 		hero_weight = get_hero_weight(get_heaviest_hero());
 
-		amap_ptr[MAP_POS(10,11)] = (hero_weight >= weight_sum ? (DNG_TILE_CORRIDOR << 4) : (DNG_TILE_WALL << 4));
+		amap_ptr[MAP_POS(10,11)] = (
+			hero_weight >= weight_sum
+			// By the above logic, this condition is true if the current group consists only of a single hero,
+			// or if there is a group located on square (0,10,11).
+
+				? (DNG_TILE_CORRIDOR << 4)
+				: (DNG_TILE_WALL << 4)
+		);
 
 		play_voc(305);
 
 	} else if ((target_pos == DNG_POS(0,10,13) || target_pos == DNG_POS(0,10,9)) && target_pos != gs_dng_handled_pos)
 	{
+		// Purpose: detect groups moving away from (0,10,12) or (0,10,10) to remove the wall at (0,10,11).
+		// Original-Bug: groups teleporting away are not detected.
+		// Original-Bug: no check is made for another group on (0,10,12) or (0,10,10) that would make the wall at (0,10,11) appear.
+
 		amap_ptr[MAP_POS(10,11)] = DNG_TILE_CORRIDOR << 4;
 
 		play_voc(305);
@@ -209,19 +240,21 @@ signed int DNG02_handler(void)
 			if (mod_slot != 0)
 			{
 				GUI_output(get_tx(12));
+				// A terrifying figure above a pentagram
 			}
 		}
 
 	} else if (target_pos == DNG_POS(0,7,1) && !gs_dng02_raven_destroyed && target_pos != gs_dng_handled_pos)
 	{
 		if (GUI_bool(get_tx(13)))
+		// A raven statue mocking Boron. Destroy?
 		{
-			/* destroy the raven */
 			gs_dng02_raven_destroyed = 1;
 
 			sub_group_le(random_schick(20));
 
 			GUI_output(get_tx(14));
+			// Statue destroyed in a blinding flash; secret door in the west wall opened.
 
 			amap_ptr[MAP_POS(5,2)] = DNG_TILE_CORRIDOR << 4;
 		}
@@ -232,6 +265,8 @@ signed int DNG02_handler(void)
 		for (i = (signed int)(weight_sum = 0); i <= 6; i++, hero++)
 		{
 			if ((hero->typus != HERO_TYPE_NONE) && (hero->group_id == gs_active_group_id))
+			// Original-Bug: Heroes from other groups on the same square (0,11,6) should be included.
+			// (Note that moving away from (0,11,6), heroes from other groups are included.)
 			{
 				weight_sum += get_hero_weight(hero);
 			}
@@ -239,13 +274,20 @@ signed int DNG02_handler(void)
 
 		if (weight_sum >= 4000)
 		{
+			// Group heavy enough -> wall at (0,11,8) disappears
+
 			GUI_output(get_tx(15));
+			// A crunching sound
+			// Original-Bug: this message also appears when the wall has already been removed.
 
 			amap_ptr[MAP_POS(11,8)] = DNG_TILE_CORRIDOR << 4;
 		}
 
 	} else if ((target_pos == DNG_POS(0,10,6) || target_pos == DNG_POS(0,11,5)) && target_pos != gs_dng_handled_pos)
 	{
+		// Purpose: detect groups moving away from (0,11,6) to determine whether the wall at (0,11,8) should reappear.
+		// Original-Bug: Groups teleporting away from (0,11,8) are not detected.
+
 		for (i = 0; i < 6; i++)
 		{
 			weight_sum = 0;
@@ -270,7 +312,10 @@ signed int DNG02_handler(void)
 					gs_groups_dng_level[i] == gs_dungeon_level &&
 					gs_groups_dungeon_id[i] == gs_dungeon_id)
 			{
-				weight_sum = 5000L;
+				// Prevent the wall from reappearing if there is a group on that square.
+				// Original-Bug: if that group moves away later, the wall remains open.
+
+				weight_sum = 5000L; // some dummy value >= 4000.
 			}
 		}
 
@@ -282,6 +327,9 @@ signed int DNG02_handler(void)
 		gs_direction_bak = gs_direction;
 
 		GUI_output(get_tx(16));
+		// Inscription in the northern wall: "Attention after three steps to the left."
+		// This is a hint for the secret passage at (1,8,4).
+		// Original-Bug: Shouldn't this be "three steps to the right?"
 
 	} else if (target_pos == DNG_POS(1,4,5) && gs_direction == SOUTH &&
 			 (target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak))
@@ -289,45 +337,62 @@ signed int DNG02_handler(void)
 		gs_direction_bak = gs_direction;
 
 		GUI_output(get_tx(17));
+		// Inscription in the southern wall: "Attention after three steps to the left."
+		// This is a hint for the secret passage at (1,8,4).
+		// Original-Bug: Shouldn't this be "three steps to the right?"
 
 	} else if (target_pos == DNG_POS(1,7,1) && !gs_dng02_sphere_known)
 	{
 		load_in_head(43);
 
 		GUI_dialogbox((unsigned char*)g_dtp2, NULL, get_tx(18), 0);
+		// A chained, mad man babbles about the "Sphärenriss".
 
-		gs_dng02_sphere_timer = 7;
+		// The timer for the Sphärenriss is activated!
+		gs_dng02_sphere_timer = 7; // 7 hours
 		gs_dng02_sphere_known = 1;
 
 	} else if ((target_pos == DNG_POS(1,1,11) || target_pos == DNG_POS(1,1,8)) && target_pos != gs_dng_handled_pos)
 	{
 		GUI_output(get_tx(22));
+		// an alchemy table
 
 	} else if (target_pos == DNG_POS(1,3,7) && target_pos != gs_dng_handled_pos)
 	{
+		// This lever is a red herring. It has no effect.
+
 		if (GUI_bool(get_tx(23)))
+		// a lever...
 		{
 			GUI_output(get_tx(24));
+			// a clicking sound.
 		}
 
 	} else if (target_pos == DNG_POS(1,8,9) && target_pos != gs_dng_handled_pos && !gs_dng02_apparature_destroyed)
 	{
 		/* petrification trap */
+
 		GUI_output(get_tx(25));
+		// The air glows violet.
 
 		hero = get_hero(0);
 		for (i = 0; i <= 6; i++, hero++)
 		{
+			/* all heroes with MR < 8 are petrified */
 			if ((hero->typus != HERO_TYPE_NONE) && (hero->group_id == gs_active_group_id) &&
 				!hero->flags.dead && (hero->mr < 8))
 			{
 				hero->flags.petrified = 1;
 
-				sprintf(g_dtp2, get_tx(42), hero->alias,
+				sprintf(
+					g_dtp2,
+					get_tx(42), // within seconds, <hero> is petrified.
+					hero->alias,
 					GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST),
 					GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST),
 					GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST),
-					hero->alias);
+					hero->alias
+				);
 
 				GUI_output(g_dtp2);
 			}
@@ -338,22 +403,38 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(1,13,11) && target_pos != gs_dng_handled_pos)
 	{
 		do {
-			i = GUI_radio(get_tx(26), 2, get_tx(27), get_tx(28));
+			i = GUI_radio(
+				get_tx(26), // A lift leads upward.
+				2,
+				get_tx(27), // Use the lift.
+				get_tx(28)  // Investigate the room further.
+			);
 
 		} while (i == -1);
 
 		if (i == 1)
 		{
+			// Use the lift
+
 			DNG_dec_level();
 			target_pos = DNG_POS(0,13,11);
 
+			// Original-Bug: The following massage is displayed whether or not the fight has already been triggered.
+
 			do {
-				i = GUI_radio(get_tx(29), 2, get_tx(30), get_tx(31));
+				i = GUI_radio(
+					get_tx(29), // Two mages, guarded by two mummies, perform an invocation at a heptagon.
+					2,
+					get_tx(30), // Interrupt the invocation.
+					get_tx(31)  // Leave.
+				);
 
 			} while (i == -1);
 
 			if (i == 2)
 			{
+				// Leave
+
 				DNG_inc_level();
 				target_pos = DNG_POS(1,13,11);
 			}
@@ -362,22 +443,36 @@ signed int DNG02_handler(void)
 	} else if (target_pos == DNG_POS(0,13,11) && target_pos != gs_dng_handled_pos)
 	{
 		do {
-			i = GUI_radio(get_tx(43), 2, get_tx(27), get_tx(28));
+			i = GUI_radio(
+				get_tx(43), // A lift leads downward.
+				2,
+				get_tx(27), // Use the lift.
+				get_tx(28)  // Investigate the room further.
+			);
 
 		} while (i == -1);
 
 		if (i == 1)
 		{
+			// Use the lift
+
 			DNG_inc_level();
 			target_pos = DNG_POS(1,13,11);
 
 			do {
-				i = GUI_radio(get_tx(26), 2, get_tx(27), get_tx(28));
+				i = GUI_radio(
+					get_tx(26), // A lift leads upward.
+					2,
+					get_tx(27), // Use the lift.
+					get_tx(28)  // Investigate the room further.
+				);
 
 			} while (i == -1);
 
 			if (i == 1)
 			{
+				// Use the lift
+
 				DNG_dec_level();
 				target_pos = DNG_POS(0,13,11);
 			}
@@ -402,7 +497,7 @@ signed int DNG02_handler(void)
 
 	} else if (target_pos == DNG_POS(1,9,14) && target_pos != gs_dng_handled_pos && gs_direction == EAST)
 	{
-		GUI_output(get_tx(35));
+		GUI_output(get_tx(35)); // A torture chamber.
 
 	} else if (target_pos == DNG_POS(0,1,8) &&
 			(target_pos != gs_dng_handled_pos || gs_direction != gs_direction_bak) &&
@@ -417,10 +512,14 @@ signed int DNG02_handler(void)
 			gs_dng02_secret_door1 = 1;
 
 			sprintf(g_dtp2, get_tx(37), hero->alias);
+			// you find a secret door
 
 			sprintf(g_text_output_buf,
-				(char*)((i = test_talent(hero, TA_SCHLOESSER, 4)) > 0 ? get_tx(39) : get_tx(38)),
-				GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
+				(char*)((i = test_talent(hero, TA_SCHLOESSER, 4)) > 0
+					? get_tx(39) // the secret door opens
+					: get_tx(38) // <hero> fails to open the secret door
+				),
+			GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
 
 			strcat(g_dtp2, g_text_output_buf);
 
@@ -428,6 +527,8 @@ signed int DNG02_handler(void)
 
 			if (i > 0)
 			{
+				/* the secret door opens */
+
 				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(1,9)] &= (DNG_TILE_CORRIDOR << 4) + 0x0f;
 				gs_dng02_secret_door1 = 2;
@@ -450,10 +551,14 @@ signed int DNG02_handler(void)
 			gs_dng02_secret_door2 = 1;
 
 			sprintf(g_dtp2,	get_tx(37), hero->alias);
+			// you find a secret door
 
 			sprintf(g_text_output_buf,
-				(char*)((i = test_talent(hero, TA_SCHLOESSER, 2)) > 0 ? get_tx(39) : get_tx(38)),
-				(GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST)));
+				(char*)((i = test_talent(hero, TA_SCHLOESSER, 2)) > 0
+					? get_tx(39) // the secret door opens
+					: get_tx(38) // <hero> fails to open the secret door
+				),
+			GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
 
 			strcat(g_dtp2, g_text_output_buf);
 
@@ -461,6 +566,9 @@ signed int DNG02_handler(void)
 
 			if (i > 0)
 			{
+				/* the secret door opens */
+
+				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(4,9)] = DNG_TILE_CORRIDOR << 4;
 				gs_dng02_secret_door2 = 2;
 				DNG_update_pos();
@@ -481,15 +589,22 @@ signed int DNG02_handler(void)
 			gs_dng02_secret_door3 = 1;
 
 			sprintf(g_dtp2,	get_tx(37), hero->alias);
+			// you find a secret door
 
 			sprintf(g_text_output_buf,
-				(char*)((i = test_talent(hero, TA_SCHLOESSER, 4)) > 0 ? get_tx(39) : get_tx(38)),
-				GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
+				(char*)((i = test_talent(hero, TA_SCHLOESSER, 4)) > 0
+					? get_tx(39) // the secret door opens
+					: get_tx(38) // <hero> fails to open the secret door
+			       ),
+			GUI_get_personal_pronoun(hero->sex, GRAMMAR_CASE_1ST));
 
 			strcat(g_dtp2, g_text_output_buf);
 
 			if (i > 0)
 			{
+				/* the secret door opens */
+
+				/* unlike other similar code positions, the lower 4 bits of the map entry are preserved here. Is there a reason? */
 				amap_ptr[MAP_POS(5,9)] = DNG_TILE_CORRIDOR << 4;
 				gs_dng02_secret_door3 = 2;
 				DNG_update_pos();
@@ -498,6 +613,7 @@ signed int DNG02_handler(void)
 			i = random_schick(6) + 4;
 
 			sprintf(g_text_output_buf, get_tx(40), hero->alias, i);
+			// <hero> is hit by a crossbow bolt
 
 			strcat(g_dtp2, g_text_output_buf);
 
@@ -510,6 +626,8 @@ signed int DNG02_handler(void)
 
 	} else if (target_pos == DNG_POS(0,1,0) && target_pos != gs_dng_handled_pos)
 	{
+		/* exit */
+
 		leave_dungeon();
 		gs_town_id = gs_travel_destination_town_id;
 		gs_x_target = gs_travel_destination_x;
@@ -518,6 +636,7 @@ signed int DNG02_handler(void)
 		gs_direction = ((gs_travel_destination_viewdir + 2) & 3);
 
 		sprintf(g_dtp2, get_tx(44), get_ttx(gs_journey_destination_town_id + 0xeb));
+		/* You leave the dungeon and reach your true destionation, <town>, a few hours later. */
 
 		GUI_output(g_dtp2);
 
@@ -588,7 +707,13 @@ void DNG02_chest04_loot(struct struct_chest*)
 	if (!gs_dng02_apparature_destroyed)
 	{
 		do {
-			answer = GUI_radio(get_tx(1), 2, get_tx(2), get_tx(3));
+			answer = GUI_radio(
+				get_tx(1), // In the chest lies a strange crystal apparatus, glowing violet.
+
+				2,
+				get_tx(2), // Take it with you.
+				get_tx(3)  // Destroy it.
+			);
 
 		} while (answer == -1);
 
@@ -609,7 +734,7 @@ void DNG02_chest04_loot(struct struct_chest*)
 			}
 		}
 	} else {
-		GUI_output(get_ttx(522));
+		GUI_output(get_ttx(522)); // Chest is empty.
 	}
 
 	g_textbox_width = tw_bak;
@@ -628,7 +753,11 @@ void DNG02_chest05_loot(struct struct_chest* chest)
 
 void DNG02_chest06_open(struct struct_chest* chest)
 {
-	loot_corpse(chest, get_tx(19), (int8_t*)&gs_dng02_corpse_flag);
+	loot_corpse(
+		chest,
+		get_tx(19), // corpse of a wanderer, slain by zombies.
+		(int8_t*)&gs_dng02_corpse_flag
+	);
 }
 
 void DNG02_chest06_loot(struct struct_chest* chest)
@@ -637,7 +766,11 @@ void DNG02_chest06_loot(struct struct_chest* chest)
 
 	chest->content = gs_dng02_chest06_content;
 
-	loot_chest(chest, get_tx(20), get_tx(21));
+	loot_chest(
+		chest,
+		get_tx(20), // There are these items...
+		get_tx(21)  // There is nothing left
+	);
 
 	chest->content = ptr_bak;
 }
@@ -650,12 +783,12 @@ void DNG02_chest06_loot(struct struct_chest* chest)
 void DNG02_fight_intro(const signed int fight_id)
 {
 	if (fight_id == FIGHT_ID_F046_13) {
-		GUI_output(get_tx(32));
+		GUI_output(get_tx(32)); // Four approaching zombies.
 	} else if (fight_id == FIGHT_ID_F046_22) {
-		GUI_output(get_tx(33));
+		GUI_output(get_tx(33)); // A skeleton attacks.
 	} else if (fight_id == FIGHT_ID_F046_25) {
-		GUI_output(get_tx(34));
+		GUI_output(get_tx(34)); // You and an alchemist notice each other; at his gesture, five shadowy figures emerge and attack.
 	} else if (fight_id == FIGHT_ID_F046_28) {
-		GUI_output(get_tx(36));
+		GUI_output(get_tx(36)); // A man cleans an iron maiden; spotting you, he shouts an alarm and attacks.
 	}
 }
