@@ -837,9 +837,9 @@ signed int TM_get_track_length(struct struct_point *track)
 
 signed int trv_journey_enter_destination_town(void)
 {
-	signed int tmp;
+	signed int tmp; /* multi use */
 	signed int signpost_typeindex;
-	signed int tmp2;
+	signed int tmp2; /* multi use */
 	struct trv_start_point *signpost_ptr;
 	struct location *locations_tab_ptr;
 
@@ -895,8 +895,13 @@ signed int trv_journey_enter_destination_town(void)
 			}
 
 			tmp = locations_tab_ptr->locdata;
-			gs_travel_destination_x = (tmp >> 8) & 0xff;
-			gs_travel_destination_y = tmp & 0x0f;
+			gs_travel_destination_x = (tmp >> 8) & 0xff; /* bits 8..15 */
+			gs_travel_destination_y = tmp & 0x0f;        /* bits 0..3 */
+
+			/* In principle, the viewdir is stored in bits 4–7 of locdata.
+			 * But strangely, this information is ignored. Instead, a heuristic based on
+			 * the signpost’s coordinates and the arrival position is used.
+			 */
 			gs_travel_destination_viewdir = trv_journey_enter_destination_town_viewdir(locations_tab_ptr->pos);
 
 			gs_town_id = tmp2;
