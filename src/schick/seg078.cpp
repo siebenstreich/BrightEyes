@@ -120,6 +120,11 @@ signed int DNG02_handler(void)
 				}
 			}
 
+#ifndef M302de_ORIGINAL_BUGFIX
+			// Original-Bug 65:
+			// verfallene Herberge: If the group leader becomes stuck in the sticky liquid on the floor,
+			// the "freed himself" message only appears after a prior failed attempt that reduced his LE to 10 or below.
+
 			if (!success_flag)
 			{
 				// Group leader was released "out of grace" to keep his LE from dropping to 10 or below.
@@ -132,6 +137,21 @@ signed int DNG02_handler(void)
 				sub_hero_le(hero, (hero->le > 6 ? random_schick(6) : hero->le - 1));
 
 			}
+#else
+			sprintf(g_dtp2, get_tx(11), hero->alias);
+			GUI_output(g_dtp2);
+			// Group leader succeeds in freeing himself.
+
+			if (!success_flag)
+			{
+				// Group leader was released "out of grace" to keep his LE from dropping to 10 or below.
+				// 1D6 extra damage to compensate for that action.
+
+				sub_hero_le(hero, (hero->le > 6 ? random_schick(6) : hero->le - 1));
+
+			}
+#endif
+
 		}
 
 	} else if (target_pos == DNG_POS(0,6,10))
