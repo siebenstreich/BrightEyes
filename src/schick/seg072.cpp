@@ -722,8 +722,8 @@ void INF_treborn_unicorn(const signed int informer, const signed int state)
 			/* the hero gets 100 AP */
 			add_hero_ap((struct struct_hero*)gs_unicorn_hero_ptr, 100);
 
-			/* set the unicorn timer (in days) */
-			gs_unicorn_timer = random_schick(24) + 36;
+			/* set the unicorn timer (in hours) */
+			gs_unicorn_timer_hours = random_schick(24) + 36; // between 3 and 5 days
 		}
 	}
 }

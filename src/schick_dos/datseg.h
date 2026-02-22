@@ -1180,7 +1180,7 @@ extern uint8_t  gs_swafnild_nomap;		//ds:0x3462; seg072
 extern uint8_t  gs_treborn_date;			//ds:0x3463; seg072
 extern uint8_t  gs_unicorn_hero_pos;		//ds:0x3464; seg072
 extern uint8_t  gs_unicorn_get_map;		//ds:0x3465; seg002, seg072, seg116
-extern uint8_t  gs_unicorn_timer;			//ds:0x3466; seg002, seg072, seg116
+extern uint8_t  gs_unicorn_timer_hours;			//ds:0x3466; seg002, seg072, seg116
 extern uint8_t  gs_algrid_treborns_hint;		//ds:0x3467; seg072
 extern uint8_t  gs_tiomar_drinkmate;		//ds:0x3468; seg030, seg072
 extern uint8_t  gs_tiomar_awaits_letter;		//ds:0x3469; seg072

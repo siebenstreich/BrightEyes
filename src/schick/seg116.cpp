@@ -710,7 +710,7 @@ void TLK_old_woman(const signed int state)
 
 void tevent_136(void)
 {
-	if (gs_met_unicorn_flag && gs_got_main_quest && gs_unicorn_get_map && !gs_unicorn_timer) {
+	if (gs_met_unicorn_flag && gs_got_main_quest && gs_unicorn_get_map && !gs_unicorn_timer_hours) {
 
 		do_talk(12, 1);
 		gs_met_unicorn_flag = 1;
