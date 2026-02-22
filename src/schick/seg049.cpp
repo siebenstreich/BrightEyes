@@ -212,41 +212,41 @@ void GRP_split(void)
 
 void GRP_merge(void)
 {
-	signed int answer;
-	signed int i;
+	signed int group_id;
+	signed int hero_pos;
 
-	answer = can_merge_group();
+	group_id = can_merge_group();
 
-	if (answer == -1) {
+	if (group_id == -1) {
 
 		GUI_output(get_ttx(516));
 	} else {
 
 		do {
 
-			gs_groups_viewdir[answer] = gs_groups_x_target[answer]
-				= gs_groups_y_target[answer] = gs_groups_town_id[answer]
-				= gs_groups_dungeon_id[answer] = gs_groups_dng_level[answer]
-				= gs_groups_viewdir_bak[answer] = gs_groups_x_target_bak[answer]
-				= gs_groups_y_target_bak[answer] = gs_town_groups_loctype_bak[answer]
-				= gs_groups_town_id_bak[answer] = gs_groups_dungeon_id_bak[answer]
-				= gs_groups_dng_level_bak[answer] = 0;
+			gs_groups_viewdir[group_id] = gs_groups_x_target[group_id]
+				= gs_groups_y_target[group_id] = gs_groups_town_id[group_id]
+				= gs_groups_dungeon_id[group_id] = gs_groups_dng_level[group_id]
+				= gs_groups_viewdir_bak[group_id] = gs_groups_x_target_bak[group_id]
+				= gs_groups_y_target_bak[group_id] = gs_town_groups_loctype_bak[group_id]
+				= gs_groups_town_id_bak[group_id] = gs_groups_dungeon_id_bak[group_id]
+				= gs_groups_dng_level_bak[group_id] = 0;
 
-			gs_group_member_counts[answer] = 0;
+			gs_group_member_counts[group_id] = 0;
 
-			for (i = 0; i <= 6; i++) {
+			for (hero_pos = 0; hero_pos <= 6; hero_pos++) {
 
-				if ((get_hero(i)->typus != HERO_TYPE_NONE) && (get_hero(i)->group_id == answer))
+				if ((get_hero(hero_pos)->typus != HERO_TYPE_NONE) && (get_hero(hero_pos)->group_id == group_id))
 				{
-					get_hero(i)->group_id = gs_active_group_id;
+					get_hero(hero_pos)->group_id = gs_active_group_id;
 					gs_group_member_counts[gs_active_group_id]++;
 				}
 			}
 
 			GRP_sort_heroes();
-			answer = can_merge_group();
+			group_id = can_merge_group();
 
-		} while (answer != -1);
+		} while (group_id != -1);
 
 		draw_status_line();
 	}
@@ -254,32 +254,32 @@ void GRP_merge(void)
 
 void GRP_switch_to_next(const signed int mode)
 {
-	signed int i;
+	signed int hero_pos;
 	signed int state;
 
-	signed int group;
+	signed int group_id;
 	signed int done = 0;
 	signed int dng_level;
 
-	group = gs_active_group_id;
+	group_id = gs_active_group_id;
 
 	do {
-		/* select next group */
-		group++;
+		/* find next group */
+		group_id++;
 
-		if (group == 6) {
-			group = 0;
+		if (group_id == 6) {
+			group_id = 0;
 		}
 
-		if (gs_group_member_counts[group] != 0) {
+		if (gs_group_member_counts[group_id] != 0) {
 
 			state = 0;
 
-			for (i = 0; i < 6; i++) {
+			for (hero_pos = 0; hero_pos < 6; hero_pos++) {
 
-				if ((get_hero(i)->typus != HERO_TYPE_NONE) && (get_hero(i)->group_id == group) && check_hero(get_hero(i)))
+				if ((get_hero(hero_pos)->typus != HERO_TYPE_NONE) && (get_hero(hero_pos)->group_id == group_id) && check_hero(get_hero(hero_pos)))
 				{
-					if (get_hero(i)->jail) {
+					if (get_hero(hero_pos)->jail) {
 						/* hero is in prison */
 						state = 2;
 					} else {
@@ -313,23 +313,23 @@ void GRP_switch_to_next(const signed int mode)
 
 	} while (done == 0);
 
-	if (gs_active_group_id != group) {
+	if (gs_active_group_id != group_id) {
 
-		if ( ((gs_town_id != TOWN_ID_NONE) && !gs_groups_town_id[group]) ||
-			(!gs_town_id && (gs_groups_town_id[group] != TOWN_ID_NONE)))
+		if ( ((gs_town_id != TOWN_ID_NONE) && !gs_groups_town_id[group_id]) ||
+			(!gs_town_id && (gs_groups_town_id[group_id] != TOWN_ID_NONE)))
 		{
 			set_palette(g_palette_allblack2, 0x00, 0x20);
 			set_palette(g_palette_allblack2, 0x80, 0x20);
 			set_palette(g_palette_allblack2, 0xa0, 0x20);
 		}
 
-		if (gs_groups_dungeon_id[group] && (gs_groups_dungeon_id[group] != gs_dungeon_id))
+		if (gs_groups_dungeon_id[group_id] && (gs_groups_dungeon_id[group_id] != gs_dungeon_id))
 		{
 			g_dng_loaded_dungeon_id = -1;
 			g_area_prepared = AREA_TYPE_NONE;
 		}
 
-		if (gs_groups_town_id[group] && (gs_groups_town_id[group] != gs_town_id))
+		if (gs_groups_town_id[group_id] && (gs_groups_town_id[group_id] != gs_town_id))
 		{
 			g_town_loaded_town_id = -1;
 			g_area_prepared = AREA_TYPE_NONE;
@@ -352,32 +352,32 @@ void GRP_switch_to_next(const signed int mode)
 		gs_groups_dng_level_bak[gs_active_group_id] = gs_dungeon_level_bak;
 
 		/* set positions for the new group */
-		gs_active_group_id = group;
-		gs_viewdir = gs_groups_viewdir[group];
-		gs_x_target = gs_groups_x_target[group];
-		gs_y_target = gs_groups_y_target[group];
-		gs_town_loc_type = gs_town_groups_loctype[group];
-		gs_town_id = gs_groups_town_id[group];
-		gs_dungeon_id = gs_groups_dungeon_id[group];
+		gs_active_group_id = group_id;
+		gs_viewdir = gs_groups_viewdir[group_id];
+		gs_x_target = gs_groups_x_target[group_id];
+		gs_y_target = gs_groups_y_target[group_id];
+		gs_town_loc_type = gs_town_groups_loctype[group_id];
+		gs_town_id = gs_groups_town_id[group_id];
+		gs_dungeon_id = gs_groups_dungeon_id[group_id];
 		dng_level = gs_dungeon_level;
-		gs_dungeon_level = gs_groups_dng_level[group];
+		gs_dungeon_level = gs_groups_dng_level[group_id];
 
 		if (dng_level != gs_dungeon_level) {
 			load_area_description(1);
 		}
 
-		gs_viewdir_bak = gs_groups_viewdir_bak[group];
-		gs_x_target_bak = gs_groups_x_target_bak[group];
-		gs_y_target_bak = gs_groups_y_target_bak[group];
-		gs_town_loc_type_bak = gs_town_groups_loctype_bak[group];
-		gs_town_id_bak = gs_groups_town_id_bak[group];
-		gs_dungeon_id_bak = gs_groups_dungeon_id_bak[group];
-		gs_dungeon_level_bak = gs_groups_dng_level_bak[group];
+		gs_viewdir_bak = gs_groups_viewdir_bak[group_id];
+		gs_x_target_bak = gs_groups_x_target_bak[group_id];
+		gs_y_target_bak = gs_groups_y_target_bak[group_id];
+		gs_town_loc_type_bak = gs_town_groups_loctype_bak[group_id];
+		gs_town_id_bak = gs_groups_town_id_bak[group_id];
+		gs_dungeon_id_bak = gs_groups_dungeon_id_bak[group_id];
+		gs_dungeon_level_bak = gs_groups_dng_level_bak[group_id];
 
 		GRP_sort_heroes();
 
-		for (group = 0; group <= 6; group++) {
-			gs_food_message[group] = gs_unconscious_message[group] = 0;
+		for (group_id = 0; group_id <= 6; group_id++) {
+			gs_food_message[group_id] = gs_unconscious_message[group_id] = 0;
 		}
 
 		g_request_refresh = 1;
