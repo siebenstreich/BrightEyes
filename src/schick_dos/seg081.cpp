@@ -54,7 +54,7 @@ signed int DNG06_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	if (target_pos == DNG_POS(0,14,5) && target_pos != gs_dng_handled_pos && !gs_dng06_book_flag)
 	{
@@ -289,7 +289,7 @@ signed int DNG06_handler(void)
 		{
 			for (i = l3 = 0; i < 6; i++)
 			{
-				if (gs_groups_x_target[i] == 3 && gs_groups_y_target[i] == 6 &&
+				if (gs_groups_x[i] == 3 && gs_groups_y[i] == 6 &&
 					gs_active_group_id != i)
 				{
 					hero = get_hero(0);
@@ -329,7 +329,7 @@ signed int DNG06_handler(void)
 		{
 			for (i = l3 = 0; i < 6; i++)
 			{
-				if (gs_groups_x_target[i] == 1 && gs_groups_y_target[i] == 2 &&
+				if (gs_groups_x[i] == 1 && gs_groups_y[i] == 2 &&
 					gs_active_group_id != i)
 				{
 					hero = get_hero(0);
@@ -430,8 +430,8 @@ signed int DNG06_handler(void)
 		leave_dungeon();
 
 		gs_town_id = gs_travel_destination_town_id;
-		gs_x_target = gs_travel_destination_x;
-		gs_y_target = gs_travel_destination_y;
+		gs_x = gs_travel_destination_x;
+		gs_y = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
 		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 

@@ -238,8 +238,8 @@ void do_house(void)
 
 	} else {
 		gs_town_loc_type = gs_town_loc_type_bak;
-		gs_x_target = gs_x_target_bak;
-		gs_y_target = gs_y_target_bak;
+		gs_x = gs_x_bak;
+		gs_y = gs_y_bak;
 	}
 }
 
@@ -751,8 +751,8 @@ void leave_location(void)
 	gs_town_loc_type = gs_town_loc_type_bak;
 
 	/* set target  coordinates*/
-	gs_x_target = gs_x_target_bak;
-	gs_y_target = gs_y_target_bak;
+	gs_x = gs_x_bak;
+	gs_y = gs_y_bak;
 
 	/* rotate party by 180 degrees */
 	gs_viewdir = (gs_viewdir + 2) % 4;

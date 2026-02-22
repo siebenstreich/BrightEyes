@@ -205,9 +205,9 @@ void spell_penetrizzel(void)
 
 	for (y = -2;  y <= 2; y++) {
 		for (x = -2;  x <= 2; x++) {
-			if ((gs_y_target + y >= 0) && (gs_x_target + x >= 0)) {
-				if ((g_map_size_x - 1 >= gs_x_target + x) && (gs_y_target + y <= 15)) {
-					set_automap_tile(gs_x_target + x, gs_y_target + y);
+			if ((gs_y + y >= 0) && (gs_x + x >= 0)) {
+				if ((g_map_size_x - 1 >= gs_x + x) && (gs_y + y <= 15)) {
+					set_automap_tile(gs_x + x, gs_y + y);
 				}
 			}
 		}

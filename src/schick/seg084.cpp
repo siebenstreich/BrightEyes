@@ -55,7 +55,7 @@ signed int DNG09_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	/* TODO: not the leader ? */
 	hero = get_hero(0);
@@ -118,7 +118,7 @@ signed int DNG09_handler(void)
 		{
 			GUI_output(get_tx(15));
 
-			gs_x_target += 2;
+			gs_x += 2;
 			gs_viewdir = EAST;
 			DNG_inc_level();
 		}
@@ -189,8 +189,8 @@ signed int DNG09_handler(void)
 		} else {
 			GUI_output(get_tx(19));
 
-			gs_x_target--;
-			gs_y_target += 2;
+			gs_x--;
+			gs_y += 2;
 			DNG_inc_level();
 		}
 
@@ -253,8 +253,8 @@ signed int DNG09_handler(void)
 	} else if (target_pos == DNG_POS(1,2,8) && target_pos != gs_dng_handled_pos) {
 
 		if (GUI_bool(get_tx(38))) {
-			gs_x_target--;
-			gs_y_target++;
+			gs_x--;
+			gs_y++;
 			gs_viewdir = SOUTH;
 			DNG_dec_level();
 		}
@@ -314,7 +314,7 @@ signed int DNG09_handler(void)
 		/* check if there is still another group on the square of the lever */
 		for (i = l3 = 0; i < 6; i++)
 		{
-			if (gs_groups_x_target[i] == 7 && gs_groups_y_target[i] == 13 &&
+			if (gs_groups_x[i] == 7 && gs_groups_y[i] == 13 &&
 				gs_groups_dng_level[i] == 1 && gs_active_group_id != i)
 			{
 				l3 = 1;
@@ -430,8 +430,8 @@ signed int DNG09_handler(void)
 	{
 		leave_dungeon();
 		gs_town_id = gs_travel_destination_town_id;
-		gs_x_target = gs_travel_destination_x;
-		gs_y_target = gs_travel_destination_y;
+		gs_x = gs_travel_destination_x;
+		gs_y = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
 		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 

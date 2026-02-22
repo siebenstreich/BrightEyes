@@ -618,12 +618,12 @@ void tevent_047(void)
 						if (answer == 1)
 						{
 							gs_town_id = TOWN_ID_LJASDAHL;
-							gs_x_target = 7;
-							gs_y_target = 3;
+							gs_x = 7;
+							gs_y = 3;
 						} else {
 							gs_town_id = TOWN_ID_OTTARJE;
-							gs_x_target = 9;
-							gs_y_target = 10;
+							gs_x = 9;
+							gs_y = 10;
 						}
 
 						gs_travel_detour = 99;
@@ -644,8 +644,8 @@ void tevent_047(void)
 						GUI_dialog_na(0, get_tx2(25));
 
 						gs_town_id = TOWN_ID_VARNHEIM;
-						gs_x_target = 4;
-						gs_y_target = 10;
+						gs_x = 4;
+						gs_y = 10;
 						gs_travel_detour = 99;
 					}
 				}

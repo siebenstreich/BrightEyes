@@ -103,7 +103,7 @@ void prepare_dungeon_area(void)
 
 	g_dng_loaded_dungeon_id = gs_dungeon_id;
 	g_town_loaded_town_id = -1;
-	set_automap_tiles(gs_x_target, gs_y_target);
+	set_automap_tiles(gs_x, gs_y);
 }
 
 void load_dungeon_ddt(void)
@@ -202,7 +202,7 @@ void prepare_town_area(void)
 	g_town_loaded_town_id = gs_town_id;
 	g_dng_loaded_dungeon_id = -1;
 
-	set_automap_tiles(gs_x_target, gs_y_target);
+	set_automap_tiles(gs_x, gs_y);
 }
 
 uint8_t* load_town_textures(const signed int index, const signed int firstcol, const signed int colors, const signed int ref)

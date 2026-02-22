@@ -45,7 +45,7 @@ signed int DNG12_handler(void)
 	ptr = g_dng_map;
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
-	target_pos = DNG_POS(gs_dungeon_level,gs_x_target,gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level,gs_x,gs_y);
 
 	hero = get_first_hero_available_in_group();
 
@@ -124,17 +124,17 @@ signed int DNG12_handler(void)
 						sprintf(g_dtp2, get_tx(22), get_hero(6)->alias);
 						GUI_output(g_dtp2);
 
-						while (gs_x_target != 6) {
+						while (gs_x != 6) {
 
-							gs_x_target += (gs_x_target > 6 ? -1 : 1);
+							gs_x += (gs_x > 6 ? -1 : 1);
 
 							DNG_update_pos();
 						}
 
 
-						while (gs_y_target != 8) {
+						while (gs_y != 8) {
 
-							gs_y_target += (gs_y_target > 8 ? -1 : 1);
+							gs_y += (gs_y > 8 ? -1 : 1);
 
 							DNG_update_pos();
 						}
@@ -232,8 +232,8 @@ signed int DNG12_handler(void)
 	} else if (target_pos == DNG_POS(0,4,6) && target_pos != gs_dng_handled_pos) {
 		/* trap door */
 		GUI_output(get_tx(11));
-		gs_x_target = 1;
-		gs_y_target = 3;
+		gs_x = 1;
+		gs_y = 3;
 		DNG_inc_level();
 	} else if (target_pos == DNG_POS(0,6,13) && target_pos != gs_dng_handled_pos) {
 		/* bolt trap */
@@ -303,8 +303,8 @@ signed int DNG12_handler(void)
 		D1_INFO("Rueckwaerts gehen\n");
 #endif
 		GUI_output(get_tx(23));
-		gs_x_target = 1;
-		gs_y_target = 3;
+		gs_x = 1;
+		gs_y = 3;
 		gs_viewdir = WEST;
 		DNG_update_pos();
 
@@ -314,8 +314,8 @@ signed int DNG12_handler(void)
 		D1_INFO("Rueckwaerts gehen\n");
 #endif
 		GUI_output(get_tx(23));
-		gs_x_target = 5;
-		gs_y_target = 3;
+		gs_x = 5;
+		gs_y = 3;
 		gs_viewdir = EAST;
 		DNG_update_pos();
 
@@ -325,8 +325,8 @@ signed int DNG12_handler(void)
 		D1_INFO("Rueckwaerts gehen\n");
 #endif
 		GUI_output(get_tx(23));
-		gs_x_target = 3;
-		gs_y_target = 1;
+		gs_x = 3;
+		gs_y = 1;
 		gs_viewdir = NORTH;
 		DNG_update_pos();
 
@@ -454,15 +454,15 @@ signed int DNG12_handler(void)
 				GUI_output(g_dtp2);
 
 				sub_hero_le(hero, random_schick(4));
-				gs_x_target = gs_x_target_bak;
-				gs_y_target = gs_y_target_bak;
+				gs_x = gs_x_bak;
+				gs_y = gs_y_bak;
 			} else {
 				/* pass */
 				GUI_output(get_tx(26));
 			}
 		} else {
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 		}
 	} else if (target_pos == DNG_POS(1,14,3) && target_pos != gs_dng_handled_pos && gs_dng12_speartrap_active) {
 		/* spear trap */
@@ -500,8 +500,8 @@ signed int DNG12_handler(void)
 
 		/* exit mine */
 		leave_dungeon();
-		gs_x_target = 1;
-		gs_y_target = 6;
+		gs_x = 1;
+		gs_y = 6;
 		gs_viewdir = NORTH;
 	}
 
@@ -523,8 +523,8 @@ void DNG_clear_corridor(int8_t *flag)
 
 		*flag = -1;
 	} else {
-		gs_x_target = gs_x_target_bak;
-		gs_y_target = gs_y_target_bak;
+		gs_x = gs_x_bak;
+		gs_y = gs_y_bak;
 	}
 }
 

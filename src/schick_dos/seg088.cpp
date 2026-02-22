@@ -61,7 +61,7 @@ void DNG14_dive(const signed int diver_pos, const signed char handicap, const si
 		}
 	}
 
-	gs_x_target = dest_x;
+	gs_x = dest_x;
 	g_dng_refresh_direction = -1;
 }
 
@@ -198,19 +198,19 @@ void DNG15_riddle(void)
 
 	ptr = g_dng_map;
 
-	pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	/* check if the other group is in position */
 	for (i = l_di = 0; i < 6; i++) {
 
-		if (pos == DNG_POS(1,8,1) && gs_groups_x_target[i] == 8 &&
-			gs_groups_y_target[i] == 5 && gs_active_group_id != i)
+		if (pos == DNG_POS(1,8,1) && gs_groups_x[i] == 8 &&
+			gs_groups_y[i] == 5 && gs_active_group_id != i)
 		{
 			l_di = 1;
 		}
 
-		if (pos == DNG_POS(1,8,5) && gs_groups_x_target[i] == 8 &&
-			gs_groups_y_target[i] == 1 && gs_active_group_id != i)
+		if (pos == DNG_POS(1,8,5) && gs_groups_x[i] == 8 &&
+			gs_groups_y[i] == 1 && gs_active_group_id != i)
 		{
 			l_di = 1;
 		}
@@ -233,9 +233,9 @@ void DNG15_riddle(void)
 			/* pull on the other side */
 
 			/* set the corresponding lever */
-			if (gs_y_target == 1) {
+			if (gs_y == 1) {
 				gs_dng15_lever_south = 1;
-			} else if (gs_y_target == 5) {
+			} else if (gs_y == 5) {
 				gs_dng15_lever_north = 1;
 			}
 

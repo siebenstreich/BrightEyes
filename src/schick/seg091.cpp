@@ -39,7 +39,7 @@ signed int DNG13_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	hero = get_first_hero_available_in_group();
 
@@ -154,8 +154,8 @@ signed int DNG13_handler(void)
 
 		leave_dungeon();
 
-		gs_x_target = 9;
-		gs_y_target = 1;
+		gs_x = 9;
+		gs_y = 1;
 		gs_viewdir = EAST;
 	}
 
@@ -205,8 +205,8 @@ void DNG13_unblock_passage(char* text, uint8_t* flag)
 
 		} else {
 
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 		}
 	}
 }

@@ -936,8 +936,8 @@ signed int do_travel_mode(void)
 					if (!gs_travel_detour && g_game_state == GAME_STATE_MAIN)
 					{
 						gs_town_id = gs_travel_destination_town_id;
-						gs_x_target_bak = gs_travel_destination_x;
-						gs_y_target_bak = gs_travel_destination_y;
+						gs_x_bak = gs_travel_destination_x;
+						gs_y_bak = gs_travel_destination_y;
 						gs_viewdir = (gs_travel_destination_viewdir + 2) & 3;
 
 					} else if (g_game_state == GAME_STATE_MAIN && gs_travel_detour != 99)

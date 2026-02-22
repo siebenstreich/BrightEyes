@@ -1079,10 +1079,10 @@ extern int8_t  gs_group_member_counts[6];	//ds:0x2d36; seg002-seg118
 extern int8_t  gs_total_hero_counter;		//ds:0x2d3c; seg002-seg113
 extern int8_t  gs_viewdir;			//ds:0x2d3d; seg002-seg120
 extern int8_t  gs_groups_viewdir[6];		//ds:0x2d3e; seg049, seg054, seg074
-extern int16_t gs_x_target;			//ds:0x2d44; seg002-seg120
-extern int16_t gs_y_target;			//ds:0x2d46; seg002-seg120
-extern int16_t gs_groups_x_target[6];		//ds:0x2d48; seg002-seg089
-extern int16_t gs_groups_y_target[6];		//ds:0x2d54; seg002-seg089
+extern int16_t gs_x;			//ds:0x2d44; seg002-seg120
+extern int16_t gs_y;			//ds:0x2d46; seg002-seg120
+extern int16_t gs_groups_x[6];		//ds:0x2d48; seg002-seg089
+extern int16_t gs_groups_y[6];		//ds:0x2d54; seg002-seg089
 extern int8_t  gs_town_loc_type;		//ds:0x2d60; seg002-seg120
 extern int8_t  gs_town_groups_loctype[6];	//ds:0x2d61; seg002, seg049
 extern int8_t  gs_town_id;			//ds:0x2d67; seg002-seg120
@@ -1093,10 +1093,10 @@ extern int8_t  gs_dungeon_level;			//ds:0x2d75; seg002-seg107
 extern int8_t  gs_groups_dng_level[6];		//ds:0x2d76; seg002-seg084
 extern int8_t  gs_viewdir_bak;			//ds:0x2d7c; seg03-seg120
 extern int8_t  gs_groups_viewdir_bak[6];	//ds:0x2d7d; seg049, seg054
-extern int16_t gs_x_target_bak;			//ds:0x2d83; seg025-seg120
-extern int16_t gs_y_target_bak;			//ds:0x2d85; seg025-seg120
-extern int16_t gs_groups_x_target_bak[6];	//ds:0x2d87; seg002, seg049, seg054
-extern int16_t gs_groups_y_target_bak[6];	//ds:0x2d93; seg002, seg049, seg054
+extern int16_t gs_x_bak;			//ds:0x2d83; seg025-seg120
+extern int16_t gs_y_bak;			//ds:0x2d85; seg025-seg120
+extern int16_t gs_groups_x_bak[6];	//ds:0x2d87; seg002, seg049, seg054
+extern int16_t gs_groups_y_bak[6];	//ds:0x2d93; seg002, seg049, seg054
 extern int8_t  gs_town_loc_type_bak;		//ds:0x2d9f; seg002-seg120
 extern int8_t  gs_town_groups_loctype_bak[6];	//ds:0x2da0; seg002, seg049, seg054
 extern int8_t  gs_town_id_bak;		//ds:0x2da6; seg025, seg049, seg066, seg075, seg120

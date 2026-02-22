@@ -66,8 +66,8 @@ void move(void)
 
 	for (i = 0; i < 29; i++, p_vis_field++) {
 		boundary_flag = 0;
-		x = gs_x_target + p_vis_field->x;
-		y = gs_y_target + p_vis_field->y;
+		x = gs_x + p_vis_field->x;
+		y = gs_y + p_vis_field->y;
 
 		if (x < 0) {
 			x = 0;
@@ -104,14 +104,14 @@ void move(void)
 
 	if (g_map_size_x == 16) {
 		/* dungeon or small town */
-		g_steptarget_front = *(p_map_small + MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y));
+		g_steptarget_front = *(p_map_small + MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
 
-		g_steptarget_back  = *(p_map_small + MAP_POS(gs_x_target + p_vis_field[1].x, gs_y_target + p_vis_field[1].y));
+		g_steptarget_back  = *(p_map_small + MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y));
 	} else {
 		/* large city */
-		g_steptarget_front = *(p_map_large + LARGE_MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y));
+		g_steptarget_front = *(p_map_large + LARGE_MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
 
-		g_steptarget_back  = *(p_map_large + LARGE_MAP_POS(gs_x_target + p_vis_field[1].x, gs_y_target + p_vis_field[1].y));
+		g_steptarget_back  = *(p_map_large + LARGE_MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y));
 	}
 }
 

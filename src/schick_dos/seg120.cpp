@@ -570,10 +570,10 @@ void init_game_state(void)
 	/* Travia Temple in Thorwal */
 	gs_town_loc_type = LOCTYPE_TEMPLE;
 	gs_town_typeindex = 1;
-	gs_x_target_bak = 9;
-	gs_y_target_bak = 9;
-	gs_x_target = 9;
-	gs_y_target = 8;
+	gs_x_bak = 9;
+	gs_y_bak = 9;
+	gs_x = 9;
+	gs_y = 8;
 	gs_viewdir_bak = 0;
 	gs_viewdir = 0;
 	gs_dungeon_id = DUNGEON_ID_NONE;

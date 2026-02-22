@@ -54,7 +54,7 @@ signed int DNG10_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	hero = get_first_hero_available_in_group();
 
@@ -226,8 +226,8 @@ signed int DNG10_handler(void)
 			GUI_output(get_tx(23));
 			sub_group_le(random_schick(6));
 
-			gs_x_target = 1;
-			gs_y_target = 3;
+			gs_x = 1;
+			gs_y = 3;
 			gs_viewdir = WEST;
 			DNG_update_pos();
 		}
@@ -361,7 +361,7 @@ signed int DNG10_handler(void)
 
 			load_in_head(58);
 
-			gs_x_target = gs_y_target = 12;
+			gs_x = gs_y = 12;
 
 			if ((answer = get_first_hero_with_item(ITEM_ID_PLATINSCHLUESSEL)) != -1)
 			{
@@ -403,8 +403,8 @@ signed int DNG10_handler(void)
 		leave_dungeon();
 
 		gs_town_id = gs_travel_destination_town_id;
-		gs_x_target = gs_travel_destination_x;
-		gs_y_target = gs_travel_destination_y;
+		gs_x = gs_travel_destination_x;
+		gs_y = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
 		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 0x03);
 

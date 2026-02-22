@@ -45,7 +45,7 @@ signed int DNG07_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	hero = get_first_hero_available_in_group();
 
@@ -142,13 +142,13 @@ signed int DNG07_handler(void)
 				}
 			}
 
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 			g_dng_refresh_direction = -1;
 
 		} else {
 
-			gs_x_target++;
+			gs_x++;
 			DNG_inc_level();
 		}
 
@@ -159,7 +159,7 @@ signed int DNG07_handler(void)
 	} else if (target_pos == DNG_POS(1,13,2) && target_pos != gs_dng_handled_pos)
 	{
 
-		gs_x_target++;
+		gs_x++;
 
 		DNG_dec_level();
 
@@ -230,13 +230,13 @@ signed int DNG07_handler(void)
 
 	} else if (target_pos == DNG_POS(2,14,13) && target_pos != gs_dng_handled_pos)
 	{
-		gs_x_target = 7;
+		gs_x = 7;
 
 		gs_viewdir = ((gs_viewdir + 2) & 3);
 
 	} else if (target_pos == DNG_POS(2,8,13) && target_pos != gs_dng_handled_pos)
 	{
-		gs_x_target = 13;
+		gs_x = 13;
 
 		gs_viewdir = ((gs_viewdir + 2) & 3);
 
@@ -269,8 +269,8 @@ signed int DNG07_handler(void)
 			leave_dungeon();
 
 			gs_town_id = gs_travel_destination_town_id;
-			gs_x_target = gs_travel_destination_x;
-			gs_y_target = gs_travel_destination_y;
+			gs_x = gs_travel_destination_x;
+			gs_y = gs_travel_destination_y;
 			gs_town_loc_type = LOCTYPE_NONE;
 			gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
@@ -283,8 +283,8 @@ signed int DNG07_handler(void)
 			g_fading_state = 3;
 		} else
 		{
-			gs_y_target = gs_y_target_bak;
-			gs_x_target = gs_x_target_bak;
+			gs_y = gs_y_bak;
+			gs_x = gs_x_bak;
 		}
 
 	}
@@ -306,7 +306,7 @@ void DNG09_statues(const signed int prob, const signed int bonus)
 
 	amap_ptr = g_dng_map;
 
-	if (*(amap_ptr + MAP_POS(gs_x_target, gs_y_target)) == 4)
+	if (*(amap_ptr + MAP_POS(gs_x, gs_y)) == 4)
 	{
 		/* TODO: no forced decision here ? */
 		i = GUI_radio(get_tx(4), 3, get_tx(5), get_tx(6), get_tx(7));
@@ -344,7 +344,7 @@ void DNG09_statues(const signed int prob, const signed int bonus)
 			/* destroy the statue */
 
 			/* remove the statue from the map */
-			*(amap_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0xfb; /* clear flag 2 */
+			*(amap_ptr + MAP_POS(gs_x, gs_y)) &= 0xfb; /* clear flag 2 */
 
 			GUI_output(get_tx(10));
 

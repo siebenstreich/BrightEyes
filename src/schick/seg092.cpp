@@ -406,8 +406,8 @@ void loot_special_chest(const signed int check_dir)
 	uint8_t *ptr = g_dng_map;
 
 	g_get_extra_loot = 0;
-	x = gs_x_target;
-	y = gs_y_target;
+	x = gs_x;
+	y = gs_y;
 
 	if (check_dir != 0) {
 		switch (gs_viewdir) {

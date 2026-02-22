@@ -58,14 +58,14 @@ signed int DNG03_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	if ((target_pos == DNG_POS(0,4,7) || target_pos == DNG_POS(0,4,9) || target_pos == DNG_POS(0,6,8)) &&
 		target_pos != gs_dng_handled_pos)
 	{
 		GUI_output(get_tx(1));
 
-		gs_x_target = gs_y_target = 1;
+		gs_x = gs_y = 1;
 		DNG_inc_level();
 
 	} else if (target_pos == DNG_POS(0,3,4) && target_pos != gs_dng_handled_pos && gs_viewdir == NORTH)
@@ -76,8 +76,8 @@ signed int DNG03_handler(void)
 		{
 			GUI_output(get_tx(4));
 
-			gs_x_target = 9;
-			gs_y_target = 8;
+			gs_x = 9;
+			gs_y = 8;
 			DNG_inc_level();
 
 			hero = get_hero(0);
@@ -98,8 +98,8 @@ signed int DNG03_handler(void)
 	{
 		GUI_output(get_tx(4));
 
-		gs_x_target = 1;
-		gs_y_target = 8;
+		gs_x = 1;
+		gs_y = 8;
 		gs_viewdir = WEST;
 
 		DNG_update_pos();
@@ -158,8 +158,8 @@ signed int DNG03_handler(void)
 		{
 			GUI_output(get_tx(4));
 
-			gs_x_target = 3;
-			gs_y_target = 4;
+			gs_x = 3;
+			gs_y = 4;
 			gs_viewdir = SOUTH;
 			DNG_update_pos();
 
@@ -360,8 +360,8 @@ signed int DNG03_handler(void)
 	} else if (target_pos == DNG_POS(1,10,8) && target_pos != gs_dng_handled_pos)
 	{
 		GUI_output(get_tx(4));
-		gs_x_target = 5;
-		gs_y_target = 14;
+		gs_x = 5;
+		gs_y = 14;
 		DNG_dec_level();
 		gs_viewdir = NORTH;
 
@@ -383,8 +383,8 @@ signed int DNG03_handler(void)
 	{
 		leave_dungeon();
 		gs_town_id = gs_travel_destination_town_id;
-		gs_x_target = gs_travel_destination_x;
-		gs_y_target = gs_travel_destination_y;
+		gs_x = gs_travel_destination_x;
+		gs_y = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
 		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
@@ -469,8 +469,8 @@ void DNG03_chest05_loot(struct struct_chest*)
 
 	if (answer == 1) {
 
-		gs_x_target = 10;
-		gs_y_target = 12;
+		gs_x = 10;
+		gs_y = 12;
 		DNG_inc_level();
 	}
 }

@@ -645,8 +645,8 @@ void TLK_schmied(const signed int state)
 		DNG_enter_dungeon(DUNGEON_ID_ZWINGFESTE);
 
 		gs_dungeon_level = 3;
-		gs_x_target_bak = gs_x_target = 11;
-		gs_y_target_bak = gs_y_target = 2;
+		gs_x_bak = gs_x = 11;
+		gs_y_bak = gs_y = 2;
 		gs_viewdir = 2;
 	}
 }

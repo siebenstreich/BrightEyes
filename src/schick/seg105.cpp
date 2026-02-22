@@ -611,7 +611,7 @@ signed int drop_item(struct struct_hero *hero, const signed int inv_slot, signed
 
 		/* check for the pirate cave on Manrek to bring Efferd a gift */
 		if ((item_id == ITEM_ID_DREIZACK || item_id == ITEM_ID_NETZ) &&
-			(gs_dungeon_id == DUNGEON_ID_PIRATENHOEHLE) && (gs_x_target == 9) && (gs_y_target == 9))
+			(gs_dungeon_id == DUNGEON_ID_PIRATENHOEHLE) && (gs_x == 9) && (gs_y == 9))
 			/* no check of dungeon level needed: pirate cafe has only a single level */
 		{
 			gs_dng11_efferd_sacrifice = 1;
@@ -619,7 +619,7 @@ signed int drop_item(struct struct_hero *hero, const signed int inv_slot, signed
 
 		/* check for the mine in Oberorken to bring Ingerimm a gift */
 		if (is_item_pleasing_ingerimm(item_id) &&
-			(gs_dungeon_id == DUNGEON_ID_ZWERGENFESTE) && (gs_x_target == 2) && (gs_y_target == 14) && (gs_dungeon_level == 1))
+			(gs_dungeon_id == DUNGEON_ID_ZWERGENFESTE) && (gs_x == 2) && (gs_y == 14) && (gs_dungeon_level == 1))
 		{
 			gs_dng12_ingerimm_sacrifice = 1;
 		}

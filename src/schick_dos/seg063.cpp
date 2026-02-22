@@ -501,8 +501,8 @@ void do_harbor(void)
 				if (!gs_travel_detour) {
 
 					gs_town_id = (signed char)gs_travel_destination_town_id;
-					gs_x_target_bak = gs_travel_destination_x;
-					gs_y_target_bak = gs_travel_destination_y;
+					gs_x_bak = gs_travel_destination_x;
+					gs_y_bak = gs_travel_destination_y;
 					gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 
 				} else {

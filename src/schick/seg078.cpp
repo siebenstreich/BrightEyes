@@ -52,7 +52,7 @@ signed int DNG02_handler(void)
 	uint8_t *amap_ptr;
 	signed char success_flag;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	amap_ptr = g_dng_map;
 
@@ -195,7 +195,7 @@ signed int DNG02_handler(void)
 		for (i = 0; i < 6; i++) {
 
 			if (
-				(gs_groups_x_target[i] == 10 && gs_groups_y_target[i] == 11)
+				(gs_groups_x[i] == 10 && gs_groups_y[i] == 11)
 				&& (gs_groups_dng_level[i] == gs_dungeon_level)
 				&& (gs_groups_dungeon_id[i] == gs_dungeon_id)
 			) {
@@ -317,7 +317,7 @@ signed int DNG02_handler(void)
 		{
 			weight_sum = 0;
 
-			if (gs_groups_x_target[i] == 11 && gs_groups_y_target[i] == 6 &&
+			if (gs_groups_x[i] == 11 && gs_groups_y[i] == 6 &&
 				gs_groups_dng_level[i] == gs_dungeon_level &&
 				gs_groups_dungeon_id[i] == gs_dungeon_id)
 			{
@@ -332,8 +332,8 @@ signed int DNG02_handler(void)
 
 				break;
 
-			} else if (gs_groups_x_target[i] == 11 &&
-					gs_groups_y_target[i] == 8 &&
+			} else if (gs_groups_x[i] == 11 &&
+					gs_groups_y[i] == 8 &&
 					gs_groups_dng_level[i] == gs_dungeon_level &&
 					gs_groups_dungeon_id[i] == gs_dungeon_id)
 			{
@@ -665,8 +665,8 @@ signed int DNG02_handler(void)
 
 		leave_dungeon();
 		gs_town_id = gs_travel_destination_town_id;
-		gs_x_target = gs_travel_destination_x;
-		gs_y_target = gs_travel_destination_y;
+		gs_x = gs_travel_destination_x;
+		gs_y = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
 		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 

@@ -42,7 +42,7 @@ signed int DNG14_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	hero = get_first_hero_available_in_group();
 
@@ -226,7 +226,7 @@ signed int DNG14_handler(void)
 
 			GUI_output(get_tx(14));
 
-			gs_y_target++;
+			gs_y++;
 			gs_viewdir = SOUTH;
 			DNG_update_pos();
 		}
@@ -396,7 +396,7 @@ signed int DNG14_handler(void)
 				}
 
 				/* drop down to level 4 */
-				gs_y_target--;
+				gs_y--;
 				DNG_inc_level();
 
 			} else if (hero_pos == 1) {
@@ -416,7 +416,7 @@ signed int DNG14_handler(void)
 				}
 
 				/* drop down to level 4 */
-				gs_y_target--;
+				gs_y--;
 				DNG_inc_level();
 			}
 		}
@@ -466,8 +466,8 @@ signed int DNG14_handler(void)
 			GUI_output(get_tx(32));
 		}
 
-		gs_x_target = gs_x_target_bak;
-		gs_y_target = gs_y_target_bak;
+		gs_x = gs_x_bak;
+		gs_y = gs_y_bak;
 
 	} else if (target_pos == DNG_POS(2,7,7) && target_pos != gs_dng_handled_pos) {
 
@@ -542,7 +542,7 @@ signed int DNG14_handler(void)
 						/* 1W6 damage */
 						sub_hero_le(hero, random_schick(6));
 
-						gs_x_target = (target_pos == DNG_POS(3,10,10) ? 9 : 13);
+						gs_x = (target_pos == DNG_POS(3,10,10) ? 9 : 13);
 
 						if (hero->flags.dead) {
 
@@ -624,8 +624,8 @@ signed int DNG14_handler(void)
 			}
 
 			leave_dungeon();
-			gs_x_target = 22;
-			gs_y_target = 5;
+			gs_x = 22;
+			gs_y = 5;
 			gs_town_loc_type = LOCTYPE_NONE;
 			gs_viewdir = SOUTH;
 		}
@@ -647,8 +647,8 @@ signed int DNG14_handler(void)
 
 		if (!GUI_bool(get_tx(59))) {
 
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 
 			GUI_output(get_tx(60));
 		}
@@ -656,8 +656,8 @@ signed int DNG14_handler(void)
 	} else if (target_pos == DNG_POS(0,0,14) && target_pos != gs_dng_handled_pos) {
 		/* regular exit */
 		leave_dungeon();
-		gs_x_target = 2;
-		gs_y_target = 13;
+		gs_x = 2;
+		gs_y = 13;
 		gs_town_loc_type = LOCTYPE_NONE;
 		gs_viewdir = NORTH;
 	}

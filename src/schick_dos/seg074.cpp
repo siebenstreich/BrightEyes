@@ -76,8 +76,8 @@ void show_automap(void)
 		g_textbox_width = 3;
 
 		l_si = (g_map_size_x == 16) ? 0 :
-				((gs_x_target - 8 < 0) ? 0 :
-				((gs_x_target - 8 > 15) ? 16 : gs_x_target - 8));
+				((gs_x - 8 < 0) ? 0 :
+				((gs_x - 8 > 15) ? 16 : gs_x - 8));
 
 		gs_town_id = town_id;
 		gs_dungeon_id = dungeon;
@@ -298,9 +298,9 @@ void render_automap(const signed int x_off)
 
 	/* Original-Bug 31: If there is another group on the same map square as the active group, the automap will mark that square by a purple arrow (for the other group) instead of a yellow one (for the active group).
 	 * The reason is that the yellow arrow will be overdrawn by the purple ones, which are drawn later. */
-	if (((gs_x_target - x_off) >= 0) && ((gs_x_target - x_off) <= 16)) { /* shouldn't this always be true? */
+	if (((gs_x - x_off) >= 0) && ((gs_x - x_off) <= 16)) { /* shouldn't this always be true? */
 
-		draw_automap_square(gs_x_target - x_off, gs_y_target, MAP_TILE_YELLOW_ARROW, gs_viewdir);
+		draw_automap_square(gs_x - x_off, gs_y, MAP_TILE_YELLOW_ARROW, gs_viewdir);
 	}
 #endif
 
@@ -313,11 +313,11 @@ void render_automap(const signed int x_off)
 			(gs_groups_town_id[group_i] == gs_town_id) &&
 			(gs_groups_dungeon_id[group_i] == gs_dungeon_id) &&
 			!is_group_in_prison(group_i) &&
-			(gs_groups_x_target[group_i] - x_off >= 0) &&
-			(gs_groups_x_target[group_i] - x_off <= 16))
+			(gs_groups_x[group_i] - x_off >= 0) &&
+			(gs_groups_x[group_i] - x_off <= 16))
 		{
-			draw_automap_square(gs_groups_x_target[group_i] - x_off,
-					gs_groups_y_target[group_i],
+			draw_automap_square(gs_groups_x[group_i] - x_off,
+					gs_groups_y[group_i],
 					MAP_TILE_PURPLE_ARROW,
 					gs_groups_viewdir[group_i]);
 		}
@@ -328,9 +328,9 @@ void render_automap(const signed int x_off)
 
 	/* Original-Bug 31: see above.
 	 * Fix: Move the code block drawing the yellow arrow after the one drawing the purple arrows. */
-	if (((gs_x_target - x_off) >= 0) && ((gs_x_target - x_off) <= 16)) { /* shouldn't this always be true? */
+	if (((gs_x - x_off) >= 0) && ((gs_x - x_off) <= 16)) { /* shouldn't this always be true? */
 
-		draw_automap_square(gs_x_target - x_off, gs_y_target, MAP_TILE_YELLOW_ARROW, gs_viewdir);
+		draw_automap_square(gs_x - x_off, gs_y, MAP_TILE_YELLOW_ARROW, gs_viewdir);
 	}
 #endif
 
@@ -511,11 +511,11 @@ signed int select_teleport_dest(void)
 	gs_town_id = gs_dungeon_id = 0;
 
 	l_si = ((g_map_size_x == 16) ? 0 :
-			((gs_x_target - 8 < 0) ? 0 :
-			((gs_x_target - 8 > 15) ? 16 : gs_x_target - 8)));
+			((gs_x - 8 < 0) ? 0 :
+			((gs_x - 8 > 15) ? 16 : gs_x - 8)));
 
-	g_automap_selx = gs_x_target;
-	g_automap_sely = gs_y_target;
+	g_automap_selx = gs_x;
+	g_automap_sely = gs_y;
 	gs_dungeon_id = dungeon;
 	gs_town_id = town;
 	tw_bak = g_textbox_width;
@@ -629,7 +629,7 @@ signed int select_teleport_dest(void)
 
 	ae_costs = 0;
 
-	if ((g_automap_selx == gs_x_target) && (g_automap_sely == gs_y_target))
+	if ((g_automap_selx == gs_x) && (g_automap_sely == gs_y))
 	{
 		ae_costs = 0;
 		*g_dtp2 = '\0';

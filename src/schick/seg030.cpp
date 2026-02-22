@@ -347,8 +347,8 @@ void do_talk(const signed int talk_id, const signed int tlk_informer)
 
 							gs_town_id = gs_swafnild_tp4;
 
-							gs_x_target_bak = (gs_swafnild_tp4 == 35 ? 10 : (gs_swafnild_tp4 == 32 ? 2 : 7));
-							gs_y_target_bak = (gs_swafnild_tp4 == 35 ? 2 : (gs_swafnild_tp4 == 32 ? 14 : 3));
+							gs_x_bak = (gs_swafnild_tp4 == 35 ? 10 : (gs_swafnild_tp4 == 32 ? 2 : 7));
+							gs_y_bak = (gs_swafnild_tp4 == 35 ? 2 : (gs_swafnild_tp4 == 32 ? 14 : 3));
 
 						} else if (txt_id == 52) {
 

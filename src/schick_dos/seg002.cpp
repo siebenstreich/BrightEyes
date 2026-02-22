@@ -2493,11 +2493,11 @@ void do_timers(void)
 				gs_town_groups_loctype[hero_i->group_id] =
 					gs_town_groups_loctype_bak[hero_i->group_id];
 
-				gs_groups_x_target[hero_i->group_id] =
-					gs_groups_x_target_bak[hero_i->group_id];
+				gs_groups_x[hero_i->group_id] =
+					gs_groups_x_bak[hero_i->group_id];
 
-				gs_groups_y_target[hero_i->group_id] =
-					gs_groups_y_target_bak[hero_i->group_id];
+				gs_groups_y[hero_i->group_id] =
+					gs_groups_y_bak[hero_i->group_id];
 			}
 		}
 	}
@@ -4215,8 +4215,8 @@ signed int can_merge_group(void)
 
 			if ((i != gs_active_group_id) &&
 				(0 != gs_group_member_counts[i]) &&
-				(gs_groups_x_target[i] == gs_x_target) &&
-				(gs_groups_y_target[i] == gs_y_target) &&
+				(gs_groups_x[i] == gs_x) &&
+				(gs_groups_y[i] == gs_y) &&
 				(gs_town_groups_loctype[i] == gs_town_loc_type) &&
 				(gs_groups_town_id[i] == gs_town_id) &&
 				(gs_groups_dungeon_id[i] == gs_dungeon_id) &&

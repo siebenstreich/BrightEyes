@@ -431,7 +431,7 @@ signed int enter_location(const signed int town_id)
 		return enter_location_daspota();
 	}
 
-	map_pos = 256 * gs_x_target + gs_y_target;
+	map_pos = 256 * gs_x + gs_y;
 	locations_tab_ptr = &g_locations_tab[0];
 	g_location_market_flag = 0;
 
@@ -464,7 +464,7 @@ signed int enter_location(const signed int town_id)
 		// assert(g_town_num_locations_table[town_id - 1] == (locations_tab_ptr - g_locations_tab)
 		gs_town_locdata = g_town_num_locations_table[town_id - 1];
 
-		if (!((gs_viewdir + gs_x_target + gs_y_target) & 1)) {
+		if (!((gs_viewdir + gs_x + gs_y) & 1)) {
 			gs_town_loc_type = LOCTYPE_CITIZEN;
 		} else {
 			gs_town_loc_type = LOCTYPE_HOUSE;
@@ -492,7 +492,7 @@ signed int enter_location_daspota(void)
 		return 1;
 	}
 
-	map_pos = 256 * gs_x_target + gs_y_target;
+	map_pos = 256 * gs_x + gs_y;
 	locations_tab_ptr = &g_locations_tab[0];
 	g_location_market_flag = 0;
 
@@ -1226,8 +1226,8 @@ void town_direction_change(void)
 {
 	disable_ani();
 	town_update_view();
-	g_town_refresh_x_target = gs_x_target;
-	g_town_refresh_y_target = gs_y_target;
+	g_town_refresh_x_target = gs_x;
+	g_town_refresh_y_target = gs_y;
 	g_town_refresh_direction = gs_viewdir;
 }
 
@@ -1268,20 +1268,20 @@ signed int town_step(void)
 
 	/* check if position or direction has changed */
 	if (gs_viewdir != g_town_refresh_direction ||
-		gs_x_target != g_town_refresh_x_target ||
-		gs_y_target != g_town_refresh_y_target)
+		gs_x != g_town_refresh_x_target ||
+		gs_y != g_town_refresh_y_target)
 	{
 		town_direction_change();
 	}
 
-	if ((gs_x_target != gs_x_target_bak) || (gs_y_target != gs_y_target_bak))
+	if ((gs_x != gs_x_bak) || (gs_y != gs_y_bak))
 	{
 		g_can_merge_group = can_merge_group();
-		set_automap_tiles(gs_x_target, gs_y_target);
+		set_automap_tiles(gs_x, gs_y);
 	}
 
-	gs_x_target_bak = gs_x_target;
-	gs_y_target_bak = gs_y_target;
+	gs_x_bak = gs_x;
+	gs_y_bak = gs_y;
 
 	handle_gui_input();
 
@@ -1382,7 +1382,7 @@ signed int town_step(void)
 
 		/* random city event? */
 		/* check if the party has moved to another square */
-		if (((gs_y_target != gs_y_target_bak) || (gs_x_target != gs_x_target_bak)) &&
+		if (((gs_y != gs_y_bak) || (gs_x != gs_x_bak)) &&
 
 			/* only in big town */
 			(gs_town_id == TOWN_ID_THORWAL || gs_town_id == TOWN_ID_PREM ||
@@ -1430,47 +1430,47 @@ void town_do_step(const signed int forward)
 	if (forward == 1) {
 
 		if (!dir) {
-			gs_y_target--;
+			gs_y--;
 		} else if (dir == 1) {
-			gs_x_target++;
+			gs_x++;
 		} else if (dir == 2) {
-			gs_y_target++;
+			gs_y++;
 		} else {
-			gs_x_target--;
+			gs_x--;
 		}
 
 	} else {
 
 		if (!dir) {
-			gs_y_target++;
+			gs_y++;
 		} else if (dir == 1) {
-			gs_x_target--;
+			gs_x--;
 		} else if (dir == 2) {
-			gs_y_target--;
+			gs_y--;
 		} else {
-			gs_x_target++;
+			gs_x++;
 		}
 	}
 
-	if (gs_x_target < 0) {
+	if (gs_x < 0) {
 
-		gs_x_target = 0;
+		gs_x = 0;
 		no_way();
 
-	} else if ((g_map_size_x - 1) < gs_x_target) {
+	} else if ((g_map_size_x - 1) < gs_x) {
 
-		gs_x_target = g_map_size_x - 1;
+		gs_x = g_map_size_x - 1;
 		no_way();
 	}
 
-	if (gs_y_target < 0) {
+	if (gs_y < 0) {
 
-		gs_y_target = 0;
+		gs_y = 0;
 		no_way();
 
-	} else if (gs_y_target > 15) {
+	} else if (gs_y > 15) {
 
-		gs_y_target = 15;
+		gs_y = 15;
 		no_way();
 	}
 }

@@ -929,16 +929,16 @@ void DNG_timestep(const signed int forward)
 
 			if (!dir) {
 				/* north */
-				gs_y_target--;
+				gs_y--;
 			} else if (dir == EAST) {
 				/* east */
-				gs_x_target++;
+				gs_x++;
 			} else if (dir == SOUTH) {
 				/* south */
-				gs_y_target++;
+				gs_y++;
 			} else {
 				/* west */
-				gs_x_target--;
+				gs_x--;
 			}
 		} else {
 
@@ -946,16 +946,16 @@ void DNG_timestep(const signed int forward)
 
 			if (!dir) {
 				/* north */
-				gs_y_target++;
+				gs_y++;
 			} else if (dir == EAST) {
 				/* east */
-				gs_x_target--;
+				gs_x--;
 			} else if (dir == SOUTH) {
 				/* south */
-				gs_y_target--;
+				gs_y--;
 			} else {
 				/* west */
-				gs_x_target++;
+				gs_x++;
 			}
 		}
 
@@ -969,8 +969,8 @@ void DNG_update_pos(void)
 
 	DNG_stub1();
 
-	g_dng_refresh_x_target = gs_x_target;
-	g_dng_refresh_y_target = gs_y_target;
+	g_dng_refresh_x_target = gs_x;
+	g_dng_refresh_y_target = gs_y;
 	g_dng_refresh_direction = gs_viewdir;
 }
 
@@ -1088,8 +1088,8 @@ void DNG01_pitfall(void)
 	if (gs_dungeon_light) {
 
 		if (DNG_pitfall(6)) {
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 		}
 	} else {
 
@@ -1331,8 +1331,8 @@ mark2:			   goto mark1;
 		case DUNGEON_ID_HYGGELIKS_RUINE:  x_pos = 1;  y_pos = 11;   viewdir = EAST;  level = 0;  break;
 	}
 
-	gs_x_target = x_pos;
-	gs_y_target = y_pos;
+	gs_x = x_pos;
+	gs_y = y_pos;
 	gs_viewdir = viewdir;
 	gs_dungeon_level = level;
 	gs_dungeon_id = dungeon_id;

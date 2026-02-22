@@ -66,8 +66,8 @@ void move(void)
 
 	for (i = 0; i < 29; i++, p_vis_field++) {
 		boundary_flag = 0;
-		x = gs_x_target + p_vis_field->x;
-		y = gs_y_target + p_vis_field->y;
+		x = gs_x + p_vis_field->x;
+		y = gs_y + p_vis_field->y;
 
 		if (x < 0) {
 			x = 0;
@@ -105,14 +105,14 @@ void move(void)
 #if defined(__BORLANDC__)
 	if (g_map_size_x == 16) {
 		/* dungeon or small town */
-		g_steptarget_front = *(p_map_small + MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y));
+		g_steptarget_front = *(p_map_small + MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
 
-		g_steptarget_back  = *(p_map_small + MAP_POS(gs_x_target + p_vis_field[1].x, gs_y_target + p_vis_field[1].y));
+		g_steptarget_back  = *(p_map_small + MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y));
 	} else {
 		/* large city */
-		g_steptarget_front = *(p_map_large + LARGE_MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y));
+		g_steptarget_front = *(p_map_large + LARGE_MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
 
-		g_steptarget_back  = *(p_map_large + LARGE_MAP_POS(gs_x_target + p_vis_field[1].x, gs_y_target + p_vis_field[1].y));
+		g_steptarget_back  = *(p_map_large + LARGE_MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y));
 	}
 #else
 
@@ -121,12 +121,12 @@ void move(void)
 
 	if (g_map_size_x == 16) {
 
-		const int front_index = MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y);
-		const int back_index = MAP_POS(gs_x_target + p_vis_field[1].x, gs_y_target + p_vis_field[1].y);
+		const int front_index = MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y);
+		const int back_index = MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y);
 
 #if 0
-		fprintf(stderr, " %d %d, %d %d %d", gs_x_target, p_vis_field[0].x, gs_y_target, p_vis_field[0].y,
-				MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y));
+		fprintf(stderr, " %d %d, %d %d %d", gs_x, p_vis_field[0].x, gs_y, p_vis_field[0].y,
+				MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
 #endif
 
 		/* dungeon or small town */
@@ -139,12 +139,12 @@ void move(void)
 		}
 
 	} else {
-		const int front_index = LARGE_MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y);
-		const int back_index = LARGE_MAP_POS(gs_x_target + p_vis_field[1].x, gs_y_target + p_vis_field[1].y);
+		const int front_index = LARGE_MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y);
+		const int back_index = LARGE_MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y);
 
 #if 0
-		fprintf(stderr, " %d %d, %d %d %d", gs_x_target, p_vis_field[0].x, gs_y_target, p_vis_field[0].y,
-				LARGE_MAP_POS(gs_x_target + p_vis_field[0].x, gs_y_target + p_vis_field[0].y));
+		fprintf(stderr, " %d %d, %d %d %d", gs_x, p_vis_field[0].x, gs_y, p_vis_field[0].y,
+				LARGE_MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
 #endif
 		/* large city */
 		if ((0 <= front_index) && (front_index < 32 * 16)) {

@@ -82,7 +82,7 @@ signed int DNG15_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	dir = gs_viewdir;
 
@@ -161,7 +161,7 @@ signed int DNG15_handler(void)
 
 			DNG_dec_level();
 			gs_viewdir = WEST;
-			gs_x_target--;
+			gs_x--;
 		}
 
 	} else if (target_pos == DNG_POS(1,8,1) &&
@@ -177,7 +177,7 @@ signed int DNG15_handler(void)
 
 		for (i = tmp = 0; i < 6; i++)
 		{
-			if (gs_groups_x_target[i] == 8 && gs_groups_y_target[i] == 5 && gs_active_group_id != i)
+			if (gs_groups_x[i] == 8 && gs_groups_y[i] == 5 && gs_active_group_id != i)
 			{
 				tmp = 1;
 			}
@@ -201,7 +201,7 @@ signed int DNG15_handler(void)
 
 		for (i = tmp = 0; i < 6; i++)
 		{
-			if (gs_groups_x_target[i] == 8 && gs_groups_y_target[i] == 1 && gs_active_group_id != i)
+			if (gs_groups_x[i] == 8 && gs_groups_y[i] == 1 && gs_active_group_id != i)
 			{
 				tmp = 1;
 			}
@@ -218,7 +218,7 @@ signed int DNG15_handler(void)
 		/* check if another group stands on the other side */
 		for (i = tmp = 0; i < 6; i++)
 		{
-			if (gs_groups_x_target[i] == 8 && gs_groups_y_target[i] == 5 && gs_active_group_id != i)
+			if (gs_groups_x[i] == 8 && gs_groups_y[i] == 5 && gs_active_group_id != i)
 			{
 				tmp = 1;
 			}
@@ -227,12 +227,12 @@ signed int DNG15_handler(void)
 		if (tmp == 0) {
 			/* go through the mirror */
 			GUI_output(get_tx(26));
-			gs_y_target = 5;
+			gs_y = 5;
 			DNG_update_pos();
 		} else {
 			/* stay here */
 			GUI_output(get_tx(27));
-			gs_y_target = gs_y_target_bak;
+			gs_y = gs_y_bak;
 		}
 
 	} else if (target_pos == DNG_POS(1,8,4) && target_pos != gs_dng_handled_pos)
@@ -241,7 +241,7 @@ signed int DNG15_handler(void)
 		/* check if another group stands on the other side */
 		for (i = tmp = 0; i < 6; i++)
 		{
-			if (gs_groups_x_target[i] == 8 && gs_groups_y_target[i] == 1 && gs_active_group_id != i)
+			if (gs_groups_x[i] == 8 && gs_groups_y[i] == 1 && gs_active_group_id != i)
 			{
 				tmp = 1;
 			}
@@ -251,12 +251,12 @@ signed int DNG15_handler(void)
 		{
 			/* go through the mirror */
 			GUI_output(get_tx(26));
-			gs_y_target = 1;
+			gs_y = 1;
 			DNG_update_pos();
 		} else {
 			/* stay here */
 			GUI_output(get_tx(27));
-			gs_y_target = gs_y_target_bak;
+			gs_y = gs_y_bak;
 		}
 
 	} else if (target_pos == DNG_POS(1,1,14) && target_pos != gs_dng_handled_pos)
@@ -469,14 +469,14 @@ signed int DNG15_handler(void)
 		{
 			GUI_output(get_tx(6));
 
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 		} else {
 			leave_dungeon();
 
 			gs_town_id = gs_travel_destination_town_id;
-			gs_x_target = gs_travel_destination_x;
-			gs_y_target = gs_travel_destination_y;
+			gs_x = gs_travel_destination_x;
+			gs_y = gs_travel_destination_y;
 			gs_town_loc_type = LOCTYPE_NONE;
 			gs_viewdir = ((gs_travel_destination_viewdir + 2) & 0x03);
 
@@ -542,7 +542,7 @@ void DNG15_debris(const signed int ladder)
 			if (GUI_bool(get_tx(13)))
 			{
 				gs_viewdir = WEST;
-				gs_x_target--;
+				gs_x--;
 				DNG_inc_level();
 			}
 		}
@@ -663,8 +663,8 @@ void DNG15_collapsing_ceiling(uint8_t* ptr)
 			}
 
 			/* way is blocked */
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 			break;
 		}
 		case 4:
@@ -721,8 +721,8 @@ void DNG15_clear_way(uint8_t* ptr)
 			}
 		}
 
-		gs_x_target = gs_x_target_bak;
-		gs_y_target = gs_y_target_bak;
+		gs_x = gs_x_bak;
+		gs_y = gs_y_bak;
 	} else {
 		(*ptr)++;
 		GUI_output(get_tx(47));

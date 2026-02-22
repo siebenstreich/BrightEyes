@@ -802,12 +802,12 @@ void INF_swafnild_unicorn(const signed int informer, const signed int state)
 						(gs_swafnild_destination == 2 ? gs_swafnild_tp2 : gs_swafnild_tp3));
 
 			switch (gs_town_id) {
-				case TOWN_ID_PREM: gs_x_target_bak        = 22; gs_y_target_bak =  8; break;
-				case TOWN_ID_KORD: gs_x_target_bak        =  4; gs_y_target_bak =  3; break;
-				case TOWN_ID_OTTARJE: gs_x_target_bak     =  9; gs_y_target_bak = 10; break;
-				case TOWN_ID_SKJAL: gs_x_target_bak       = 11; gs_y_target_bak = 11; break;
-				case TOWN_ID_TREBAN: gs_x_target_bak      =  4; gs_y_target_bak = 12; break;
-				case TOWN_ID_RUNINSHAVEN: gs_x_target_bak =  6; gs_y_target_bak =  6; break;
+				case TOWN_ID_PREM: gs_x_bak        = 22; gs_y_bak =  8; break;
+				case TOWN_ID_KORD: gs_x_bak        =  4; gs_y_bak =  3; break;
+				case TOWN_ID_OTTARJE: gs_x_bak     =  9; gs_y_bak = 10; break;
+				case TOWN_ID_SKJAL: gs_x_bak       = 11; gs_y_bak = 11; break;
+				case TOWN_ID_TREBAN: gs_x_bak      =  4; gs_y_bak = 12; break;
+				case TOWN_ID_RUNINSHAVEN: gs_x_bak =  6; gs_y_bak =  6; break;
 			}
 
 			gs_town_loc_type_bak = LOCTYPE_NONE;

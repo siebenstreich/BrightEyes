@@ -133,8 +133,8 @@ void GRP_save_pos(signed int group)
 
 	gs_groups_viewdir[group] = gs_viewdir;
 
-	gs_groups_x_target[group] = gs_x_target;
-	gs_groups_y_target[group] = gs_y_target;
+	gs_groups_x[group] = gs_x;
+	gs_groups_y[group] = gs_y;
 
 	gs_town_groups_loctype[group] = gs_town_loc_type;
 	gs_groups_town_id[group] = gs_town_id;
@@ -142,8 +142,8 @@ void GRP_save_pos(signed int group)
 	gs_groups_dng_level[group] = gs_dungeon_level;
 	gs_groups_viewdir_bak[group] = gs_viewdir_bak;
 
-	gs_groups_x_target_bak[group] = gs_x_target_bak;
-	gs_groups_y_target_bak[group] = gs_y_target_bak;
+	gs_groups_x_bak[group] = gs_x_bak;
+	gs_groups_y_bak[group] = gs_y_bak;
 
 	gs_town_groups_loctype_bak[group] = gs_town_loc_type_bak;
 	gs_groups_town_id_bak[group] = gs_town_id_bak;
@@ -224,11 +224,11 @@ void GRP_merge(void)
 
 		do {
 
-			gs_groups_viewdir[group_id] = gs_groups_x_target[group_id]
-				= gs_groups_y_target[group_id] = gs_groups_town_id[group_id]
+			gs_groups_viewdir[group_id] = gs_groups_x[group_id]
+				= gs_groups_y[group_id] = gs_groups_town_id[group_id]
 				= gs_groups_dungeon_id[group_id] = gs_groups_dng_level[group_id]
-				= gs_groups_viewdir_bak[group_id] = gs_groups_x_target_bak[group_id]
-				= gs_groups_y_target_bak[group_id] = gs_town_groups_loctype_bak[group_id]
+				= gs_groups_viewdir_bak[group_id] = gs_groups_x_bak[group_id]
+				= gs_groups_y_bak[group_id] = gs_town_groups_loctype_bak[group_id]
 				= gs_groups_town_id_bak[group_id] = gs_groups_dungeon_id_bak[group_id]
 				= gs_groups_dng_level_bak[group_id] = 0;
 
@@ -337,15 +337,15 @@ void GRP_switch_to_next(const signed int mode)
 
 		/* save positions from the old group */
 		gs_groups_viewdir[gs_active_group_id] = gs_viewdir;
-		gs_groups_x_target[gs_active_group_id] = gs_x_target;
-		gs_groups_y_target[gs_active_group_id] = gs_y_target;
+		gs_groups_x[gs_active_group_id] = gs_x;
+		gs_groups_y[gs_active_group_id] = gs_y;
 		gs_town_groups_loctype[gs_active_group_id] = gs_town_loc_type;
 		gs_groups_town_id[gs_active_group_id] = gs_town_id;
 		gs_groups_dungeon_id[gs_active_group_id] = gs_dungeon_id;
 		gs_groups_dng_level[gs_active_group_id] = gs_dungeon_level;
 		gs_groups_viewdir_bak[gs_active_group_id] = gs_viewdir_bak;
-		gs_groups_x_target_bak[gs_active_group_id] = gs_x_target_bak;
-		gs_groups_y_target_bak[gs_active_group_id] = gs_y_target_bak;
+		gs_groups_x_bak[gs_active_group_id] = gs_x_bak;
+		gs_groups_y_bak[gs_active_group_id] = gs_y_bak;
 		gs_town_groups_loctype_bak[gs_active_group_id] = gs_town_loc_type_bak;
 		gs_groups_town_id_bak[gs_active_group_id] = gs_town_id_bak;
 		gs_groups_dungeon_id_bak[gs_active_group_id] = gs_dungeon_id_bak;
@@ -354,8 +354,8 @@ void GRP_switch_to_next(const signed int mode)
 		/* set positions for the new group */
 		gs_active_group_id = group_id;
 		gs_viewdir = gs_groups_viewdir[group_id];
-		gs_x_target = gs_groups_x_target[group_id];
-		gs_y_target = gs_groups_y_target[group_id];
+		gs_x = gs_groups_x[group_id];
+		gs_y = gs_groups_y[group_id];
 		gs_town_loc_type = gs_town_groups_loctype[group_id];
 		gs_town_id = gs_groups_town_id[group_id];
 		gs_dungeon_id = gs_groups_dungeon_id[group_id];
@@ -367,8 +367,8 @@ void GRP_switch_to_next(const signed int mode)
 		}
 
 		gs_viewdir_bak = gs_groups_viewdir_bak[group_id];
-		gs_x_target_bak = gs_groups_x_target_bak[group_id];
-		gs_y_target_bak = gs_groups_y_target_bak[group_id];
+		gs_x_bak = gs_groups_x_bak[group_id];
+		gs_y_bak = gs_groups_y_bak[group_id];
 		gs_town_loc_type_bak = gs_town_groups_loctype_bak[group_id];
 		gs_town_id_bak = gs_groups_town_id_bak[group_id];
 		gs_dungeon_id_bak = gs_groups_dungeon_id_bak[group_id];

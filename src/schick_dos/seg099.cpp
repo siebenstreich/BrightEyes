@@ -811,8 +811,8 @@ void spell_foramen(void)
 		return;
 	}
 
-	x = gs_x_target;
-	y = gs_y_target;
+	x = gs_x;
+	y = gs_y;
 
 	switch (gs_viewdir) {
 		case 0:	y--; break;
@@ -869,8 +869,8 @@ void spell_transversalis(void)
 				play_voc(ARCHIVE_FILE_FX16_VOC);
 
 				/* set new coordinates */
-				gs_x_target = g_automap_selx;
-				gs_y_target = g_automap_sely;
+				gs_x = g_automap_selx;
+				gs_y = g_automap_sely;
 			}
 		}
 	}

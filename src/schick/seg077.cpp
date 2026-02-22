@@ -53,7 +53,7 @@ signed int DNG01_handler(void)
 	struct struct_hero *hero;
 
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	if (target_pos == DNG_POS(0,1,8))
 	{
@@ -61,12 +61,12 @@ signed int DNG01_handler(void)
 
 	} else if (target_pos == DNG_POS(1,3,9))
 	{
-		gs_x_target--;
+		gs_x--;
 		DNG_pitfall_add_pit(6);
 
 	} else if (target_pos == DNG_POS(1,14,5))
 	{
-		gs_y_target++;
+		gs_y++;
 		DNG_pitfall_add_pit(6);
 
 	} else if (target_pos == DNG_POS(2,7,6) || target_pos == DNG_POS(2,7,9))
@@ -80,7 +80,7 @@ signed int DNG01_handler(void)
 	} else if (target_pos == DNG_POS(4,7,6))
 	{
 		DNG_pitfall_add_pit(6);
-		gs_y_target++;
+		gs_y++;
 
 	} else if ((target_pos == DNG_POS(1,13,5)) && (target_pos != gs_dng_handled_pos) && !gs_dng01_sabre_taken)
 	{
@@ -192,14 +192,14 @@ signed int DNG01_handler(void)
 				if (test_talent(get_hero(0), TA_KLETTERN, 0) > 0)
 				{
 					/* Original-Bug: '32 * ' should probably be '16 *'. */
-					g_dng_map[32 * gs_y_target + gs_x_target] = DNG_TILE_PIT_IN_CEILING << 4;
+					g_dng_map[32 * gs_y + gs_x] = DNG_TILE_PIT_IN_CEILING << 4;
 
 					DNG_dec_level();
 
 					/* Original-Bug: '32 * ' should probably be '16 *'. */
-					g_dng_map[32 * gs_y_target + gs_x_target] = DNG_TILE_PIT << 4;
+					g_dng_map[32 * gs_y + gs_x] = DNG_TILE_PIT << 4;
 
-					gs_y_target++;
+					gs_y++;
 				}
 			} else {
 				GUI_output(get_ttx(529));
@@ -212,8 +212,8 @@ signed int DNG01_handler(void)
 		{
 			leave_dungeon();
 			gs_town_id = gs_travel_destination_town_id;
-			gs_x_target = gs_travel_destination_x;
-			gs_y_target = gs_travel_destination_y;
+			gs_x = gs_travel_destination_x;
+			gs_y = gs_travel_destination_y;
 			gs_town_loc_type = LOCTYPE_NONE;
 			gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
 

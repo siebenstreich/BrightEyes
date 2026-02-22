@@ -104,8 +104,8 @@ void DNG_door(const signed int action)
 	signed int lockpick_result;
 
 	ptr_doors = g_dungeon_doors_buf;
-	x = gs_x_target;
-	y = gs_y_target;
+	x = gs_x;
+	y = gs_y;
 
 	switch (gs_viewdir)
 	{
@@ -361,8 +361,8 @@ void DNG_pitfall_add_pit(const signed int max_damage)
 	play_voc(ARCHIVE_FILE_FX18_VOC);
 
 	/* add a pit in the floor to the dungeon tile */
-	*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
-	*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT << 4);
+	*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) &= 0x0f; /* clear higher 4 bits */
+	*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) |= (DNG_TILE_PIT << 4);
 
 	if (gs_dungeon_light != 0)
 	{
@@ -378,8 +378,8 @@ void DNG_pitfall_add_pit(const signed int max_damage)
 		DNG_inc_level();
 
 		/* add a pit in the ceiling to the dungeon tile */
-		*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
-		*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT_IN_CEILING << 4);
+		*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) &= 0x0f; /* clear higher 4 bits */
+		*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) |= (DNG_TILE_PIT_IN_CEILING << 4);
 
 		/* damage the heroes */
 		hero = get_hero(0);
@@ -403,14 +403,14 @@ void DNG_pitfall_add_pit(const signed int max_damage)
 			load_area_description(1);
 
 			/* add a pit in the ceiling to the dungeon tile */
-			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
-			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT_IN_CEILING << 4);
+			*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) &= 0x0f; /* clear higher 4 bits */
+			*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) |= (DNG_TILE_PIT_IN_CEILING << 4);
 
 			/* move one level up */
 			gs_dungeon_level--;
 
-			gs_x_target = gs_x_target_bak;
-			gs_y_target = gs_y_target_bak;
+			gs_x = gs_x_bak;
+			gs_y = gs_y_bak;
 
 			load_area_description(1);
 
@@ -419,8 +419,8 @@ void DNG_pitfall_add_pit(const signed int max_damage)
 			/* All heroes fell. So they form the active group on the lower floor. */
 
 			/* add a pit in the ceiling to the dungeon tile */
-			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) &= 0x0f; /* clear higher 4 bits */
-			*(g_dng_map_ptr + MAP_POS(gs_x_target, gs_y_target)) |= (DNG_TILE_PIT_IN_CEILING << 4);
+			*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) &= 0x0f; /* clear higher 4 bits */
+			*(g_dng_map_ptr + MAP_POS(gs_x, gs_y)) |= (DNG_TILE_PIT_IN_CEILING << 4);
 		}
 	}
 }
@@ -471,22 +471,22 @@ signed int DNG_step(void)
 		g_redraw_menuicons = 0;
 	}
 
-	if (gs_viewdir != g_dng_refresh_direction || gs_x_target != g_dng_refresh_x_target || gs_y_target != g_dng_refresh_y_target)
+	if (gs_viewdir != g_dng_refresh_direction || gs_x != g_dng_refresh_x_target || gs_y != g_dng_refresh_y_target)
 	{
 		DNG_update_pos();
-		set_automap_tiles(gs_x_target, gs_y_target);
+		set_automap_tiles(gs_x, gs_y);
 		DNG_fight();
 	}
 
 	/* TODO: potential bug: g_dng_level_changed is set to 1, but never back to 0 */
-	if ((gs_x_target != gs_x_target_bak) || (gs_y_target != gs_y_target_bak) || (signed char)g_dng_level_changed)
+	if ((gs_x != gs_x_bak) || (gs_y != gs_y_bak) || (signed char)g_dng_level_changed)
 	{
 		g_can_merge_group = can_merge_group();
 		g_lockpick_try_counter = 0;
 	}
 
-	gs_x_target_bak = gs_x_target;
-	gs_y_target_bak = gs_y_target;
+	gs_x_bak = gs_x;
+	gs_y_bak = gs_y;
 	gs_viewdir_bak = gs_viewdir;
 
 	handle_gui_input();
@@ -537,7 +537,7 @@ signed int DNG_step(void)
 	} else if (g_action == ACTION_ID_ICON_2)
 	{
 		/* merge groups or reach hands through the mirror */
-		pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+		pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 		if ((gs_dungeon_id == DUNGEON_ID_HYGGELIKS_RUINE && pos == DNG_POS(1,8,1)) || pos == DNG_POS(1,8,5))
 		{
@@ -638,8 +638,8 @@ signed int DNG_step(void)
 
 			if (g_get_extra_loot)
 			{
-				x = gs_x_target;
-				y = gs_y_target;
+				x = gs_x;
+				y = gs_y;
 
 				switch (gs_viewdir)
 				{
@@ -685,7 +685,7 @@ void DNG_see_stairs(void)
 	stair_struct *stair_ptr;
 	stair_ptr = (stair_struct*)g_dungeon_stairs_buf;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 #if !defined(__BORLANDC__)
 	if (sizeof(stair_struct) != 4)
@@ -699,8 +699,8 @@ void DNG_see_stairs(void)
 		if (stair_ptr->pos == target_pos)
 		{
 			/* found the current stairs */
-			gs_x_target = (stair_ptr->target_x & 0x0f);
-			gs_y_target = (stair_ptr->target_y & 0x0f);
+			gs_x = (stair_ptr->target_x & 0x0f);
+			gs_y = (stair_ptr->target_y & 0x0f);
 			gs_viewdir = (stair_ptr->target_y >> 4);
 
 			if (stair_ptr->target_x & 0x80)
@@ -723,7 +723,7 @@ void DNG_see_stairs(void)
 				DNG_dec_level();
 			}
 
-			set_automap_tiles(gs_x_target, gs_y_target);
+			set_automap_tiles(gs_x, gs_y);
 
 			break;
 		}
@@ -840,7 +840,7 @@ void DNG_fight(void)
 	signed int target_pos;
 	struct dungeon_fight *fight_ptr = (struct dungeon_fight*)g_dungeon_fights_buf;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	do {
 		if (fight_ptr->pos == target_pos)
@@ -996,7 +996,7 @@ void DNG_see_lever(void)
 {
 	signed int target_pos;
 
-	target_pos = DNG_POS(gs_dungeon_level, gs_x_target, gs_y_target);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	if (gs_dungeon_id == DUNGEON_ID_HYGGELIKS_RUINE &&
 		(target_pos == DNG_POS(1,8,1) || target_pos == DNG_POS(1,8,5)) &&
