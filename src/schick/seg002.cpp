@@ -4426,7 +4426,7 @@ void draw_compass(void)
 
 signed int can_merge_group(void)
 {
-	signed int i;
+	signed int group_id;
 	signed int retval = -1;
 
 	if (gs_group_member_counts[gs_active_group_id] == gs_total_hero_counter) {
@@ -4435,18 +4435,18 @@ signed int can_merge_group(void)
 
 	} else {
 
-		for (i = 0; i < 6; i++)	{
+		for (group_id = 0; group_id < 6; group_id++)	{
 
-			if ((i != gs_active_group_id) &&
-				(0 != gs_group_member_counts[i]) &&
-				(gs_groups_x[i] == gs_x) &&
-				(gs_groups_y[i] == gs_y) &&
-				(gs_town_groups_loctype[i] == gs_town_loc_type) &&
-				(gs_groups_town_id[i] == gs_town_id) &&
-				(gs_groups_dungeon_id[i] == gs_dungeon_id) &&
-				(gs_groups_dng_level[i] == gs_dungeon_level))
+			if ((group_id != gs_active_group_id) &&
+				(0 != gs_group_member_counts[group_id]) &&
+				(gs_groups_x[group_id] == gs_x) &&
+				(gs_groups_y[group_id] == gs_y) &&
+				(gs_town_groups_loctype[group_id] == gs_town_loc_type) &&
+				(gs_groups_town_id[group_id] == gs_town_id) &&
+				(gs_groups_dungeon_id[group_id] == gs_dungeon_id) &&
+				(gs_groups_dng_level[group_id] == gs_dungeon_level))
 			{
-				retval = i;
+				retval = group_id;
 			}
 		}
 	}

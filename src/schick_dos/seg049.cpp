@@ -110,45 +110,45 @@ int GRP_compare_heroes(const void *p1, const void *p2)
 
 void GRP_sort_heroes(void)
 {
-	signed int i;
+	signed int hero_pos;
 
 	qsort((void*)get_hero(0), 6, sizeof(struct struct_hero), GRP_compare_heroes);
 
-	for (i = 0; i < 6; i++) {
-		get_hero(i)->slot_pos = i + 1;
+	for (hero_pos = 0; hero_pos < 6; hero_pos++) {
+		get_hero(hero_pos)->slot_pos = hero_pos + 1;
 	}
 }
 
-void GRP_save_pos(signed int group)
+void GRP_save_pos(signed int group_id)
 {
 	signed int refresh = 0;
 
-	if (group & 0x8000) {
+	if (group_id & 0x8000) {
 		refresh = 1;
 	}
 
-	group &= 0x7fff;
+	group_id &= 0x7fff;
 
 	GRP_sort_heroes();
 
-	gs_groups_viewdir[group] = gs_viewdir;
+	gs_groups_viewdir[group_id] = gs_viewdir;
 
-	gs_groups_x[group] = gs_x;
-	gs_groups_y[group] = gs_y;
+	gs_groups_x[group_id] = gs_x;
+	gs_groups_y[group_id] = gs_y;
 
-	gs_town_groups_loctype[group] = gs_town_loc_type;
-	gs_groups_town_id[group] = gs_town_id;
-	gs_groups_dungeon_id[group] = gs_dungeon_id;
-	gs_groups_dng_level[group] = gs_dungeon_level;
-	gs_groups_viewdir_bak[group] = gs_viewdir_bak;
+	gs_town_groups_loctype[group_id] = gs_town_loc_type;
+	gs_groups_town_id[group_id] = gs_town_id;
+	gs_groups_dungeon_id[group_id] = gs_dungeon_id;
+	gs_groups_dng_level[group_id] = gs_dungeon_level;
+	gs_groups_viewdir_bak[group_id] = gs_viewdir_bak;
 
-	gs_groups_x_bak[group] = gs_x_bak;
-	gs_groups_y_bak[group] = gs_y_bak;
+	gs_groups_x_bak[group_id] = gs_x_bak;
+	gs_groups_y_bak[group_id] = gs_y_bak;
 
-	gs_town_groups_loctype_bak[group] = gs_town_loc_type_bak;
-	gs_groups_town_id_bak[group] = gs_town_id_bak;
-	gs_groups_dungeon_id_bak[group] = gs_dungeon_id_bak;
-	gs_groups_dng_level_bak[group] = gs_dungeon_level_bak;
+	gs_town_groups_loctype_bak[group_id] = gs_town_loc_type_bak;
+	gs_groups_town_id_bak[group_id] = gs_town_id_bak;
+	gs_groups_dungeon_id_bak[group_id] = gs_dungeon_id_bak;
+	gs_groups_dng_level_bak[group_id] = gs_dungeon_level_bak;
 
 	if (!refresh) {
 		draw_status_line();
