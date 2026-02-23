@@ -130,7 +130,7 @@ signed int DNG01_handler(void)
 	{
 		loot_special_chest(0);
 
-	} else if (g_visual_field_vals[1] == 2)
+	} else if (g_visual_square_vals[1] == 2)
 	{
 		/* TRAP: heroes may loose 2 LE with probability 10% */
 		if (mod_day_timer(MINUTES(10)))

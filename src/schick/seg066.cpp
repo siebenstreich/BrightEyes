@@ -174,7 +174,7 @@ static const signed char g_seg066_0bad_unkn4[29] = { 0x11, 0x12, 0x13, -0x01, 0x
 static const signed char g_seg066_0bad_unkn5[29] = { -0x01, -0x01, -0x01, -0x01, 0x4a, 0x4a, 0x4a, -0x01, -0x01, -0x01, 0x4b, 0x4b, 0x4b, -0x01, -0x01, -0x01, 0x4c, 0x4c, 0x4c, 0x4c, 0x4c, -0x01, 0x4d, 0x4d, 0x4d, 0x4d, 0x4d, 0x4d, 0x4d }; // ds:0x72e3
 static const signed char g_seg066_0bad_unkn6[29] = { -0x01, -0x01, -0x01, -0x01, 0x5e, 0x5e, 0x5e, -0x01, -0x01, -0x01, 0x5f, 0x5f, 0x5f, -0x01, -0x01, -0x01, 0x60, 0x60, 0x60, 0x60, 0x60, -0x01, 0x61, 0x61, 0x61, 0x61, 0x61, 0x61, 0x61 }; // ds:0x7300
 static const signed char g_seg066_0bad_unkn7[29] = { -0x01, -0x01, -0x01, -0x01, 0x62, 0x62, 0x62, -0x01, -0x01, -0x01, 0x63, 0x63, 0x63, -0x01, -0x01, -0x01, 0x64, 0x64, 0x64, 0x64, 0x64, -0x01, 0x65, 0x65, 0x65, 0x65, 0x65, 0x65, 0x65 }; // ds:0x731d
-static const struct struct_point g_visual_field_offsets_std[29] = {
+static const struct struct_point g_visual_square_offsets_std[29] = {
 	{ 0x0000, 0x0001 },
 	{ -0x0001, -1 },
 	{ 0x00bd, 0x0001 },
@@ -205,7 +205,7 @@ static const struct struct_point g_visual_field_offsets_std[29] = {
 	{ 0x009c, 0x0039 },
 	{ 0x00be, 0x0039 }
 }; // ds:0x733a
-static const struct struct_point g_visual_field_offsets_sign[29] = {
+static const struct struct_point g_visual_square_offsets_sign[29] = {
 	{ 0x0014, 0x0001 },
 	{ -0x0001, -1 },
 	{ 0x00a9, 0x0001 },
@@ -236,7 +236,7 @@ static const struct struct_point g_visual_field_offsets_sign[29] = {
 	{ 0x009c, 0x0039 },
 	{ 0x00be, 0x0039 }
 }; // ds:0x73ae
-static const struct struct_point g_visual_field_offsets_inn[29] = {
+static const struct struct_point g_visual_square_offsets_inn[29] = {
 	{ 0x0000, 0x0001 },
 	{ -0x0001, -1 },
 	{ 0x00bd, 0x0001 },
@@ -267,7 +267,7 @@ static const struct struct_point g_visual_field_offsets_inn[29] = {
 	{ 0x009c, 0x000e },
 	{ 0x00be, 0x000e }
 }; // ds:0x7422
-static const struct struct_point g_visual_field_offsets_grass[29] = {
+static const struct struct_point g_visual_square_offsets_grass[29] = {
 	{ 0x0000, 0x007a },
 	{ 0x0000, 0x007a },
 	{ 0x00bd, 0x007a },
@@ -403,7 +403,7 @@ static const unsigned char g_tex_descr_table[101][18] = {
 	{ 0xfe, 0xff, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff },
 	{ 0x00, 0x00, 0xf3, 0xff, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff }
 }; // ds:0x750a
-static const signed char g_visual_field_draw_order[29] = {
+static const signed char g_visual_square_draw_order[29] = {
 	22, 23, 24, 25, 26, 27, 28, 15, 16, 21, 20, 17, 19, 18, 8, 9, 14, 13, 10, 12, 11, 3, 4, 7, 6, 5, 0, 2, 1
 }; // ds:0x7c24
 signed char g_can_merge_group = -1; // ds:0x7c41, {-1,1}
@@ -458,7 +458,7 @@ signed int enter_location(const signed int town_id)
 
 	move();
 
-	if (((b_index = get_border_index(cast_u16(g_visual_field_vals[1]))) >= 2) && (b_index <= 5)) {
+	if (((b_index = get_border_index(cast_u16(g_visual_square_vals[1]))) >= 2) && (b_index <= 5)) {
 
 		gs_town_loc_type_bak = LOCTYPE_NONE;
 		// assert(g_town_num_locations_table[town_id - 1] == (locations_tab_ptr - g_locations_tab)
@@ -563,7 +563,7 @@ signed int enter_location_daspota(void)
 
 	move();
 
-	if ((b_index = get_border_index(cast_u16(g_visual_field_vals[1]))) >= 2 && b_index <= 5) {
+	if ((b_index = get_border_index(cast_u16(g_visual_square_vals[1]))) >= 2 && b_index <= 5) {
 
 		gs_town_loc_type_bak = LOCTYPE_NONE;
 		gs_town_loc_type = LOCTYPE_CITIZEN;
@@ -753,8 +753,8 @@ void town_update_view(void)
 {
 	refresh_floor_and_sky();
 	move();
-	town_set_vis_field_vals();
-	town_set_vis_field_tex();
+	town_set_visual_square_vals();
+	town_set_visual_square_tex();
 
 	/* TODO: these are write only variables */
 	g_always_zero2 = g_always_zero1 = 0;
@@ -764,179 +764,179 @@ void town_update_view(void)
 	town_fade_and_colors();
 }
 
-void town_set_vis_field_vals(void)
+void town_set_visual_square_vals(void)
 {
 	signed int bi;
 
-	if ((bi = get_border_index(g_visual_field_vals[3])) >= 2 && bi <= 5) {
-		g_visual_field_vals[3] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[3])) >= 2 && bi <= 5) {
+		g_visual_square_vals[3] = 0;
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[7])) >= 2 && bi <= 5) {
-		g_visual_field_vals[7] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[7])) >= 2 && bi <= 5) {
+		g_visual_square_vals[7] = 0;
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[8])) >= 2 && bi <= 5) {
-		g_visual_field_vals[8] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[8])) >= 2 && bi <= 5) {
+		g_visual_square_vals[8] = 0;
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[14])) >= 2 && bi <= 5) {
-		g_visual_field_vals[14] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[14])) >= 2 && bi <= 5) {
+		g_visual_square_vals[14] = 0;
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[15])) >= 2 && bi <= 5) {
-		g_visual_field_vals[15] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[15])) >= 2 && bi <= 5) {
+		g_visual_square_vals[15] = 0;
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[21])) >= 2 && bi <= 5) {
-		g_visual_field_vals[21] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[21])) >= 2 && bi <= 5) {
+		g_visual_square_vals[21] = 0;
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[0])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[0])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[9] = g_visual_field_vals[15] = g_visual_field_vals[22] = 0;
+		g_visual_square_vals[9] = g_visual_square_vals[15] = g_visual_square_vals[22] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[5])) >= 2 && bi <= 5) {
-			g_visual_field_vals[4] = g_visual_field_vals[10] = g_visual_field_vals[16] = g_visual_field_vals[23] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[5])) >= 2 && bi <= 5) {
+			g_visual_square_vals[4] = g_visual_square_vals[10] = g_visual_square_vals[16] = g_visual_square_vals[23] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[2])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[2])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[13] = g_visual_field_vals[21] = g_visual_field_vals[28] = 0;
+		g_visual_square_vals[13] = g_visual_square_vals[21] = g_visual_square_vals[28] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[5])) >= 2 && bi <= 5) {
-			g_visual_field_vals[6] = g_visual_field_vals[12] = g_visual_field_vals[20] = g_visual_field_vals[27] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[5])) >= 2 && bi <= 5) {
+			g_visual_square_vals[6] = g_visual_square_vals[12] = g_visual_square_vals[20] = g_visual_square_vals[27] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[4])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[4])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[9] = g_visual_field_vals[16] = g_visual_field_vals[22] = g_visual_field_vals[23] = 0;
+		g_visual_square_vals[9] = g_visual_square_vals[16] = g_visual_square_vals[22] = g_visual_square_vals[23] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[5])) >= 2 && bi <= 5) {
-			g_visual_field_vals[10] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[5])) >= 2 && bi <= 5) {
+			g_visual_square_vals[10] = 0;
 		}
 
-		if ((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) {
-			g_visual_field_vals[10] = g_visual_field_vals[17] = g_visual_field_vals[18] = 0;
-			g_visual_field_vals[24] = g_visual_field_vals[25] = 0;
-		}
-	}
-
-	if ((bi = get_border_index(g_visual_field_vals[5])) >= 2 && bi <= 5) {
-
-		g_visual_field_vals[11] = g_visual_field_vals[17] = g_visual_field_vals[18] = 0;
-
-		g_visual_field_vals[19] = g_visual_field_vals[24] = g_visual_field_vals[25] = 0;
-
-		g_visual_field_vals[26] = 0;
-	}
-
-	if ((bi = get_border_index(g_visual_field_vals[6])) >= 2 && bi <= 5) {
-
-		g_visual_field_vals[13] = g_visual_field_vals[20] = g_visual_field_vals[27] = g_visual_field_vals[28] = 0;
-
-		if ((bi = get_border_index(g_visual_field_vals[5])) >= 2 && bi <= 5) {
-
-			g_visual_field_vals[11] = g_visual_field_vals[12] = g_visual_field_vals[17] = 0;
-
-			g_visual_field_vals[18] = g_visual_field_vals[19] = g_visual_field_vals[24] = 0;
-
-			g_visual_field_vals[25] = g_visual_field_vals[26] = 0;
-		}
-
-		if ((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) {
-
-			g_visual_field_vals[12] = g_visual_field_vals[18] = g_visual_field_vals[19] = 0;
-
-			g_visual_field_vals[25] = g_visual_field_vals[26] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) {
+			g_visual_square_vals[10] = g_visual_square_vals[17] = g_visual_square_vals[18] = 0;
+			g_visual_square_vals[24] = g_visual_square_vals[25] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[9])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[5])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[22] = 0;
+		g_visual_square_vals[11] = g_visual_square_vals[17] = g_visual_square_vals[18] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[17])) >= 2 && bi <= 5) {
-			g_visual_field_vals[16] = g_visual_field_vals[23] = 0;
+		g_visual_square_vals[19] = g_visual_square_vals[24] = g_visual_square_vals[25] = 0;
+
+		g_visual_square_vals[26] = 0;
+	}
+
+	if ((bi = get_border_index(g_visual_square_vals[6])) >= 2 && bi <= 5) {
+
+		g_visual_square_vals[13] = g_visual_square_vals[20] = g_visual_square_vals[27] = g_visual_square_vals[28] = 0;
+
+		if ((bi = get_border_index(g_visual_square_vals[5])) >= 2 && bi <= 5) {
+
+			g_visual_square_vals[11] = g_visual_square_vals[12] = g_visual_square_vals[17] = 0;
+
+			g_visual_square_vals[18] = g_visual_square_vals[19] = g_visual_square_vals[24] = 0;
+
+			g_visual_square_vals[25] = g_visual_square_vals[26] = 0;
+		}
+
+		if ((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) {
+
+			g_visual_square_vals[12] = g_visual_square_vals[18] = g_visual_square_vals[19] = 0;
+
+			g_visual_square_vals[25] = g_visual_square_vals[26] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[13])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[9])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[28] = 0;
+		g_visual_square_vals[22] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[19])) >= 2 && bi <= 5) {
-			g_visual_field_vals[20] = g_visual_field_vals[27] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[17])) >= 2 && bi <= 5) {
+			g_visual_square_vals[16] = g_visual_square_vals[23] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[10])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[13])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[9] = g_visual_field_vals[16] = g_visual_field_vals[22] = g_visual_field_vals[23] = 0;
+		g_visual_square_vals[28] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) {
-			g_visual_field_vals[18] = 0;
-		}
-
-		if (((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) ||
-			((bi = get_border_index(g_visual_field_vals[18])) >= 2 && bi <= 5)) {
-
-			g_visual_field_vals[17] = g_visual_field_vals[24] = g_visual_field_vals[25] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[19])) >= 2 && bi <= 5) {
+			g_visual_square_vals[20] = g_visual_square_vals[27] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[12])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[10])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[13] = g_visual_field_vals[20] = g_visual_field_vals[27] = g_visual_field_vals[28] = 0;
+		g_visual_square_vals[9] = g_visual_square_vals[16] = g_visual_square_vals[22] = g_visual_square_vals[23] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) {
-			g_visual_field_vals[18] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) {
+			g_visual_square_vals[18] = 0;
 		}
 
-		if (((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) ||
-			((bi = get_border_index(g_visual_field_vals[18])) >= 2 && bi <= 5)) {
+		if (((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) ||
+			((bi = get_border_index(g_visual_square_vals[18])) >= 2 && bi <= 5)) {
 
-			g_visual_field_vals[19] = g_visual_field_vals[25] = g_visual_field_vals[26] = 0;
-		}
-	}
-
-	if ((bi = get_border_index(g_visual_field_vals[11])) >= 2 && bi <= 5) {
-		g_visual_field_vals[18] = g_visual_field_vals[25] = 0;
-	}
-
-	if ((bi = get_border_index(g_visual_field_vals[16])) >= 2 && bi <= 5) {
-
-		g_visual_field_vals[22] = 0;
-
-		if ((bi = get_border_index(g_visual_field_vals[24])) >= 2 && bi <= 5) {
-			g_visual_field_vals[23] = 0;
+			g_visual_square_vals[17] = g_visual_square_vals[24] = g_visual_square_vals[25] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[20])) >= 2 && bi <= 5) {
+	if ((bi = get_border_index(g_visual_square_vals[12])) >= 2 && bi <= 5) {
 
-		g_visual_field_vals[28] = 0;
+		g_visual_square_vals[13] = g_visual_square_vals[20] = g_visual_square_vals[27] = g_visual_square_vals[28] = 0;
 
-		if ((bi = get_border_index(g_visual_field_vals[26])) >= 2 && bi <= 5) {
-			g_visual_field_vals[27] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) {
+			g_visual_square_vals[18] = 0;
+		}
+
+		if (((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) ||
+			((bi = get_border_index(g_visual_square_vals[18])) >= 2 && bi <= 5)) {
+
+			g_visual_square_vals[19] = g_visual_square_vals[25] = g_visual_square_vals[26] = 0;
 		}
 	}
 
-	if ((bi = get_border_index(g_visual_field_vals[18])) >= 2 && bi <= 5) {
-		g_visual_field_vals[25] = 0;
+	if ((bi = get_border_index(g_visual_square_vals[11])) >= 2 && bi <= 5) {
+		g_visual_square_vals[18] = g_visual_square_vals[25] = 0;
 	}
 
-	if (((bi = get_border_index(g_visual_field_vals[18])) >= 2 && bi <= 5) ||
-		((bi = get_border_index(g_visual_field_vals[25])) >= 2 && bi <= 5)) {
+	if ((bi = get_border_index(g_visual_square_vals[16])) >= 2 && bi <= 5) {
 
-		if ((bi = get_border_index(g_visual_field_vals[17])) >= 2 && bi <= 5) {
-			g_visual_field_vals[24] = 0;
+		g_visual_square_vals[22] = 0;
+
+		if ((bi = get_border_index(g_visual_square_vals[24])) >= 2 && bi <= 5) {
+			g_visual_square_vals[23] = 0;
+		}
+	}
+
+	if ((bi = get_border_index(g_visual_square_vals[20])) >= 2 && bi <= 5) {
+
+		g_visual_square_vals[28] = 0;
+
+		if ((bi = get_border_index(g_visual_square_vals[26])) >= 2 && bi <= 5) {
+			g_visual_square_vals[27] = 0;
+		}
+	}
+
+	if ((bi = get_border_index(g_visual_square_vals[18])) >= 2 && bi <= 5) {
+		g_visual_square_vals[25] = 0;
+	}
+
+	if (((bi = get_border_index(g_visual_square_vals[18])) >= 2 && bi <= 5) ||
+		((bi = get_border_index(g_visual_square_vals[25])) >= 2 && bi <= 5)) {
+
+		if ((bi = get_border_index(g_visual_square_vals[17])) >= 2 && bi <= 5) {
+			g_visual_square_vals[24] = 0;
 		}
 
-		if ((bi = get_border_index(g_visual_field_vals[19])) >= 2 && bi <= 5) {
-			g_visual_field_vals[26] = 0;
+		if ((bi = get_border_index(g_visual_square_vals[19])) >= 2 && bi <= 5) {
+			g_visual_square_vals[26] = 0;
 		}
 	}
 }
@@ -960,19 +960,19 @@ signed int get_border_index(const unsigned char val)
 	return i;
 }
 
-void town_set_vis_field_tex(void)
+void town_set_visual_square_tex(void)
 {
 	signed int i;
 	signed int bi;
 
 	for (i = 28; i >= 0; i--) {
 
-		bi = get_border_index(g_visual_field_vals[i]);
+		bi = get_border_index(g_visual_square_vals[i]);
 
 		if (bi == -1) {
-			g_visual_fields_tex[i] = -1;
+			g_visual_squares_tex[i] = -1;
 		} else {
-			g_visual_fields_tex[i] = (
+			g_visual_squares_tex[i] = (
 						bi == 2 ? g_seg066_0bad_unkn0[i] : (
 						bi == 3 ? g_seg066_0bad_unkn1[i] : (
 						bi == 4 ? g_seg066_0bad_unkn2[i] : (
@@ -1003,8 +1003,8 @@ void town_water_and_grass(void)
 
 	for (i = 0; i < 29; i++) {
 
-		c1 = g_visual_field_draw_order[i];
-		c2 = g_visual_field_vals[c1];
+		c1 = g_visual_square_draw_order[i];
+		c2 = g_visual_square_vals[c1];
 
 		if (c2 != 0) {
 
@@ -1013,12 +1013,12 @@ void town_water_and_grass(void)
 			if (bi == 6 || bi == 7) {
 
 				/* water or grass */
-				ptr = (int16_t*)&g_visual_field_offsets_grass[c1];
+				ptr = (int16_t*)&g_visual_square_offsets_grass[c1];
 
 				x = ptr[0];
 				y = ptr[1];
 
-				c1 = g_visual_fields_tex[c1];
+				c1 = g_visual_squares_tex[c1];
 
 				if (c1 != -1) {
 
@@ -1055,8 +1055,8 @@ void town_building_textures(void)
 
 	for (i = 0; i < 29; i++) {
 
-		c1 = g_visual_field_draw_order[i];
-		c2 = g_visual_field_vals[c1];
+		c1 = g_visual_square_draw_order[i];
+		c2 = g_visual_square_vals[c1];
 
 		if (c2 != 0) {
 
@@ -1065,20 +1065,20 @@ void town_building_textures(void)
 			if (bi != 7 && bi != 6) {
 			    /* if not grass or water */
 
-				ptr = (int16_t*)&g_visual_field_offsets_std[c1];
+				ptr = (int16_t*)&g_visual_square_offsets_std[c1];
 
 				if (bi == 8) {
 					/* direction sign */
-					ptr = (int16_t*)&g_visual_field_offsets_sign[c1];
+					ptr = (int16_t*)&g_visual_square_offsets_sign[c1];
 				} else if (bi == 9 || bi == 10) {
 					/* tavern/inn or shop */
-					ptr = (int16_t*)&g_visual_field_offsets_inn[c1];
+					ptr = (int16_t*)&g_visual_square_offsets_inn[c1];
 				}
 
 				x = ptr[0];
 				y = ptr[1];
 
-				c1 = g_visual_fields_tex[c1];
+				c1 = g_visual_squares_tex[c1];
 
 				if (c1 != -1) {
 

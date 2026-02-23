@@ -1732,10 +1732,10 @@ extern char g_diary_string4[6];			//ds:0x493a; seg024
 extern char g_diary_string5[9];			//ds:0x4940; seg024
 extern char g_diary_string6[19];		//ds:0x4949; seg024
 extern char g_diary_string7[19];		//ds:0x495c; seg024
-extern struct point8s g_visual_field_dir0[31];	//ds:0x4970; seg003
-extern struct point8s g_visual_field_dir1[31];	//ds:0x49ae; seg003
-extern struct point8s g_visual_field_dir2[31];	//ds:0x49ec; seg003
-extern struct point8s g_visual_field_dir3[31];	//ds:0x492a; seg003
+extern struct point8s g_visual_square_north[31];	//ds:0x4970; seg003
+extern struct point8s g_visual_square_east[31];	//ds:0x49ae; seg003
+extern struct point8s g_visual_square_south[31];	//ds:0x49ec; seg003
+extern struct point8s g_visual_square_west[31];	//ds:0x492a; seg003
 extern char   g_noway_string[40];		//ds:0x4a68; seg003
 
 extern int16_t g_pic_copy_flag;			//ds:0x4a92; seg004, seg008, seg074
@@ -2071,8 +2071,8 @@ extern signed int g_ems_travelmap_handle;	// ds:0xbd90; seg028, seg120
 #if defined(__BORLANDC__)
 extern struct ems_tab *g_ems_unused_tab;	// ds:0xbd8c; seg028
 #endif
-extern unsigned char g_visual_field_vals[29];	// ds:0xbd6e; seg003, seg066,seg075, seg077, seg080
-extern signed char g_visual_fields_tex[29];	// ds:0xbd50; seg066, seg075
+extern unsigned char g_visual_square_vals[29];	// ds:0xbd6e; seg003, seg066,seg075, seg077, seg080
+extern signed char g_visual_squares_tex[29];	// ds:0xbd50; seg066, seg075
 extern signed char g_direction_unkn;		// ds:0xbd4f; seg003
 extern unsigned char g_steptarget_back;		// ds:0xbd4e; seg003, seg066, seg076
 extern unsigned char g_steptarget_front;	// ds:0xbd4d; seg003, seg066, seg076, seg099

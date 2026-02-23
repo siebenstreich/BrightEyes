@@ -344,7 +344,7 @@ signed int AFIG_search_spell_target(const signed int x, const signed int y, cons
 			y_diff++;
 		}
 
-		/* check the field is on the chessboard */
+		/* check whether the square is on the chessboard */
 		if ((y + y_diff < 0) || (y + y_diff > 23) ||
 			(x + x_diff < 0) || (x + x_diff > 23))
 		{
@@ -352,7 +352,7 @@ signed int AFIG_search_spell_target(const signed int x, const signed int y, cons
 			continue;
 		}
 
-		/* get the fight object ID of the object on that field */
+		/* get the fight object ID of the object on that square */
 		target_object_id = get_cb_val(x + x_diff, y + y_diff);
 
 		if (renegade == 1) {

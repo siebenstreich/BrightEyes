@@ -265,7 +265,7 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 
 	while (!done) {
 
-		/* go one field further */
+		/* move one square forward */
 		if (viewdir == FIG_VIEWDIR_RIGHT) {
 			x_diff++;
 		} else if (viewdir == FIG_VIEWDIR_DOWN) {
@@ -302,7 +302,7 @@ signed int FIG_search_range_target(const signed int x, const signed int y, const
 
 				} else
 
-				/* if field is not empty */
+				/* if square is not empty */
 				if (target_object_id != 0) {
 
 					/* an enemy or another object */

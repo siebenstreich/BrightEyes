@@ -44,7 +44,7 @@ void move(void)
 	volatile signed int i;
 	uint8_t *p_map_small;
 	uint8_t *p_map_large;
-	struct point8s *p_vis_field;
+	struct point8s *p_visual_square;
 
 	signed int x;
 	signed int y;
@@ -53,21 +53,21 @@ void move(void)
 
 	/* direction */
 #if defined(__BORLANDC__)
-	p_vis_field = (struct point8s*)MK_FP(_DS,
-				((gs_viewdir == 0) ? FP_OFF(g_visual_field_dir0) :
-				((gs_viewdir == 1) ? FP_OFF(g_visual_field_dir1) :
-				((gs_viewdir == 2) ? FP_OFF(g_visual_field_dir2) : FP_OFF(g_visual_field_dir3)))));
+	p_visual_square = (struct point8s*)MK_FP(_DS,
+				((gs_viewdir == 0) ? FP_OFF(g_visual_square_north) :
+				((gs_viewdir == 1) ? FP_OFF(g_visual_square_east) :
+				((gs_viewdir == 2) ? FP_OFF(g_visual_square_south) : FP_OFF(g_visual_square_west)))));
 #else
-	p_vis_field = ((gs_viewdir == 0) ? g_visual_field_dir0 :
-			((gs_viewdir == 1) ? g_visual_field_dir1 :
-			((gs_viewdir == 2) ? g_visual_field_dir2 : g_visual_field_dir3)));
+	p_visual_square = ((gs_viewdir == 0) ? g_visual_square_north :
+			((gs_viewdir == 1) ? g_visual_square_east :
+			((gs_viewdir == 2) ? g_visual_square_south : g_visual_square_west)));
 
 #endif
 
-	for (i = 0; i < 29; i++, p_vis_field++) {
+	for (i = 0; i < 29; i++, p_visual_square++) {
 		boundary_flag = 0;
-		x = gs_x + p_vis_field->x;
-		y = gs_y + p_vis_field->y;
+		x = gs_x + p_visual_square->x;
+		y = gs_y + p_visual_square->y;
 
 		if (x < 0) {
 			x = 0;
@@ -96,22 +96,22 @@ void move(void)
 			*(p_map_large + LARGE_MAP_POS(x, y));
 
 		if (boundary_flag != 0) {
-			g_visual_field_vals[i] = ((mapval == 0xa0) || (mapval == 0xb0) ? mapval : 0xb0);
+			g_visual_square_vals[i] = ((mapval == 0xa0) || (mapval == 0xb0) ? mapval : 0xb0);
 		} else {
-			g_visual_field_vals[i] = mapval;
+			g_visual_square_vals[i] = mapval;
 		}
 	}
 
 	if (g_map_size_x == 16) {
 		/* dungeon or small town */
-		g_steptarget_front = *(p_map_small + MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
+		g_steptarget_front = *(p_map_small + MAP_POS(gs_x + p_visual_square[0].x, gs_y + p_visual_square[0].y));
 
-		g_steptarget_back  = *(p_map_small + MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y));
+		g_steptarget_back  = *(p_map_small + MAP_POS(gs_x + p_visual_square[1].x, gs_y + p_visual_square[1].y));
 	} else {
 		/* large city */
-		g_steptarget_front = *(p_map_large + LARGE_MAP_POS(gs_x + p_vis_field[0].x, gs_y + p_vis_field[0].y));
+		g_steptarget_front = *(p_map_large + LARGE_MAP_POS(gs_x + p_visual_square[0].x, gs_y + p_visual_square[0].y));
 
-		g_steptarget_back  = *(p_map_large + LARGE_MAP_POS(gs_x + p_vis_field[1].x, gs_y + p_vis_field[1].y));
+		g_steptarget_back  = *(p_map_large + LARGE_MAP_POS(gs_x + p_visual_square[1].x, gs_y + p_visual_square[1].y));
 	}
 }
 

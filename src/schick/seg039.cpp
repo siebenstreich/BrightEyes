@@ -201,8 +201,8 @@ void fill_enemy_sheet(const signed int enemy_id, const signed char target_object
  */
 signed int place_obj_on_cb(const signed int x, const signed int y, const signed int object_id, const signed int type, const signed char dir)
 {
-	/* check if an object is already on that field
-		check if the object no is valid */
+	/* check if an object is already on that square
+		check if the object id is valid */
 	if ((get_cb_val(x, y) > 0) || (object_id < 0)) {
 		return 0;
 	}
@@ -242,11 +242,11 @@ signed int place_obj_on_cb(const signed int x, const signed int y, const signed 
 		}
 
 	} else {
-		/* if object is an enemy and needs 2 fields */
+		/* if object is a double-size enemy  */
 		if (object_id >= 10 && is_in_byte_array(type, g_double_size_actor_sprite_id_table))
 		{
 
-			/* check if field is empty */
+			/* check if square is empty */
 			if ((get_cb_val(x + g_gfxtab_double_size_extra_cb[dir].x, y + g_gfxtab_double_size_extra_cb[dir].y)) ||
 				(y + g_gfxtab_double_size_extra_cb[dir].y < 0) ||
 				(y + g_gfxtab_double_size_extra_cb[dir].y > 23) ||
@@ -288,14 +288,14 @@ void FIG_load_enemy_sprites(struct enemy_sheet *enemy, const signed int x, const
 
 	if (is_in_byte_array(enemy->actor_sprite_id, g_double_size_actor_sprite_id_table)) {
 
-		/* sprite uses two fields */
+		/* sprite uses two squares */
 		g_fig_list_elem.x1 = g_gfxtab_double_size_x1[enemy->viewdir];
 		g_fig_list_elem.x2 = g_gfxtab_double_size_x2[enemy->viewdir];
 
 		/* TODO: b = ++a; */
 		g_fig_list_elem.double_size = g_fig_double_size_count = g_fig_double_size_count + 1;
 	} else {
-		/* sprite uses one field */
+		/* sprite uses one square */
 		g_fig_list_elem.x1 = 0;
 		g_fig_list_elem.x2 = 0x1f;
 		g_fig_list_elem.double_size = -1;

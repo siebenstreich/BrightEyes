@@ -125,9 +125,9 @@ unsigned char g_unkn_073[12];		// ds:0xbd41
 unsigned char g_steptarget_front;	// ds:0xbd4d
 unsigned char g_steptarget_back;	// ds:0xbd4e
 signed char g_direction_unkn;		// ds:0xbd4f, writeonly (1)
-signed char g_visual_fields_tex[29];	// ds:0xbd50
+signed char g_visual_squares_tex[29];	// ds:0xbd50
 unsigned char g_unkn_074[1];		// ds:0xbd6d
-unsigned char g_visual_field_vals[29];	// ds:0xbd6e
+unsigned char g_visual_square_vals[29];	// ds:0xbd6e
 unsigned char g_unkn_075[1];		// ds:0xbd8b
 #if defined(__BORLANDC__)
 struct ems_tab *g_ems_unused_tab;	// ds:0xbd8c

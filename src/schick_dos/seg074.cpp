@@ -171,11 +171,11 @@ signed int is_discovered(const signed int x, const signed int y)
 }
 
 /**
- * \brief   get value of automap field from small (16x16) maps
+ * \brief   get value of an automap square from a small (16x16) map
  *
  * \param   x           x-coordinate
  * \param   y           y-coordinate
- * \return              value of the field at (x,y)
+ * \return              map value of square (x,y)
  */
 uint16_t get_mapval_small(const signed int x, const signed int y)
 {
@@ -185,11 +185,11 @@ uint16_t get_mapval_small(const signed int x, const signed int y)
 }
 
 /**
- * \brief   get value of automap field from small (32x16) maps
+ * \brief   get value of an automap square from a large (32x16) map
  *
  * \param   x           x-coordinate
  * \param   y           y-coordinate
- * \return              value of the field at (x,y)
+ * \return              map value of square (x,y)
  */
 uint16_t get_mapval_large(const signed int x, const signed int y)
 {

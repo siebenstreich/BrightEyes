@@ -389,7 +389,7 @@ signed char FIG_add_to_list(const signed char fighter_id)
 
 	/* The list is filled in the order of rendering, i.e. from rear to front:
 	 * (x1,y1) is rendered before (x2,y2) if (x1 < x2) || (x1 == x2 && y1 > y2)
-	 * On the same chessboard field, lower z is rendered before larger z.
+	 * On the same chessboard square, lower z is rendered before larger z.
 	 */
 	if (g_fig_list_elem.z != -1) {
 

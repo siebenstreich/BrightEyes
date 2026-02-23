@@ -737,7 +737,7 @@ void DNG_see_door(void)
 
 	if ((dng_tile = div16(g_steptarget_front)) == 1 || dng_tile == 2)
 	{
-		/* standing direct in front of a door with view to it */
+		/* standing directly in front of a door, facing it */
 		if (g_new_menu_icons[6] != MENU_ICON_OPEN_CLOSE_DOOR && g_new_menu_icons[6] != MENU_ICON_SMASH_DOOR)
 		{
 			g_new_menu_icons[6] = MENU_ICON_OPEN_CLOSE_DOOR;
@@ -753,7 +753,7 @@ void DNG_see_door(void)
 		if (g_new_menu_icons[6] != MENU_ICON_NONE &&
 			(g_dng_extra_action == DNG_MENU_MODE_OPEN_DOOR || g_dng_extra_action == DNG_MENU_MODE_CLOSE_DOOR || g_dng_extra_action == DNG_MENU_MODE_UNLOCK_DOOR))
 		{
-			/* standing two fields before a door with view to it */
+			/* standing two squares away from a door, facing it */
 			g_new_menu_icons[6] = g_new_menu_icons[7] = g_new_menu_icons[8] = MENU_ICON_NONE;
 			g_redraw_menuicons = 1;
 			g_dng_extra_action = DNG_MENU_MODE_PLAIN;
@@ -765,7 +765,7 @@ void DNG_see_chest(void)
 {
 	if (div16(g_steptarget_front) == 8)
 	{
-		/* standing direct in front of a treasure chest with view to it */
+		/* standing directly in front of a treasure chest, facing it */
 		if (g_new_menu_icons[6] != MENU_ICON_OPEN_CHEST)
 		{
 			g_new_menu_icons[6] = MENU_ICON_OPEN_CHEST;
@@ -776,7 +776,7 @@ void DNG_see_chest(void)
 	} else {
 		if (g_new_menu_icons[6] != MENU_ICON_NONE && g_dng_extra_action == DNG_MENU_MODE_OPEN_CHEST)
 		{
-			/* standing two fields before a treasure chest with view to it */
+			/* standing two squares away from a treasure chest, facing it */
 			g_new_menu_icons[6] = g_new_menu_icons[7] = g_new_menu_icons[8] = MENU_ICON_NONE;
 			g_redraw_menuicons = 1;
 			g_dng_extra_action = DNG_MENU_MODE_PLAIN;

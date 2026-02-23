@@ -4016,7 +4016,7 @@ char g_diary_string5[9] = "~~IN %s."; // ds:0x4940
 char g_diary_string6[19] = "~~ABENTEUER IN %s."; // ds:0x4949
 char g_diary_string7[19] = "~~RUMH\x8eNGEN IN %s."; // ds:0x495c
 unsigned char g_unkn_034[1] = { 0x00 }; // ds:0x496f
-struct point8s g_visual_field_dir0[31] = {
+struct point8s g_visual_square_north[31] = {
 	{ -1,  0 },
 	{  0,  0 },
 	{  1,  0 },
@@ -4049,7 +4049,7 @@ struct point8s g_visual_field_dir0[31] = {
 	{  0, -1 },
 	{  0,  1 }
 }; // ds:0x4970
-struct point8s g_visual_field_dir1[31] = {
+struct point8s g_visual_square_east[31] = {
 	{  0, -1 },
 	{  0,  0 },
 	{  0,  1 },
@@ -4082,7 +4082,7 @@ struct point8s g_visual_field_dir1[31] = {
 	{  1,  0 },
 	{ -1,  0 }
 }; // ds:0x49ae
-struct point8s g_visual_field_dir2[31] = {
+struct point8s g_visual_square_south[31] = {
 	{  1,  0 },
 	{  0,  0 },
 	{ -1,  0 },
@@ -4115,7 +4115,7 @@ struct point8s g_visual_field_dir2[31] = {
 	{  0,  1 },
 	{  0, -1 }
 }; // ds:0x49ec
-struct point8s g_visual_field_dir3[31] = {
+struct point8s g_visual_square_west[31] = {
 	{  0,  1 },
 	{  0,  0 },
 	{  0, -1 },

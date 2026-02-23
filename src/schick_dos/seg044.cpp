@@ -564,7 +564,7 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	/* terminate figure animation array */
 	*p_ani_clip_base = -1;
 
-	/* does this sprite need two fields */
+	/* does this sprite need two squares? */
 	if (is_in_byte_array(enemy->actor_sprite_id, g_double_size_actor_sprite_id_table))	{
 
 		memcpy(&g_fig_ani_tracks[FANI_TRACK_ID_BASE_TO_TAIL(ani_track_id)], &g_fig_ani_tracks[ani_track_id], 243);

@@ -29,8 +29,8 @@ void town_fade_and_colors(void);
 /* 0x61 */
 void town_update_house_count(void);
 /* 0x66 */
-void town_set_vis_field_tex(void);
+void town_set_visual_square_tex(void);
 /* 0x6b */
-void town_set_vis_field_vals(void);
+void town_set_visual_square_vals(void);
 /* 0x70 */
 signed int town_step(void);
