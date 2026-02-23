@@ -572,10 +572,10 @@ void init_game_state(void)
 	gs_town_typeindex = 1;
 	gs_x_bak = 9;
 	gs_y_bak = 9;
-	gs_x = 9;
-	gs_y = 8;
-	gs_viewdir_bak = 0;
-	gs_viewdir = 0;
+	gs_x = 9; //     Why gs_x == gs_x_bak ...
+	gs_y = 8; // ... but gs_y != gs_y_bak ??
+	gs_viewdir_bak = NORTH;
+	gs_viewdir = NORTH;
 	gs_dungeon_id = DUNGEON_ID_NONE;
 
 	gs_town_id_bak = gs_town_id = TOWN_ID_THORWAL;
