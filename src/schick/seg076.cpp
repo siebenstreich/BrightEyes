@@ -735,7 +735,7 @@ void DNG_see_door(void)
 {
 	signed int dng_tile;
 
-	if ((dng_tile = div16(g_steptarget_front)) == 1 || dng_tile == 2)
+	if ((dng_tile = div16(g_steptarget_front)) == DNG_TILE_CLOSED_DOOR || dng_tile == DNG_TILE_OPEN_DOOR)
 	{
 		/* standing directly in front of a door, facing it */
 		if (g_new_menu_icons[6] != MENU_ICON_OPEN_CLOSE_DOOR && g_new_menu_icons[6] != MENU_ICON_SMASH_DOOR)
@@ -746,7 +746,7 @@ void DNG_see_door(void)
 
 		if (g_new_menu_icons[6] != MENU_ICON_SMASH_DOOR)
 		{
-			g_dng_extra_action = (dng_tile == 1 ? DNG_MENU_MODE_OPEN_DOOR : DNG_MENU_MODE_CLOSE_DOOR);
+			g_dng_extra_action = (dng_tile == DNG_TILE_CLOSED_DOOR ? DNG_MENU_MODE_OPEN_DOOR : DNG_MENU_MODE_CLOSE_DOOR);
 		}
 
 	} else {
@@ -763,7 +763,7 @@ void DNG_see_door(void)
 
 void DNG_see_chest(void)
 {
-	if (div16(g_steptarget_front) == 8)
+	if (div16(g_steptarget_front) == DNG_TILE_CHEST)
 	{
 		/* standing directly in front of a treasure chest, facing it */
 		if (g_new_menu_icons[6] != MENU_ICON_OPEN_CHEST)
