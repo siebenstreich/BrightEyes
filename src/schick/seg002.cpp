@@ -258,7 +258,7 @@ signed int g_replenish_stocks_mod; // ds:0xd331
 struct fight_msg g_fig_msg_data[6]; // ds:0xd333
 struct enemy_sheet g_enemy_sheets[20]; // ds:0xd34b
 #if defined(__BORLANDC__)
-int8_t g_fig_move_pathdir[10]; // ds:0xd823 /* TODO: 10 steps is to short */
+int8_t g_fig_move_pathdir[10]; // ds:0xd823 /* TODO: 10 steps is too short */
 #else
 int8_t g_fig_move_pathdir[20]; // ds:0xd823 /* TODO: check if 20 steps are enough, WC: 2 * bp_max + 2 */
 #endif
@@ -1234,7 +1234,7 @@ void copy_file_to_temp(const char* src_file, const char* fname)
 
 int32_t process_nvf_extraction(struct nvf_extract_desc *nvf)
 {
-	signed int i; /* multi use: disease_id, poison_id, hero_pos */
+	signed int i;
 	uint32_t offs;
 	signed int pics;
 	signed int width;
@@ -1924,7 +1924,7 @@ static int sdl_event_loop(const int cmd)
 signed int bioskey(const signed int cmd)
 {
 	if (cmd == 0) {
-		// return the pressed key imediately
+		// return the pressed key immediately
 		int keycode = sdl_event_loop(0);
 		return keycode;
 	} if (cmd == 1) {
@@ -4777,7 +4777,7 @@ void add_hero_ae(struct struct_hero* hero, const signed int ae)
  */
 void sub_hero_le(struct struct_hero *hero, const signed int le)
 {
-	signed int i;
+	signed int i; /* multi use: disease_id, poison_id, hero_pos */
 	signed int bak;
 	signed int old_le;
 	struct struct_fighter *p_fighter;
