@@ -311,7 +311,7 @@ void delete_chest_item(struct struct_chest *chest, signed int item_num)
  */
 void loot_chest(struct struct_chest *chest, char *text_non_empty, char *text_empty)
 {
-	signed int pos;
+	signed int tmp; /* multi use: index of chest content; anser */
 	signed int item_id;
 	signed int tw_bak;
 	char names[20][20];
@@ -322,43 +322,43 @@ void loot_chest(struct struct_chest *chest, char *text_non_empty, char *text_emp
 	g_textbox_width = 7;
 
 	do {
-		pos = 0;
+		tmp = 0;
 
 		/* write the names of the items in the chest into names[] */
-		while ((item_id = chest->content[pos]) != 0xff) {
+		while ((item_id = chest->content[tmp]) != 0xff) {
 
-			strcpy(names[pos++], GUI_name_inflect(INFLECT_GENDER_UNSPECIFIED | INFLECT_SINGULAR | INFLECT_1ST_CASE, g_itemsname[item_id]));
+			strcpy(names[tmp++], GUI_name_inflect(INFLECT_GENDER_UNSPECIFIED | INFLECT_SINGULAR | INFLECT_1ST_CASE, g_itemsname[item_id]));
 		}
 
-		if (pos == 0) {
+		if (tmp == 0) {
 			/* this chest is empty */
 			GUI_output(text_empty);
 			break;
 		} else {
 
 			/* show radio menu with item names */
-			pos = GUI_radio(text_non_empty, (signed char)pos,
+			tmp = GUI_radio(text_non_empty, (signed char)tmp,
 						names[0], names[1], names[2], names[3],
 						names[4], names[5], names[6], names[7],
 						names[8], names[9], names[10], names[11],
 						names[12], names[13], names[14], names[15],
 						names[16], names[17], names[18], names[19]) - 1;
 
-			if (pos != -2) {
+			if (tmp != -2) {
 
 				/* if not pressed ESC */
-				if (give_new_item_to_group(chest->content[pos], 1, 1)) {
+				if (give_new_item_to_group(chest->content[tmp], 1, 1)) {
 
 					/* got the item in inventory => remove from chest */
-					delete_chest_item(chest, pos);
+					delete_chest_item(chest, tmp);
 				} else {
 					/* group has not taken the item */
-					pos = -2;
+					tmp = -2;
 				}
 			}
 		}
 
-	} while (pos != -2);
+	} while (tmp != -2);
 
 	g_textbox_width = tw_bak;
 }
