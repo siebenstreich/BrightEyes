@@ -30,19 +30,49 @@ enum {
 };
 
 enum {
-	ACTION_ID_ESC                                =   1,
-	ACTION_ID_CLOSING_SQUARE_BRACKET             =  27, /* the ']' key. used in buy_screen() at a merchant to decrease the number of items. */
-	ACTION_ID_RETURN                             =  28,
-	ACTION_ID_J                                  =  44, /* the 'J' key. used in seg097.cpp in GUI_menu_input (when called from GUI_bool()). selects the "Ja" (yes) answer. */
-	ACTION_ID_N                                  =  49, /* the 'N' key. used in seg097.cpp in GUI_menu_input (when called from GUI_bool()). selects the "Nein" (no) answer. */
-	ACTION_ID_SLASH                              =  53, // the '/' key. used in buy_screen() at a merchant to increase the number of items.
-	ACTION_ID_SPACE                              =  57,
-	ACTION_ID_UP                                 =  72,
-	ACTION_ID_PAGE_UP                            =  73, /* opens the menu */
-	ACTION_ID_LEFT                               =  75,
-	ACTION_ID_RIGHT                              =  77,
-	ACTION_ID_DOWN                               =  80,
-	ACTION_ID_PAGE_DOWN                          =  81, /* closes the menu */
+	ASCII_CODE_NONE         = 0x00,
+	ASCII_CODE_CTRL_E       = 0x05,
+	ASCII_CODE_BACKSPACE    = 0x08,
+	ASCII_CODE_ENTER        = 0x0d,
+	ASCII_CODE_CTRL_O       = 0x0f,
+	ASCII_CODE_CTRL_P       = 0x10,
+	ASCII_CODE_CTRL_Q       = 0x11,
+	ASCII_CODE_CTRL_S       = 0x13,
+	/* the following come from the ASCII code extension codepage 437 or 850. */
+	ASCII_CODE_LOWERCASE_UE = 0x81,
+	ASCII_CODE_LOWERCASE_AE = 0x84,
+	ASCII_CODE_UPPERCASE_AE = 0x8e,
+	ASCII_CODE_LOWERCASE_OE = 0x94,
+	ASCII_CODE_UPPERCASE_OE = 0x99,
+	ASCII_CODE_UPPERCASE_UE = 0x9a
+};
+
+/* The following are BIOS scan codes placed in AH (higher byte) by the INT 16h (functions 00h/10h) BIOS interrupt call, corresponding to the physical key pressed.
+ * They are used as action_id values */
+enum {
+	KEY_SCAN_CODE_NONE                   = 0x00,
+	KEY_SCAN_CODE_ESC                    = 0x01,
+	KEY_SCAN_CODE_CLOSING_SQUARE_BRACKET = 0x1b, /* the ']' key. used in buy_screen() at a merchant to decrease the number of items. */
+	KEY_SCAN_CODE_ENTER                  = 0x1c,
+	KEY_SCAN_CODE_J                      = 0x24,
+	KEY_SCAN_CODE_N                      = 0x31, /* the 'N' key. used in seg097.cpp in GUI_menu_input (when called from GUI_bool()). selects the "Nein" (no) answer. */
+	KEY_SCAN_CODE_SLASH                  = 0x35, /* the '/' key. used in buy_screen() at a merchant to increase the number of items. */
+	KEY_SCAN_CODE_SPACE_BAR              = 0x39,
+	KEY_SCAN_CODE_Y                      = 0x2c, /* the 'Y' key on **German** keyboard (which is Z on US keyboard).
+                                                      * used in seg097.cpp in GUI_menu_input (when called from GUI_bool()). selects the "Ja" (yes) answer.
+                                                      * We use identifier 'Y' (and not 'Z') since it is used for "Y"es.
+						      * Note that J is remapped to Y in the functions handle_gui_input and handle_input.
+						      */
+	KEY_SCAN_CODE_ARROW_UP               = 0x48,
+	KEY_SCAN_CODE_PAGE_UP                = 0x49, /* opens the menu */
+	KEY_SCAN_CODE_ARROW_LEFT             = 0x4b,
+	KEY_SCAN_CODE_ARROW_RIGHT            = 0x4d,
+	KEY_SCAN_CODE_ARROW_DOWN             = 0x50,
+	KEY_SCAN_CODE_PAGE_DOWN              = 0x51  /* closes the menu */
+};
+
+enum {
+	ACTION_ID_NONE                               = 0,
 	/* in seg048.cpp there is "if (ds_readws(ACTION) >= 128 && ds_readws(ACTION) <= 152) [...]".
 	 * I think these 25 numbers are used for the icons in the character screen, probably in the order
 	 * head, arms, body, right hand, left hand, legs, feet, knapsack1 .. knapsack16; eye, mouth */
@@ -56,8 +86,17 @@ enum {
 	ACTION_ID_ICON_8                             = 136,
 	ACTION_ID_ICON_9                             = 137,
 	ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK = 144, /* set in buy_screen() at a merchant if an item is right-clicked to decrease the count. */
-	ACTION_ID_240                                = 240, /* what does it mean? used in status_menu() in seg048.cpp */
+	ACTION_ID_STATUS_DISEASE                     = 0xf0, /* click on the red text 'krank' in the status screen */
 	/* In seg057.cpp and seg058.cpp there is "if (ds_readws(ACTION) >= 241 && ds_readws(ACTION) <= 247) [...]" */
+	ACTION_ID_HERO_1                             = 0xf1,
+	ACTION_ID_HERO_2                             = 0xf2,
+	ACTION_ID_HERO_3                             = 0xf3,
+	ACTION_ID_HERO_4                             = 0xf4,
+	ACTION_ID_HERO_5                             = 0xf5,
+	ACTION_ID_HERO_6                             = 0xf6,
+	ACTION_ID_HERO_NPC                           = 0xf7,
+	ACTION_ID_CLOCK                              = 0xfc,
+	ACTION_ID_CREDITS                            = 0xfd, /* click on the black eye */
 	ACTION_ID_VOID                               = 999
 };
 

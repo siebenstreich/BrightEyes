@@ -307,30 +307,30 @@ void buy_screen(void)
 
 		if (g_mouse_rightclick_event && get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_merchant)) {
 
-			g_action = ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK;
+			g_action_id = ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK;
 		}
 
-		if ((g_mouse_rightclick_event && g_action != ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK) || g_action == ACTION_ID_PAGE_UP) {
+		if ((g_mouse_rightclick_event && g_action_id != ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK) || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			l3 = GUI_radio(NULL, 4,	get_ttx(433), get_ttx(435), get_ttx(436), get_ttx(437)) - 1;
 
 			if (l3 != -2) {
-				g_action = l3 + ACTION_ID_ICON_1;
+				g_action_id = l3 + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_CLOSING_SQUARE_BRACKET || g_action == ACTION_ID_SLASH || g_action == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK) {
+		if (g_action_id == KEY_SCAN_CODE_CLOSING_SQUARE_BRACKET || g_action_id == KEY_SCAN_CODE_SLASH || g_action_id == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK) {
 
 			l3 = 1;
 
-			if (g_action == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK) {
+			if (g_action_id == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK) {
 
 				if (g_mouse_rightclick_event) {
 					g_mouse_rightclick_event = 0;
 					l3 = 2;
 				}
 			} else {
-				if (g_action == ACTION_ID_SLASH) {
+				if (g_action_id == KEY_SCAN_CODE_SLASH) {
 					l3 = 2;
 				}
 			}
@@ -475,19 +475,19 @@ void buy_screen(void)
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_3 && item_selector_page_offset) {
+		if (g_action_id == ACTION_ID_ICON_3 && item_selector_page_offset) {
 
 			l8 = 1;
 			item_selector_page_offset -= 15;
 
-		} else if (g_action == ACTION_ID_ICON_2 && g_item_selector_buy[item_selector_page_offset + 15].item_id) {
+		} else if (g_action_id == ACTION_ID_ICON_2 && g_item_selector_buy[item_selector_page_offset + 15].item_id) {
 
 			l8 = 1;
 			item_selector_page_offset += 15;
 		}
 
 
-		if (g_action == ACTION_ID_ICON_1 && price) {
+		if (g_action_id == ACTION_ID_ICON_1 && price) {
 
 			j = 0;
 
@@ -596,7 +596,7 @@ void buy_screen(void)
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_4) {
+		if (g_action_id == ACTION_ID_ICON_4) {
 			done = 1;
 		}
 	}

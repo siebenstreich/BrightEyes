@@ -246,39 +246,44 @@ signed int GUI_enter_string(char* dst, signed int x, const signed int y, const s
 	flush_keyboard_queue();
 	g_mouse_leftclick_event = 0;
 
-	c = 0;
-	while ((c != 0xd) || (pos == 0)) {
+	c = ASCII_CODE_NONE;
+	while ((c != ASCII_CODE_ENTER) || (pos == 0)) {
 		do {
 			goto dummy;
 dummy:
 
+			/* wait till keypress or left mouse button */
 			/* This loop is evil */
 			do {;} while ((CD_bioskey(1) == 0) && !g_mouse_leftclick_event);
 
 			if (g_mouse_leftclick_event) {
-				g_bioskey_event = 0x0d;
+				g_keystroke_ascii_code = ASCII_CODE_ENTER; /* 0x0d is ASCII code of [Enter] key */
 				g_mouse_leftclick_event = g_mouse1_event2 = 0;
 			} else {
-				g_action = (g_bioskey_event = bioskey(0)) >> 8;
-				g_bioskey_event &= 0xff;
+				/* bioskey(0) writes 2 byte keystroke code to g_keystroke_ascii_code and removes it from the buffer.
+				 * g_action_id stores higher byte   (hardware keyscan code)
+				 * g_keystroke_ascii_code stores lower byte (ASCII code)
+				 */
+				g_action_id = (g_keystroke_ascii_code = bioskey(0)) >> 8;
+				g_keystroke_ascii_code &= 0xff;
 			}
 
-		} while ((g_action == 0) && (g_bioskey_event == 0));
+		} while ((g_action_id == KEY_SCAN_CODE_NONE) && (g_keystroke_ascii_code == ASCII_CODE_NONE));
 
-		c = g_bioskey_event;
+		c = g_keystroke_ascii_code;
 
-		if (c == 0x0d) {
+		if (c == ASCII_CODE_ENTER) {
 
-		} else if (g_action == ACTION_ID_ESC) {
+		} else if (g_action_id == KEY_SCAN_CODE_ESC) {
 			*dst_start = 0;
 			call_mouse();
-			g_action = 0;
+			g_action_id = 0;
 			return -1;
-		} else if (c == 8) {
+		} else if (c == ASCII_CODE_BACKSPACE) {
 			if (pos > 0) {
 
 				if ((zero == 1) && (pos != num)) {
-					GUI_print_char(0x20, x_pos, y);
+					GUI_print_char(' ', x_pos, y);
 				}
 
 				x_pos -= 6;
@@ -290,19 +295,21 @@ dummy:
 		} else
 
 		/* check if character is valid */
-		if (((c >= 0x20) && (c <= 0x7a)) || (c == 0x81) || (c == 0x84) || (c == 0x94))
-		{
+		if (
+			((c >= ' ') && (c <= 'z'))
+			|| (c == ASCII_CODE_LOWERCASE_UE) || (c == ASCII_CODE_LOWERCASE_AE) || (c == ASCII_CODE_LOWERCASE_OE)
+		) {
 			if (isalpha(c)) c = toupper(c);
 
 			/* ae */
-			if (c == 0x84)
-				c = (signed char)0x8e;
+			if (c == ASCII_CODE_LOWERCASE_AE)
+				c = (signed char)ASCII_CODE_UPPERCASE_AE;
 			/* oe */
-			if (c == 0x94)
-				c = (signed char)0x99;
+			if (c == ASCII_CODE_LOWERCASE_OE)
+				c = (signed char)ASCII_CODE_UPPERCASE_OE;
 			/* ue */
-			if (c == 0x81)
-				c = (signed char)0x9a;
+			if (c == ASCII_CODE_LOWERCASE_UE)
+				c = (signed char)ASCII_CODE_UPPERCASE_UE;
 
 			/* are we at the end of the input field ? */
 			if (pos == num) {
@@ -454,7 +461,7 @@ signed int GUI_input(char *str, const signed int digits)
 		/* set action table */
 		g_action_table_secondary = &g_action_table_menu[0];
 
-		if (g_bioskey_event10 != 0) {
+		if (g_game_paused_flag != 0) {
 			wait_for_keypress();
 		} else {
 			vsync_or_key(lines * g_textbox_width * 50);
@@ -476,7 +483,7 @@ signed int GUI_input(char *str, const signed int digits)
 	g_textline_posy = l4;
 	g_textline_maxlen = l5;
 
-	g_action = 0;
+	g_action_id = 0;
 	g_dialogbox_lock = 0;
 
 	g_wallclock_update = l6;
@@ -661,7 +668,7 @@ signed int GUI_dialogbox(uint8_t* picture, char *name, char *text, signed int op
 
 	g_wallclock_update = wc_bak;
 
-	g_action = g_dialogbox_lock = 0;
+	g_action_id = g_dialogbox_lock = 0;
 
 	g_update_statusline = usl_bak;
 
@@ -716,7 +723,7 @@ signed int GUI_menu_input(const signed int positions, const signed int h_lines, 
 				l5 = g_menu_selected;
 			}
 
-			if (g_mouse_rightclick_event || g_action == ACTION_ID_ESC || g_action == ACTION_ID_PAGE_DOWN) {
+			if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_ESC || g_action_id == KEY_SCAN_CODE_PAGE_DOWN) {
 				/* close menu */
 
 				retval = -1;
@@ -724,18 +731,18 @@ signed int GUI_menu_input(const signed int positions, const signed int h_lines, 
 				g_mouse_rightclick_event = 0;
 			}
 
-			if (g_action == ACTION_ID_RETURN) {
+			if (g_action_id == KEY_SCAN_CODE_ENTER) {
 				retval = g_menu_selected;
 				done = 1;
 			}
 
 			/* TODO: ... */
-			if (g_action == ACTION_ID_UP) {
+			if (g_action_id == KEY_SCAN_CODE_ARROW_UP) {
 				if (g_menu_selected-- == 1)
 					g_menu_selected = positions;
 			}
 
-			if (g_action == ACTION_ID_DOWN) {
+			if (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) {
 				if (g_menu_selected++ == positions)
 					g_menu_selected = 1;
 			}
@@ -749,11 +756,11 @@ signed int GUI_menu_input(const signed int positions, const signed int h_lines, 
 
 				/* in yes-no-mode, answer "Ja" (yes) can be selected with the 'J' key,
 				 * and answer "Nein" (no) can be selected with the 'N' key. */
-				if (g_action == ACTION_ID_J) {
+				if (g_action_id == KEY_SCAN_CODE_Y) {
 
 					retval = done = 1;
 
-				} else if (g_action == ACTION_ID_N) {
+				} else if (g_action_id == KEY_SCAN_CODE_N) {
 
 					retval = 2;
 					done = 1;
@@ -776,7 +783,7 @@ signed int GUI_menu_input(const signed int positions, const signed int h_lines, 
 		do {
 			vsync_or_key(10000);
 
-		} while (g_action == 0);
+		} while (g_action_id == 0);
 
 		retval = -1;
 	}
@@ -871,7 +878,7 @@ signed int GUI_radio(char *header, const signed int options, ...)
 	g_textline_posy = y_bak;
 	g_textline_maxlen = ml_bak;
 	g_txt_tabpos[0] = l10;
-	g_action = g_dialogbox_lock = 0;
+	g_action_id = g_dialogbox_lock = 0;
 	g_update_statusline = usl_bak;
 
 	return retval;

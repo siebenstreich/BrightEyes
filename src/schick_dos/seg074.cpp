@@ -112,7 +112,7 @@ void show_automap(void)
 
 			handle_gui_input();
 
-			if ((g_mouse_rightclick_event) || (g_action == ACTION_ID_PAGE_UP)) {
+			if ((g_mouse_rightclick_event) || (g_action_id == KEY_SCAN_CODE_PAGE_UP)) {
 
 				if (g_map_size_x == 16) {
 
@@ -125,13 +125,13 @@ void show_automap(void)
 				}
 
 				if (l_di != -2) {
-					g_action = l_di + ACTION_ID_ICON_1;
+					g_action_id = l_di + ACTION_ID_ICON_1;
 				}
 			}
 
 			if (g_map_size_x != 16) {
 
-				if ((g_action == ACTION_ID_ICON_1) || (g_action == ACTION_ID_LEFT)) {
+				if ((g_action_id == ACTION_ID_ICON_1) || (g_action_id == KEY_SCAN_CODE_ARROW_LEFT)) {
 
 					if (l_si > 0) {
 						render_automap(--l_si);
@@ -139,7 +139,7 @@ void show_automap(void)
 					}
 				}
 
-				if ((g_action == ACTION_ID_ICON_2) || (g_action == ACTION_ID_RIGHT)) {
+				if ((g_action_id == ACTION_ID_ICON_2) || (g_action_id == KEY_SCAN_CODE_ARROW_RIGHT)) {
 
 					if (l_si < 16) {
 						render_automap(++l_si);
@@ -148,8 +148,8 @@ void show_automap(void)
 				}
 			}
 
-			if (((g_action == ACTION_ID_ICON_1) && (g_map_size_x == 16)) ||
-				((g_action == ACTION_ID_ICON_3) && (g_map_size_x != 16)))
+			if (((g_action_id == ACTION_ID_ICON_1) && (g_map_size_x == 16)) ||
+				((g_action_id == ACTION_ID_ICON_3) && (g_map_size_x != 16)))
 			{
 				done = 1;
 			}
@@ -540,7 +540,7 @@ signed int select_teleport_dest(void)
 	do {
 		handle_input();
 
-		if ((g_mouse_rightclick_event) || (g_action == ACTION_ID_PAGE_UP)) {
+		if ((g_mouse_rightclick_event) || (g_action_id == KEY_SCAN_CODE_PAGE_UP)) {
 
 			if (g_map_size_x == 16) {
 				answer = GUI_radio(get_ttx(616), 1, get_ttx(617)) - 1;
@@ -549,11 +549,11 @@ signed int select_teleport_dest(void)
 			}
 
 			if (answer != -2) {
-				g_action = (answer + ACTION_ID_ICON_1);
+				g_action_id = (answer + ACTION_ID_ICON_1);
 			}
 		}
 
-		if ((g_action == ACTION_ID_LEFT) &&
+		if ((g_action_id == KEY_SCAN_CODE_ARROW_LEFT) &&
 			(g_automap_selx > 0) &&
 			is_discovered(g_automap_selx - 1, g_automap_sely))
 		{
@@ -561,7 +561,7 @@ signed int select_teleport_dest(void)
 			render_automap(l_si);
 			draw_automap_to_screen();
 
-		} else if ((g_action == ACTION_ID_UP) &&
+		} else if ((g_action_id == KEY_SCAN_CODE_ARROW_UP) &&
 			(g_automap_sely > 0) &&
 			is_discovered(g_automap_selx, g_automap_sely - 1))
 		{
@@ -569,7 +569,7 @@ signed int select_teleport_dest(void)
 			render_automap(l_si);
 			draw_automap_to_screen();
 
-		} else if ((g_action == ACTION_ID_RIGHT) &&
+		} else if ((g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) &&
 			(g_map_size_x - 1 > g_automap_selx) &&
 			is_discovered(g_automap_selx + 1, g_automap_sely))
 		{
@@ -577,7 +577,7 @@ signed int select_teleport_dest(void)
 			render_automap(l_si);
 			draw_automap_to_screen();
 
-		} else if ((g_action == ACTION_ID_DOWN) &&
+		} else if ((g_action_id == KEY_SCAN_CODE_ARROW_DOWN) &&
 			(g_automap_sely < 16) &&
 			is_discovered(g_automap_selx, g_automap_sely + 1))
 		{
@@ -588,19 +588,19 @@ signed int select_teleport_dest(void)
 
 		if (g_map_size_x != 16) {
 
-			if ((g_action == ACTION_ID_ICON_1) && (l_si > 0)) {
+			if ((g_action_id == ACTION_ID_ICON_1) && (l_si > 0)) {
 				render_automap(--l_si);
 				draw_automap_to_screen();
 			}
 
-			if ((g_action == ACTION_ID_ICON_2) && (l_si < 16)) {
+			if ((g_action_id == ACTION_ID_ICON_2) && (l_si < 16)) {
 				render_automap(++l_si);
 				draw_automap_to_screen();
 			}
 		}
 
-		if (((g_action == ACTION_ID_ICON_1) && (g_map_size_x == 16)) ||
-			((g_action == ACTION_ID_ICON_3) && (g_map_size_x != 16)))
+		if (((g_action_id == ACTION_ID_ICON_1) && (g_map_size_x == 16)) ||
+			((g_action_id == ACTION_ID_ICON_3) && (g_map_size_x != 16)))
 		{
 			done = 1;
 		}

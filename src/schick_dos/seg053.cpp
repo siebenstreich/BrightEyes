@@ -145,7 +145,7 @@ void do_healer(void)
 
 		handle_gui_input();
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			g_textbox_width = 4;
 
@@ -154,16 +154,16 @@ void do_healer(void)
 			g_textbox_width = 3;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_4) {
+		if (g_action_id == ACTION_ID_ICON_4) {
 			leave_healer = 1;
 			continue;
 		}
 
-		if (g_action == ACTION_ID_ICON_1) {
+		if (g_action_id == ACTION_ID_ICON_1) {
 
 			/* Heal Wounds */
 
@@ -226,7 +226,7 @@ void do_healer(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_2) {
+		} else if (g_action_id == ACTION_ID_ICON_2) {
 
 			/* Cure Disease */
 			money = get_party_money();
@@ -288,7 +288,7 @@ void do_healer(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_3) {
+		} else if (g_action_id == ACTION_ID_ICON_3) {
 
 			/* Heal Poison */
 			money = get_party_money();

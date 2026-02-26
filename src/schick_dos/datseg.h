@@ -456,7 +456,7 @@ struct struct_fighter {
 	signed char y1;
 	signed char x2;
 	signed char y2;
-	signed char reload; 	/* {0, -1	= update gfx data} */
+	signed char reload; 	/* {0, -1 = update gfx data} */
 	signed char ani_track_id_base;	/* 0xe274, 0xe2a8, 0xd8ce */
 	signed char ani_track_id_weapon;	/* 0xe274 */
 	signed char id;		/* position in g_fig_list_array */
@@ -2026,8 +2026,8 @@ extern signed int g_ani_unknown1;	// ds:0xc3eb; seg027
 extern signed int g_ani_unknown2;	// ds:0xc3e9; seg027
 extern signed int g_ani_width;		// ds:0xc3e7; seg004
 extern HugePt g_buffer9_ptr;		// ds:0xc3db; seg004-seg120
-extern signed int g_action;		// ds:0xc3d9; seg002, seg025-seg097
-extern signed int g_bioskey_event;	// ds:0xc3d7; seg002, seg097
+extern signed int g_action_id;		// ds:0xc3d9; seg002, seg025-seg097
+extern signed int g_keystroke_ascii_code;	// ds:0xc3d7; seg002, seg097
 extern signed int g_mouse1_event2;	// ds:0xc3d5; seg002, seg004, seg025, seg049, seg066, seg097
 extern signed int g_mouse_rightclick_event;	// ds:0xc3d3; seg002, seg025-seg097
 extern signed int g_mouse_leftclick_event;	// ds:0xc3d1; seg002, seg034, seg093, seg097
@@ -2035,7 +2035,7 @@ extern signed int g_mouse1_doubleclick;		// ds:0xc3cf; seg002, seg048
 extern signed int g_update_statusline;		// ds:0xc3cb; seg002, seg004, seg026, seg029, seg046, seg097
 extern signed int g_unused_spinlock_flag;	// ds:0xc3cb; seg002, seg004
 extern signed int g_have_mouse;		// ds:0xc3c7; seg002-seg058
-extern signed int g_bioskey_event10;	// ds:0xc3c5; seg002, seg097
+extern signed int g_game_paused_flag;	// ds:0xc3c5; seg002, seg097
 extern signed int g_game_state;		// ds:0xc3c1; seg002-seg116
 extern int16_t g_random_schick_seed2;	// ds:0xc3bf; seg004, seg007
 extern char **g_text_ltx_index;		// ds:0xc3b5;

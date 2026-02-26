@@ -230,7 +230,7 @@ signed char FIG_cb_select_target(signed int *px, signed int *py, const signed in
 	do {
 		handle_input();
 
-		if ((g_action == ACTION_ID_ESC) || g_mouse_rightclick_event) {
+		if ((g_action_id == KEY_SCAN_CODE_ESC) || g_mouse_rightclick_event) {
 
 			/* cancel */
 
@@ -247,8 +247,8 @@ signed char FIG_cb_select_target(signed int *px, signed int *py, const signed in
 
 		from_kbd = 0;
 
-		if ((g_action == ACTION_ID_UP) || (g_action == ACTION_ID_DOWN) ||
-			(g_action == ACTION_ID_RIGHT) || (g_action == ACTION_ID_LEFT))
+		if ((g_action_id == KEY_SCAN_CODE_ARROW_UP) || (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) ||
+			(g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) || (g_action_id == KEY_SCAN_CODE_ARROW_LEFT))
 		{
 			from_kbd = 1;
 
@@ -259,47 +259,47 @@ signed char FIG_cb_select_target(signed int *px, signed int *py, const signed in
 
 			if (((y_diff > 0) && (x_diff <= -10)) || ((x_diff < 0) && (y_diff >= 5)))
 			{
-				g_action = ACTION_ID_DOWN;
+				g_action_id = KEY_SCAN_CODE_ARROW_DOWN;
 
 			} else if (((y_diff < 0) && (x_diff >= 10)) || ((x_diff > 0) && (y_diff <= -5)))
 			{
-				g_action = ACTION_ID_UP;
+				g_action_id = KEY_SCAN_CODE_ARROW_UP;
 
 			} else if (((y_diff > 0) && (x_diff >= 10)) || ((x_diff > 0) && (y_diff >= 5)))
 			{
-				g_action = ACTION_ID_RIGHT;
+				g_action_id = KEY_SCAN_CODE_ARROW_RIGHT;
 
 			} else if (((y_diff < 0) && (x_diff <= -10)) ||	((x_diff < 0) && (y_diff <= -5)))
 			{
-				g_action = ACTION_ID_LEFT;
+				g_action_id = KEY_SCAN_CODE_ARROW_LEFT;
 			}
 		}
 
 		if (g_mouse_leftclick_event) {
 
-			g_action = ACTION_ID_RETURN;
+			g_action_id = KEY_SCAN_CODE_ENTER;
 			g_mouse_leftclick_event = 0;
 		}
 
-		if (g_action == ACTION_ID_RIGHT) {
+		if (g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) {
 
 			if (FIG_check_hero_attack(x, y, *px, *py, 1, 0, max_range)) {
 				(*px)++;
 			}
 
-		} else if (g_action == ACTION_ID_LEFT) {
+		} else if (g_action_id == KEY_SCAN_CODE_ARROW_LEFT) {
 
 			if (FIG_check_hero_attack(x, y, *px, *py, -1, 0, max_range)) {
 				(*px)--;
 			}
 
-		} else if (g_action == ACTION_ID_UP) {
+		} else if (g_action_id == KEY_SCAN_CODE_ARROW_UP) {
 
 			if (FIG_check_hero_attack(x, y, *px, *py, 0, 1, max_range)) {
 				(*py)++;
 			}
 
-		} else if (g_action == ACTION_ID_DOWN) {
+		} else if (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) {
 
 			if (FIG_check_hero_attack(x, y, *px, *py, 0, -1, max_range)) {
 				(*py)--;
@@ -349,7 +349,7 @@ signed char FIG_cb_select_target(signed int *px, signed int *py, const signed in
 			FIG_set_gfx();
 		}
 
-	} while (g_action != ACTION_ID_RETURN);
+	} while (g_action_id != KEY_SCAN_CODE_ENTER);
 
 	FIG_remove_from_list(g_fig_cb_selector_id[0], 0);
 
@@ -606,8 +606,8 @@ void FIG_move_hero(struct struct_hero *hero, const signed int hero_pos, signed i
 		curr_y = sel_y;
 		from_kbd = 0;
 
-		if ((g_action == ACTION_ID_UP) || (g_action == ACTION_ID_DOWN) ||
-				(g_action == ACTION_ID_RIGHT) || (g_action == ACTION_ID_LEFT))
+		if ((g_action_id == KEY_SCAN_CODE_ARROW_UP) || (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) ||
+				(g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) || (g_action_id == KEY_SCAN_CODE_ARROW_LEFT))
 		{
 			from_kbd = 1;
 
@@ -620,7 +620,7 @@ void FIG_move_hero(struct struct_hero *hero, const signed int hero_pos, signed i
 
 				if ((mouse_cb_x >= -1) && (mouse_cb_x <= 24) && (mouse_cb_y >= -1) && (mouse_cb_y <= 24)) {
 
-					g_action = ACTION_ID_VOID;
+					g_action_id = ACTION_ID_VOID;
 				}
 			}
 		}
@@ -628,18 +628,18 @@ void FIG_move_hero(struct struct_hero *hero, const signed int hero_pos, signed i
 		if (g_mouse_leftclick_event) {
 
 			g_mouse_leftclick_event = 0;
-			g_action = ACTION_ID_RETURN;
+			g_action_id = KEY_SCAN_CODE_ENTER;
 		}
 
-		if ((g_action == ACTION_ID_RIGHT) && (sel_x < 23)) {
+		if ((g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) && (sel_x < 23)) {
 			sel_x++;
-		} else if ((g_action == ACTION_ID_LEFT) && (sel_x >= 0)) {
+		} else if ((g_action_id == KEY_SCAN_CODE_ARROW_LEFT) && (sel_x >= 0)) {
 			sel_x--;
-		} else if ((g_action == ACTION_ID_UP) && (sel_y <= 23)) {
+		} else if ((g_action_id == KEY_SCAN_CODE_ARROW_UP) && (sel_y <= 23)) {
 			sel_y++;
-		} else if ((g_action == ACTION_ID_DOWN) && (sel_y >= 0)) {
+		} else if ((g_action_id == KEY_SCAN_CODE_ARROW_DOWN) && (sel_y >= 0)) {
 			sel_y--;
-		} else if (g_action == ACTION_ID_VOID) {
+		} else if (g_action_id == ACTION_ID_VOID) {
 			sel_x = mouse_cb_x;
 			sel_y = mouse_cb_y;
 		}
@@ -887,14 +887,14 @@ void FIG_move_hero(struct struct_hero *hero, const signed int hero_pos, signed i
 			set_textcolor(fg_bak, bg_bak);
 		}
 
-		if ((g_mouse_rightclick_event) || (g_action == ACTION_ID_ESC)) {
+		if ((g_mouse_rightclick_event) || (g_action_id == KEY_SCAN_CODE_ESC)) {
 
 			g_mouse_rightclick_event = 0;
-			g_action = ACTION_ID_RETURN;
+			g_action_id = KEY_SCAN_CODE_ENTER;
 			problem = 5;
 		}
 
-	} while (g_action != ACTION_ID_RETURN);
+	} while (g_action_id != KEY_SCAN_CODE_ENTER);
 
 	get_textcolor(&fg_bak, &bg_bak);
 	set_textcolor(255, 0);

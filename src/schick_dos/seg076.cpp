@@ -491,7 +491,7 @@ signed int DNG_step(void)
 
 	handle_gui_input();
 
-	if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP)
+	if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP)
 	{
 		tw_bak = g_textbox_width;
 		g_textbox_width = 3;
@@ -521,7 +521,7 @@ signed int DNG_step(void)
 
 		if (l_di != -2)
 		{
-			g_action = l_di + ACTION_ID_ICON_1;
+			g_action_id = l_di + ACTION_ID_ICON_1;
 		}
 
 		g_textbox_width = tw_bak;
@@ -529,12 +529,12 @@ signed int DNG_step(void)
 
 	l_di = 0;
 
-	if (g_action == ACTION_ID_ICON_1)
+	if (g_action_id == ACTION_ID_ICON_1)
 	{
 		GRP_split();
 		g_can_merge_group = can_merge_group();
 
-	} else if (g_action == ACTION_ID_ICON_2)
+	} else if (g_action_id == ACTION_ID_ICON_2)
 	{
 		/* merge groups or reach hands through the mirror */
 		pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
@@ -554,42 +554,42 @@ signed int DNG_step(void)
 			/* TODO: if a "dark" group was merged with a "lighted" group, make group "lighted". */
 		}
 
-	} else if (g_action == ACTION_ID_ICON_3)
+	} else if (g_action_id == ACTION_ID_ICON_3)
 	{
 		GRP_switch_to_next(0);
 
-	} else if (g_action == ACTION_ID_ICON_4)
+	} else if (g_action_id == ACTION_ID_ICON_4)
 	{
 		game_options();
 
-	} else if (g_action == ACTION_ID_ICON_5)
+	} else if (g_action_id == ACTION_ID_ICON_5)
 	{
 		show_automap();
 
-	} else if (g_action == ACTION_ID_ICON_6)
+	} else if (g_action_id == ACTION_ID_ICON_6)
 	{
 		if (select_magic_user() > 0)
 		{
 			g_dng_refresh_direction = -1;
 		}
 
-	} else if (g_action == ACTION_ID_ICON_7 && g_dng_extra_action == DNG_MENU_MODE_PLAIN)
+	} else if (g_action_id == ACTION_ID_ICON_7 && g_dng_extra_action == DNG_MENU_MODE_PLAIN)
 	{
 		gs_town_loc_type = LOCTYPE_AREA_CAMP;
 		g_area_camp_area_type = AREA_TYPE_DUNGEON; /* AREA_CAMP takes place in dungeon */
 		l_di = 1;
 
-	} else if (g_action == ACTION_ID_LEFT)
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_LEFT)
 	{
 		update_direction(3);
 		g_new_menu_icons[6] = g_new_menu_icons[7] = g_new_menu_icons[8] = MENU_ICON_NONE;
 
-	} else if (g_action == ACTION_ID_RIGHT)
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_RIGHT)
 	{
 		update_direction(1);
 		g_new_menu_icons[6] = g_new_menu_icons[7] = g_new_menu_icons[8] = MENU_ICON_NONE;
 
-	} else if (g_action == ACTION_ID_UP)
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_UP)
 	{
 		if ((dng_tile = div16(g_steptarget_front)) == DNG_TILE_SEMIPERMEABLE_WALL)
 		{
@@ -612,7 +612,7 @@ signed int DNG_step(void)
 			no_way();
 		}
 
-	} else if (g_action == ACTION_ID_DOWN)
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_DOWN)
 	{
 		if ((dng_tile = div16(g_steptarget_back)) != DNG_TILE_WALL &&
 				dng_tile != DNG_TILE_CLOSED_DOOR &&
@@ -625,14 +625,14 @@ signed int DNG_step(void)
 			no_way();
 		}
 
-	} else if (g_action >= ACTION_ID_ICON_7 &&
-			g_action <= ACTION_ID_ICON_9 &&
-			g_new_menu_icons[g_action - ACTION_ID_ICON_1] != -1)
+	} else if (g_action_id >= ACTION_ID_ICON_7 &&
+			g_action_id <= ACTION_ID_ICON_9 &&
+			g_new_menu_icons[g_action_id - ACTION_ID_ICON_1] != -1)
 	{
 		if (g_dng_extra_action == DNG_MENU_MODE_OPEN_DOOR || g_dng_extra_action == DNG_MENU_MODE_CLOSE_DOOR || g_dng_extra_action == DNG_MENU_MODE_UNLOCK_DOOR)
 		{
-			DNG_door(g_action);
-		} else if (g_action == ACTION_ID_ICON_7 && g_dng_extra_action == DNG_MENU_MODE_OPEN_CHEST)
+			DNG_door(g_action_id);
+		} else if (g_action_id == ACTION_ID_ICON_7 && g_dng_extra_action == DNG_MENU_MODE_OPEN_CHEST)
 		{
 			loot_special_chest(1);
 
@@ -652,7 +652,7 @@ signed int DNG_step(void)
 				*(g_dng_map_ptr + MAP_POS(x,y)) |= (0x02);
 				/* set bit 1 'unlocked' */
 			}
-		} else if (g_action == ACTION_ID_ICON_7 && (!gs_dng15_lever_south || !gs_dng15_lever_north))
+		} else if (g_action_id == ACTION_ID_ICON_7 && (!gs_dng15_lever_south || !gs_dng15_lever_north))
 		{
 			DNG15_riddle();
 		}

@@ -855,7 +855,7 @@ signed int do_travel_mode(void)
 			while (1) {
 				handle_input();
 
-				if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP)
+				if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP)
 				{
 					i = 0;
 					while ((tmp1 = signpost_ptr->linked_travel_routes[i]) != 0xff)

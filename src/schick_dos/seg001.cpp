@@ -250,7 +250,16 @@ signed int CD_bioskey(const signed int cmd)
 {
 #if defined(__BORLANDC__)
 	CD_enable_repeat();
+
 	return bioskey(cmd);
+	/*
+	 * bioskey invokes the BIOS keyboard service INT 16h, with function AH value given by 'cmd'
+	 * see https://en.wikipedia.org/wiki/INT_16H
+	 * cmd == 0 -> wait until a key is pressed,
+	 *             return BIOS scan code (hardware key identifier) as low byte and ASCII code as high byte
+	 * cmd == 1 -> get the state of the keyboard buffer
+	 *             return 0 if no key is waiting, otherwise return keycode as for cmd == 0
+	 */
 #else
 	return 0;
 #endif

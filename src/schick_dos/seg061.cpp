@@ -135,7 +135,7 @@ void do_temple(void)
 		handle_gui_input();
 
 		/* input window */
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			answer = GUI_radio(get_ttx(225), 9,
 						get_ttx(226), get_ttx(227), get_ttx(293),
@@ -143,29 +143,29 @@ void do_temple(void)
 						get_ttx(620), get_ttx(296), get_ttx(231)) - 1;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_9) {
+		if (g_action_id == ACTION_ID_ICON_9) {
 			/* leave temple */
 			if (!gs_group_member_counts[gs_active_group_id]) {
 				GUI_output(get_ttx(232));
 			} else {
 				done = 1;
 			}
-		} else if (g_action == ACTION_ID_ICON_1) {
+		} else if (g_action_id == ACTION_ID_ICON_1) {
 			/* add character */
 			char_add(gs_town_typeindex);
 			draw_status_line();
-		} else if (g_action == ACTION_ID_ICON_2) {
+		} else if (g_action_id == ACTION_ID_ICON_2) {
 			/* let go character */
 			char_letgo(gs_town_typeindex);
 			draw_status_line();
-		} else if (g_action == ACTION_ID_ICON_3) {
+		} else if (g_action_id == ACTION_ID_ICON_3) {
 			/* erase character */
 			char_erase();
-		} else if (g_action == ACTION_ID_ICON_4) {
+		} else if (g_action_id == ACTION_ID_ICON_4) {
 			/* load game */
 			if (gs_town_typeindex != 58) {
 
@@ -185,7 +185,7 @@ void do_temple(void)
 			} else {
 				GUI_output(get_ttx(817));
 			}
-		} else if (g_action == ACTION_ID_ICON_5) {
+		} else if (g_action_id == ACTION_ID_ICON_5) {
 
 			/* save game */
 			if (gs_town_typeindex != 58) {
@@ -200,7 +200,7 @@ void do_temple(void)
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_6) {
+		if (g_action_id == ACTION_ID_ICON_6) {
 
 			/* quit game */
 			if (GUI_bool(get_ttx(299))) {
@@ -210,7 +210,7 @@ void do_temple(void)
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_7) {
+		if (g_action_id == ACTION_ID_ICON_7) {
 
 			/* ask for a miracle */
 			if (!gs_group_member_counts[gs_active_group_id]) {
@@ -220,7 +220,7 @@ void do_temple(void)
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_8) {
+		if (g_action_id == ACTION_ID_ICON_8) {
 
 			/* make a donation */
 			if (!gs_group_member_counts[gs_active_group_id]) {

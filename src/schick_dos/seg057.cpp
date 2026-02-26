@@ -288,24 +288,24 @@ void sell_screen(struct merchant_descr *merchant_descr)
 			GUI_print_loc_line(GUI_name_base_form(g_itemsname[g_item_selector_sell[item_selector_pos + item_selector_page_offset].item_id]));
 		}
 
-		if (g_mouse_rightclick_event  || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event  || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			answer = GUI_radio(NULL, 5, get_ttx(433), get_ttx(435), get_ttx(436), get_ttx(446), get_ttx(437)) - 1;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_3 && item_selector_page_offset) {
+		if (g_action_id == ACTION_ID_ICON_3 && item_selector_page_offset) {
 			flag_unknown_3 = 1;
 			item_selector_page_offset -= 15;
-		} else if (g_action == ACTION_ID_ICON_2 && g_item_selector_sell[item_selector_page_offset + 15].item_id) {
+		} else if (g_action_id == ACTION_ID_ICON_2 && g_item_selector_sell[item_selector_page_offset + 15].item_id) {
 			flag_unknown_3 = 1;
 			item_selector_page_offset += 15;
 		}
 
-		if (g_action == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK || g_action == ACTION_ID_RETURN) {
+		if (g_action_id == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK || g_action_id == KEY_SCAN_CODE_ENTER) {
 
 			/* Is ACTION == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK possible at all?
 			 * ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK can be written to ACTION in buy_screen(), but where should it show up in sell_screen()?? */
@@ -409,7 +409,7 @@ void sell_screen(struct merchant_descr *merchant_descr)
 		}
 
 
-		if (g_action == ACTION_ID_ICON_1 && price) {
+		if (g_action_id == ACTION_ID_ICON_1 && price) {
 
 			j = nice = 0;
 			for (items_x = 0; items_x <= 6; items_x++) {
@@ -511,9 +511,9 @@ void sell_screen(struct merchant_descr *merchant_descr)
 			}
 		}
 
-		if (g_action >= 241 && g_action <= 247) {
+		if (g_action_id >= ACTION_ID_HERO_1 && g_action_id <= ACTION_ID_HERO_NPC) {
 
-			hero_pos = g_action - 241;
+			hero_pos = g_action_id - ACTION_ID_HERO_1;
 			hero3 = get_hero(hero_pos);
 
 			if ((hero3->typus != HERO_TYPE_NONE) && (hero3->group_id == gs_active_group_id))
@@ -526,11 +526,11 @@ void sell_screen(struct merchant_descr *merchant_descr)
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_4) {
+		if (g_action_id == ACTION_ID_ICON_4) {
 			flag_unknown_1 = 1;
 		}
 
-		if (g_action == ACTION_ID_ICON_5) {
+		if (g_action_id == ACTION_ID_ICON_5) {
 			done = 1;
 		}
 

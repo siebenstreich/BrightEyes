@@ -533,7 +533,7 @@ signed int enter_location_daspota(void)
 					do {
 						handle_gui_input();
 
-					} while (g_action == 0 && g_mouse1_event2 == 0);
+					} while (g_action_id == 0 && g_mouse1_event2 == 0);
 
 					g_mouse1_event2 = 0;
 				}
@@ -1275,7 +1275,7 @@ signed int town_step(void)
 
 	handle_gui_input();
 
-	if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+	if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 		for (i = options = 0; i < 9; i++) {
 			if (g_new_menu_icons[i] != MENU_ICON_NONE) {
@@ -1289,59 +1289,59 @@ signed int town_step(void)
 				get_ttx(306), get_ttx(569)) - 1;
 
 		if (i != -2) {
-			g_action = i + ACTION_ID_ICON_1;
+			g_action_id = i + ACTION_ID_ICON_1;
 		}
 	}
 
 	i = 0;
 
-	if (g_action == ACTION_ID_ICON_1) {
+	if (g_action_id == ACTION_ID_ICON_1) {
 
 		GRP_split();
 		g_can_merge_group = can_merge_group();
 
-	} else if (g_action == ACTION_ID_ICON_2) {
+	} else if (g_action_id == ACTION_ID_ICON_2) {
 
 		GRP_merge();
 		g_can_merge_group = -1;
 
-	} else if (g_action == ACTION_ID_ICON_3) {
+	} else if (g_action_id == ACTION_ID_ICON_3) {
 
 		GRP_switch_to_next(0);
 		i = 1;
 
-	} else if (g_action == ACTION_ID_ICON_4) {
+	} else if (g_action_id == ACTION_ID_ICON_4) {
 
 		game_options();
 
-	} else if (g_action == ACTION_ID_ICON_5) {
+	} else if (g_action_id == ACTION_ID_ICON_5) {
 
 		show_automap();
 
-	} else if (g_action == ACTION_ID_ICON_6) {
+	} else if (g_action_id == ACTION_ID_ICON_6) {
 
 		select_magic_user();
 
-	} else if (g_action == ACTION_ID_ICON_7) {
+	} else if (g_action_id == ACTION_ID_ICON_7) {
 
 		gs_town_loc_type = LOCTYPE_AREA_CAMP;
 		g_area_camp_area_type = AREA_TYPE_TOWN; /* AREA_CAMP takes place in a town */
 		i = 1;
 
-	} else if (g_action == ACTION_ID_ICON_8 && g_new_menu_icons[7] != MENU_ICON_NONE) {
+	} else if (g_action_id == ACTION_ID_ICON_8 && g_new_menu_icons[7] != MENU_ICON_NONE) {
 
 		gs_town_loc_type = LOCTYPE_MARKET;
 		i = 1;
 
-	} else if (g_action == ACTION_ID_LEFT) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_LEFT) {
 
 		update_direction(3);
 
-	} else if (g_action == ACTION_ID_RIGHT) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) {
 
 		update_direction(1);
 
-	} else if (g_action == ACTION_ID_UP) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_UP) {
 
 		bi = get_border_index(g_steptarget_front);
 
@@ -1353,7 +1353,7 @@ signed int town_step(void)
 			no_way();
 		}
 
-	} else if (g_action == ACTION_ID_DOWN) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) {
 
 		bi = get_border_index(g_steptarget_back);
 

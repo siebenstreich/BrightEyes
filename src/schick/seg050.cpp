@@ -501,7 +501,7 @@ void level_up(const signed int hero_pos)
 	sprintf(g_dtp2, get_ttx(411), hero->alias);
 	GUI_output(g_dtp2);
 
-	g_action = 0;
+	g_action_id = 0;
 	g_status_page_mode = 1;
 
 	for (i = 0; i < SP__END; i++) {

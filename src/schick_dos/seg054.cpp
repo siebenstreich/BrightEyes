@@ -426,7 +426,7 @@ void do_inn(void)
 
 		handle_gui_input();
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			answer = GUI_radio(get_ttx(345), g_combo_mode == 0 ? 7 : 8,
 						get_ttx(343), get_ttx(470),
@@ -435,16 +435,16 @@ void do_inn(void)
 						get_ttx(347), get_ttx(823)) - 1;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_1) {
+		if (g_action_id == ACTION_ID_ICON_1) {
 
 			talk_inn();
 			g_request_refresh = 1;
 
-		} else if (g_action == ACTION_ID_ICON_2) { /* order food */
+		} else if (g_action_id == ACTION_ID_ICON_2) { /* order food */
 
 			price = count_heroes_in_group() * (6L - inn->quality / 4L);
 
@@ -501,7 +501,7 @@ void do_inn(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_3 && g_sleep_quality == -1) {
+		} else if (g_action_id == ACTION_ID_ICON_3 && g_sleep_quality == -1) {
 
 			price_schlafsaal = 5;
 			price_einzelzimmer = 30;
@@ -558,7 +558,7 @@ void do_inn(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_4) {
+		} else if (g_action_id == ACTION_ID_ICON_4) {
 
 			if (g_sleep_quality != -1) {
 				GUI_use_talent2(0, get_ttx(395));
@@ -567,7 +567,7 @@ void do_inn(void)
 				GUI_output(get_ttx(346));
 			}
 
-		} else if (g_action == ACTION_ID_ICON_5) {
+		} else if (g_action_id == ACTION_ID_ICON_5) {
 
 			if (g_sleep_quality != -1) {
 
@@ -594,7 +594,7 @@ void do_inn(void)
 				GUI_output(get_ttx(346));
 			}
 
-		} else if (g_action == ACTION_ID_ICON_6) {
+		} else if (g_action_id == ACTION_ID_ICON_6) {
 
 			if (g_sleep_quality != -1 && g_booked_inn_days > 0) {
 
@@ -647,7 +647,7 @@ void do_inn(void)
 			} else {
 				GUI_output(get_ttx(346));
 			}
-		} else if (g_action == ACTION_ID_ICON_7) {
+		} else if (g_action_id == ACTION_ID_ICON_7) {
 
 			if (g_sleep_quality != -1) {
 
@@ -660,7 +660,7 @@ void do_inn(void)
 				g_combo_mode = 0;
 			}
 
-		} else if (g_action == ACTION_ID_ICON_8 && g_combo_mode != 0) {
+		} else if (g_action_id == ACTION_ID_ICON_8 && g_combo_mode != 0) {
 
 			const struct inn_descr *tavern = &g_tavern_descr_table[gs_town_typeindex];
 
@@ -716,6 +716,6 @@ void TLK_inn(const signed int state)
 		/* CH - 3 */
 		g_dialog_next_state = (test_attrib(hero, ATTRIB_CH, -3) > 0 ? 16 : 17);
 	} else if (state == 17) {
-		g_action = ACTION_ID_ICON_2;
+		g_action_id = ACTION_ID_ICON_2;
 	}
 }

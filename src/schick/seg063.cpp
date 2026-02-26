@@ -255,16 +255,16 @@ void do_harbor(void)
 
 		handle_gui_input();
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			answer = GUI_radio(get_tx(9), 4,get_tx(10), get_tx(11), get_tx(12), get_tx(13)) - 1;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_1) {
+		if (g_action_id == ACTION_ID_ICON_1) {
 			/* book passage */
 
 			answer = prepare_passages();
@@ -353,7 +353,7 @@ void do_harbor(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_2) {
+		} else if (g_action_id == ACTION_ID_ICON_2) {
 			/* Hafenmeister */
 
 			if (gs_day_timer <= HOURS(6) || gs_day_timer >= HOURS(21)) {
@@ -421,7 +421,7 @@ void do_harbor(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_3) {
+		} else if (g_action_id == ACTION_ID_ICON_3) {
 			/* enter booked ship */
 
 			if (gs_sea_travel_psgbooked_flag != 0xaa) {
@@ -515,7 +515,7 @@ void do_harbor(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_4) {
+		} else if (g_action_id == ACTION_ID_ICON_4) {
 			done = 1;
 		}
 

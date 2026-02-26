@@ -166,7 +166,7 @@ unsigned char g_unkn_077[6]; // ds:0xc3b9
 int16_t g_random_schick_seed2; // ds:0xc3bf
 signed int g_game_state; // ds:0xc3c1, see enum GAME_STATE_*
 unsigned char g_unkn_078[2]; // ds:0xc3c3
-signed int g_bioskey_event10; // ds:0xc3c5
+signed int g_game_paused_flag; // ds:0xc3c5 // game paused from pressing Ctrl + P
 signed int g_have_mouse; // ds:0xc3c7
 signed int g_unused_spinlock_flag; // ds:0xc3c9
 signed int g_update_statusline; // ds:0xc3cb
@@ -175,8 +175,8 @@ signed int g_mouse1_doubleclick; // ds:0xc3cf
 signed int g_mouse_leftclick_event; // ds:0xc3d1
 signed int g_mouse_rightclick_event; // ds:0xc3d3
 signed int g_mouse1_event2; // ds:0xc3d5
-signed int g_bioskey_event; // ds:0xc3d7
-signed int g_action; // ds:0xc3d9
+signed int g_keystroke_ascii_code; // ds:0xc3d7
+signed int g_action_id; // ds:0xc3d9
 HugePt g_buffer9_ptr; // ds:0xc3db, to buffer of size 180000 (or 203000 if LARGE_BUF), used for NVF
 unsigned char g_unkn_080[8]; // ds:0xc3df
 signed int g_ani_width; // ds:0xc3e7
@@ -1937,24 +1937,29 @@ signed int bioskey(const signed int cmd)
 
 void handle_gui_input(void)
 {
-	signed int l_in_key_ext;
+	signed int action_id;
 	signed int tw_bak;
 
-	g_bioskey_event = g_action = l_in_key_ext = 0;
+	g_keystroke_ascii_code = g_action_id = action_id = ACTION_ID_NONE;
 
 	herokeeping();
 
-	if (CD_bioskey(1)) {
+	if (CD_bioskey(1)) { /* check if a keystroke is waiting in the buffer. key stays in buffer. */
 
-		l_in_key_ext = (g_bioskey_event = bioskey(0)) >> 8;
-		g_bioskey_event &= 0xff;
+		/* bioskey(0) reads 2 byte BIOS scan key from the last keystroke and removes it from the buffer.
+		 * action_id stores higher byte (scan code).
+		 * g_keystroke_ascii_code stores lower byte (ASCII code).
+		 */
+		action_id = (g_keystroke_ascii_code = bioskey(0)) >> 8;
+		g_keystroke_ascii_code &= 0xff;
 
-		if (l_in_key_ext == 0x24) {
-			l_in_key_ext = 0x2c;
+		/* J is mapped to Y */
+		if (action_id == KEY_SCAN_CODE_J) {
+			action_id = KEY_SCAN_CODE_Y;
 		}
 
 		/* Ctrl + Q -> quit */
-		if ((g_bioskey_event == 0x11) && !g_pregame_state) {
+		if ((g_keystroke_ascii_code == ASCII_CODE_CTRL_Q) && !g_pregame_state) {
 			cleanup_game();
 
 			exit(0);
@@ -1969,26 +1974,26 @@ void handle_gui_input(void)
 		}
 
 		/* Ctrl + E */
-		if (g_bioskey_event == 5) {
+		if (g_keystroke_ascii_code == ASCII_CODE_CTRL_E) {
 			status_select_hero();
-			l_in_key_ext = 0;
+			action_id = ACTION_ID_NONE;
 		}
 
 		/* Ctrl + O -> swap heroes */
-		if (g_bioskey_event == 15) {
+		if (g_keystroke_ascii_code == ASCII_CODE_CTRL_O) {
 			GRP_swap_heroes();
-			l_in_key_ext = 0;
+			action_id = ACTION_ID_NONE;
 		}
 
 		/* Ctrl + S -> sound menu */
-		if ((g_bioskey_event == 0x13) && !g_dialogbox_lock) {
+		if ((g_keystroke_ascii_code == ASCII_CODE_CTRL_S) && !g_dialogbox_lock) {
 			sound_menu();
 		}
 
 		/* Ctrl + P -> pause game */
-		if ((g_bioskey_event == 0x10) && (g_bioskey_event10 == 0) && !g_dialogbox_lock && !g_pregame_state)
+		if ((g_keystroke_ascii_code == ASCII_CODE_CTRL_P) && (g_game_paused_flag == 0) && !g_dialogbox_lock && !g_pregame_state)
 		{
-			g_bioskey_event10 = 1;
+			g_game_paused_flag = 1;
 			g_timers_disabled++;
 			g_gui_text_centered = 1;
 			tw_bak = g_textbox_width;
@@ -1996,20 +2001,20 @@ void handle_gui_input(void)
 			GUI_output(g_pause_string);		/* P A U S E */
 			g_textbox_width = tw_bak;
 			g_gui_text_centered = 0;
-			g_bioskey_event10 = l_in_key_ext = g_bioskey_event = 0;
+			g_game_paused_flag = action_id = g_keystroke_ascii_code = 0;
 			g_timers_disabled--;
 		}
 	} else {
 		play_voc(ARCHIVE_FILE_FX1_VOC);
 		g_mouse1_event2 = 0;
-		l_in_key_ext = 0;
+		action_id = KEY_SCAN_CODE_NONE;
 
 		if (g_action_table_secondary) {
-			l_in_key_ext = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_secondary);
+			action_id = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_secondary);
 		}
 
-		if (!l_in_key_ext && g_action_table_primary) {
-			l_in_key_ext = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_primary);
+		if (!action_id && g_action_table_primary) {
+			action_id = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_primary);
 		}
 
 		if (g_have_mouse == 2) {
@@ -2026,15 +2031,15 @@ void handle_gui_input(void)
 			}
 		}
 
-		if ((l_in_key_ext >= 0xf1) && (l_in_key_ext <= 0xf8)) {
+		if ((action_id >= ACTION_ID_HERO_1) && (action_id <= ACTION_ID_HERO_NPC + 1)) { /* Original-Bug? Should this be '<= ACTION_ID_HERO_NPC'? */
 
 			if (g_mouse1_doubleclick) {
 
 				/* open character screen by double click on hero picture */
-				if ((get_hero(l_in_key_ext - 241)->typus != HERO_TYPE_NONE) && (get_hero(l_in_key_ext - 241)->group_id == gs_active_group_id))
+				if ((get_hero(action_id - ACTION_ID_HERO_1)->typus != HERO_TYPE_NONE) && (get_hero(action_id - ACTION_ID_HERO_1)->group_id == gs_active_group_id))
 				{
-					status_menu(l_in_key_ext - 241);
-					l_in_key_ext = 0;
+					status_menu(action_id - ACTION_ID_HERO_1);
+					action_id = ACTION_ID_NONE;
 					g_mouse1_doubleclick = 0;
 					g_mouse1_event2 = 0;
 				}
@@ -2042,20 +2047,20 @@ void handle_gui_input(void)
 			} else {
 				/* swap heroes by click - move mouse - click */
 				if (g_heroswap_allowed &&
-					(get_hero(l_in_key_ext - 241)->typus != HERO_TYPE_NONE) && (get_hero(l_in_key_ext - 241)->group_id == gs_active_group_id))
+					(get_hero(action_id - ACTION_ID_HERO_1)->typus != HERO_TYPE_NONE) && (get_hero(action_id - ACTION_ID_HERO_1)->group_id == gs_active_group_id))
 				{
 					/* the destination will be selected by a mouse klick in the following function call */
-					GRP_move_hero(l_in_key_ext - 241);
-					l_in_key_ext = 0;
+					GRP_move_hero(action_id - ACTION_ID_HERO_1);
+					action_id = ACTION_ID_NONE;
 					g_mouse1_doubleclick = 0;
 					g_mouse1_event2 = 0;
 				}
 			}
 
-		} else if (l_in_key_ext == 0xfd) {
+		} else if (action_id == ACTION_ID_CREDITS) {
 			/* Credits */
 
-			l_in_key_ext = 0;
+			action_id = ACTION_ID_NONE;
 			tw_bak = g_textbox_width;
 			g_textbox_width = 5;
 			g_gui_text_centered = 1;
@@ -2063,9 +2068,9 @@ void handle_gui_input(void)
 			g_gui_text_centered = 0;
 			g_textbox_width = tw_bak;
 
-		} else if (l_in_key_ext == 0xfc) {
+		} else if (action_id == ACTION_ID_CLOCK) {
 			/* Clock */
-			l_in_key_ext = 0;
+			action_id = ACTION_ID_NONE;
 			tw_bak = g_textbox_width;
 			g_textbox_width = 5;
 			g_gui_text_centered = 1;
@@ -2078,7 +2083,7 @@ void handle_gui_input(void)
 	}
 
 	mouse_motion();
-	g_action = l_in_key_ext;
+	g_action_id = action_id;
 }
 
 /**
@@ -2088,7 +2093,7 @@ void handle_gui_input(void)
  * \param   y the y-coordinate
  * \param   a pointer to a (-1)-terminated list of signed 2-byte-values.
  *          each block of 5 * 2 bytes is interpreted as the coordinates of a rectangle, and a return value,
-*           in the order lower-x-bound, upper-x-bound, lower-y-bound, upper-y-bound, return value
+ *          in the order lower-x-bound, upper-x-bound, lower-y-bound, upper-y-bound, return value
  * \return  if (x,y) is in one of the rectangles, return the return value of the first fitting rectangle.
  *          otherwise, return 0.
  */
@@ -2109,23 +2114,28 @@ signed int get_mouse_action(const signed int x, const signed int y, const struct
 
 void handle_input(void)
 {
-	signed int l_in_key_ext;
+	signed int action_id;
 
-	g_bioskey_event = g_action = l_in_key_ext = 0;
+	g_keystroke_ascii_code = g_action_id = action_id = ACTION_ID_NONE;
 
 	herokeeping();
 
-	if (CD_bioskey(1)) {
+	if (CD_bioskey(1)) { /* check if a keystroke is waiting in the buffer. key stays in buffer. */
 
-		l_in_key_ext = (g_bioskey_event = bioskey(0)) >> 8;
-		g_bioskey_event &= 0xff;
+		/* bioskey(0) reads 2 byte BIOS scan key from the last keystroke and removes it from the buffer.
+		 * action_id stores higher byte (scan code).
+		 * g_keystroke_ascii_code stores lower byte (ASCII code).
+		 */
+		action_id = (g_keystroke_ascii_code = bioskey(0)) >> 8;
+		g_keystroke_ascii_code &= 0xff;
 
-		if (l_in_key_ext == 0x24) {
-			l_in_key_ext = 0x2c;
+		/* J is mapped to Y */
+		if (action_id == KEY_SCAN_CODE_J) {
+			action_id = KEY_SCAN_CODE_Y;
 		}
 
 		/* Ctrl + Q -> quit */
-		if ((g_bioskey_event == 0x11) && !g_pregame_state) {
+		if ((g_keystroke_ascii_code == ASCII_CODE_CTRL_Q) && !g_pregame_state) {
 			cleanup_game();
 
 			exit(0);
@@ -2138,17 +2148,17 @@ void handle_input(void)
 		}
 
 		/* Ctrl + S -> sound menu */
-		if ((g_bioskey_event == 0x13) && !g_dialogbox_lock) {
+		if ((g_keystroke_ascii_code == ASCII_CODE_CTRL_S) && !g_dialogbox_lock) {
 			sound_menu();
 		}
 
 		/* Ctrl + P -> pause game */
 		/* TODO: use tw_bak here */
-		if ((g_bioskey_event == 0x10) && (g_bioskey_event10 == 0) &&
+		if ((g_keystroke_ascii_code == ASCII_CODE_CTRL_P) && (g_game_paused_flag == 0) &&
 			!g_dialogbox_lock && !g_pregame_state)
 		{
 			g_timers_disabled++;
-			g_bioskey_event10 = 1;
+			g_game_paused_flag = 1;
 			g_gui_text_centered = 1;
 			g_textbox_width = 2;
 			GUI_output(g_pause_string);		/* P A U S E */
@@ -2156,19 +2166,19 @@ void handle_input(void)
 			g_gui_text_centered = 0;
 			g_timers_disabled--;
 
-			g_bioskey_event10 = l_in_key_ext = g_bioskey_event = 0;
+			g_game_paused_flag = action_id = g_keystroke_ascii_code = 0;
 		}
 	} else {
 		play_voc(ARCHIVE_FILE_FX1_VOC);
 		g_mouse1_event2 = 0;
-		l_in_key_ext = 0;
+		action_id = ACTION_ID_NONE;
 
 		if (g_action_table_secondary) {
-			l_in_key_ext = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_secondary);
+			action_id = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_secondary);
 		}
 
-		if (!l_in_key_ext && g_action_table_primary) {
-			l_in_key_ext = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_primary);
+		if (!action_id && g_action_table_primary) {
+			action_id = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_primary);
 		}
 
 		if (g_have_mouse == 2) {
@@ -2189,7 +2199,7 @@ void handle_input(void)
 	}
 
 	mouse_motion();
-	g_action = l_in_key_ext;
+	g_action_id = action_id;
 }
 
 void flush_keyboard_queue_alt(void)
@@ -4054,7 +4064,7 @@ static void error_msg(char *msg)
 
 void wait_for_keypress(void)
 {
-	signed int l_key;
+	signed int scan_key;
 
 #if defined(__BORLANDC__)
 	flushall();
@@ -4063,15 +4073,18 @@ void wait_for_keypress(void)
 	g_mouse1_event2 = 0;
 
 	do {
-		if (CD_bioskey(1)) {
+		if (CD_bioskey(1)) { /* check if a keystroke is waiting in the buffer. key stays in buffer. */
 
-			l_key = bioskey(0);
+			/* bioskey(0) reads 2 byte BIOS scan key from the last keystroke and removes it from the buffer. */
+			scan_key = bioskey(0);
 
-			if (((l_key & 0xff) == 0x20) && (g_bioskey_event10 == 0))
+			/* space bar pauses the game till next keypress */
+			if (((scan_key & 0xff) == ' ') && (g_game_paused_flag == 0))
 			{
 
 				ul_save();
 
+				/* wait for next keypress; keycode stays in buffer */
 				while (!CD_bioskey(1)) {;}
 
 				ul_blit();
@@ -4081,8 +4094,9 @@ void wait_for_keypress(void)
 
 	} while (!CD_bioskey(1) && g_mouse1_event2 == 0);
 
+	/* remove keycode from buffer */
 	if (CD_bioskey(1))
-		l_key = bioskey(0);
+		scan_key = bioskey(0);
 
 	g_mouse1_event2 = 0;
 }
@@ -4105,9 +4119,9 @@ void vsync_or_key(const signed int duration)
 
 		if (g_town_city_event_active) {
 
-			if (g_action != 0) {
+			if (g_action_id != 0) {
 
-				if (g_action == ACTION_ID_SPACE) {
+				if (g_action_id == KEY_SCAN_CODE_SPACE_BAR) {
 
 					ul_save();
 					while (!CD_bioskey(1)) { ; }
@@ -4116,10 +4130,10 @@ void vsync_or_key(const signed int duration)
 
 				} else {
 
-					if ((g_action != ACTION_ID_UP) &&
-						(g_action != ACTION_ID_DOWN) &&
-						(g_action != ACTION_ID_RIGHT) &&
-						(g_action != ACTION_ID_LEFT))
+					if ((g_action_id != KEY_SCAN_CODE_ARROW_UP) &&
+						(g_action_id != KEY_SCAN_CODE_ARROW_DOWN) &&
+						(g_action_id != KEY_SCAN_CODE_ARROW_RIGHT) &&
+						(g_action_id != KEY_SCAN_CODE_ARROW_LEFT))
 					{
 						done = 1;
 					}
@@ -4132,9 +4146,9 @@ void vsync_or_key(const signed int duration)
 			}
 		} else {
 
-			if (g_action != 0) {
+			if (g_action_id != 0) {
 
-				if (g_action == ACTION_ID_SPACE) {
+				if (g_action_id == KEY_SCAN_CODE_SPACE_BAR) {
 
 					ul_save();
 					while (!CD_bioskey(1)) { ; }
@@ -4154,7 +4168,7 @@ void vsync_or_key(const signed int duration)
 
 		if (done) {
 			g_mouse_rightclick_event = 0;
-			g_action = ACTION_ID_RETURN;
+			g_action_id = KEY_SCAN_CODE_ENTER;
 			break;
 		}
 
@@ -4486,7 +4500,7 @@ void item_selector_keyboard_select(signed int *result_ptr, const struct item_sel
 {
 	signed int item_selector_pos = *result_ptr;
 
-	if (g_action == ACTION_ID_UP) {
+	if (g_action_id == KEY_SCAN_CODE_ARROW_UP) {
 
 		/* Key UP */
 		if (item_selector_pos) {
@@ -4498,7 +4512,7 @@ void item_selector_keyboard_select(signed int *result_ptr, const struct item_sel
 			}
 		}
 
-	} else if (g_action == ACTION_ID_DOWN) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) {
 
 		/* Key DOWN */
 		if (item_selector_pos < 14) {
@@ -4511,7 +4525,7 @@ void item_selector_keyboard_select(signed int *result_ptr, const struct item_sel
 			item_selector_pos = 0;
 		}
 
-	} else if (g_action == ACTION_ID_RIGHT) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) {
 
 		/* Key RIGHT */
 		if (item_selector_pos < 10) {
@@ -4522,7 +4536,7 @@ void item_selector_keyboard_select(signed int *result_ptr, const struct item_sel
 			item_selector_pos -= 10;
 		}
 
-	} else if (g_action == ACTION_ID_LEFT) {
+	} else if (g_action_id == KEY_SCAN_CODE_ARROW_LEFT) {
 
 		/* Key LEFT */
 		if (item_selector_pos > 4) {
@@ -4602,7 +4616,7 @@ static void ul_save(void)
 	/* save gfx settings to stack */
 	struct struct_pic_copy pic_copy_bak = g_pic_copy;
 
-	/* set range 0,0 - 7,7 */
+	/* set range (0,0) - (7,7), i.e. 8x8 square in upper left corner */
 	g_pic_copy.x1 = 0;
 	g_pic_copy.y1 = 0;
 	g_pic_copy.x2 = 7;
@@ -4628,7 +4642,7 @@ static void ul_blit(void)
 	/* save gfx settings to stack */
 	struct struct_pic_copy pic_copy_bak = g_pic_copy;
 
-	/* set range 0,0 - 7,7 */
+	/* set range (0,0) - (7,7), i.e. 8x8 square in upper left corner */
 	g_pic_copy.x1 = 0;
 	g_pic_copy.y1 = 0;
 	g_pic_copy.x2 = 7;

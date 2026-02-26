@@ -81,28 +81,28 @@ void do_tavern(void)
 
 			GUI_output(get_ttx(472));
 			done = 1;
-			g_mouse_rightclick_event = g_action = 0;
+			g_mouse_rightclick_event = g_action_id = 0;
 		}
 
 		if (gs_day_timer < HOURS(11) && gs_day_timer > HOURS(3)) {
 
 			GUI_output(get_ttx(9));
 			done = 1;
-			g_mouse_rightclick_event = g_action = 0;
+			g_mouse_rightclick_event = g_action_id = 0;
 		}
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			answer = GUI_radio(get_ttx(469), g_combo_mode == 0 ? 4 : 5,
 					get_ttx(343), get_ttx(470), get_ttx(212),
 					get_ttx(471), get_ttx(824)) - 1;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_1) {
+		if (g_action_id == ACTION_ID_ICON_1) {
 			/* TALK */
 
 			p_money_before = get_party_money();
@@ -124,7 +124,7 @@ void do_tavern(void)
 			g_request_refresh = done = 1;
 			g_combo_mode = 0;
 
-		} else if (g_action == ACTION_ID_ICON_2) {
+		} else if (g_action_id == ACTION_ID_ICON_2) {
 			/* EAT AND DRINK */
 
 			p_money_after = count_heroes_in_group() * (6 - tavern->quality / 4);
@@ -188,7 +188,7 @@ void do_tavern(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_3) {
+		} else if (g_action_id == ACTION_ID_ICON_3) {
 			/* USE TALENT */
 
 			time(&timeval);
@@ -202,13 +202,13 @@ void do_tavern(void)
 				g_combo_mode = 0;
 			}
 
-		} else if (g_action == ACTION_ID_ICON_4) {
+		} else if (g_action_id == ACTION_ID_ICON_4) {
 			/* LEAVE */
 
 			done = 1;
 			g_combo_mode = 0;
 
-		} else if (g_action == ACTION_ID_ICON_5) {
+		} else if (g_action_id == ACTION_ID_ICON_5) {
 			/* VISIT INN */
 
 			if (g_combo_mode != 0) {

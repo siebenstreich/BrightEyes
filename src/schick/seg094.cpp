@@ -424,7 +424,7 @@ void trv_do_journey(const signed int land_route_id, const signed int reverse)
 		gs_travel_distance_made += (gs_journey_direction == JOURNEY_DIRECTION_BACKWARD ? -gs_travel_distance_per_step : gs_travel_distance_per_step);
 		gs_travel_distance_per_18_hours += gs_travel_distance_per_step;
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP)
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP)
 		{
 			if (!gs_forcedmarch_timer)
 			{

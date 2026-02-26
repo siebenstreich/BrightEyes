@@ -688,7 +688,7 @@ void GUI_print_string(char *str, signed int x, signed int y)
 	while ((c = str[i++])) {
 
 		/* handle line breaks */
-		if ((c == 0x0d) || (c == '@')) {
+		if ((c == ASCII_CODE_ENTER) || (c == '@')) {
 
 			if (++l1 == g_dialogbox_indent_height) {
 				g_textline_maxlen += g_dialogbox_indent_width;

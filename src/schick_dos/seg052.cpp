@@ -87,7 +87,7 @@ void do_area_camp(void)
 
 		handle_gui_input();
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			/* open area_camp radio menu */
 			answer = GUI_radio(get_ttx(307), 5,
@@ -97,11 +97,11 @@ void do_area_camp(void)
 
 			/* set action on a valid answer */
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_1) {
+		if (g_action_id == ACTION_ID_ICON_1) {
 
 			answer = -1;
 
@@ -142,11 +142,11 @@ void do_area_camp(void)
 				}
 			}
 
-		} else if (g_action == ACTION_ID_ICON_2) {
+		} else if (g_action_id == ACTION_ID_ICON_2) {
 
 			GUI_use_talent2(0, get_ttx(395));
 
-		} else if (g_action == ACTION_ID_ICON_3) {
+		} else if (g_action_id == ACTION_ID_ICON_3) {
 
 			answer = select_hero_ok(get_ttx(317));
 
@@ -179,7 +179,7 @@ void do_area_camp(void)
 					GUI_output(get_ttx(330));
 				}
 			}
-		} else if (g_action == ACTION_ID_ICON_4) {
+		} else if (g_action_id == ACTION_ID_ICON_4) {
 
 			if (GUI_bool(get_ttx(318))) {
 
@@ -292,7 +292,7 @@ void do_area_camp(void)
 				done = 1;
 			}
 
-		} else if (g_action == ACTION_ID_ICON_5) {
+		} else if (g_action_id == ACTION_ID_ICON_5) {
 			done = 1;
 		}
 	}

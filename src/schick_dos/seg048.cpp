@@ -137,7 +137,7 @@ void status_menu(signed int hero_pos)
 	load_ggsts_nvf();
 
 	g_request_refresh = 1;
-	g_action = 0;
+	g_action_id = 0;
 	g_status_page_mode = 1;
 
 	while (flag1 == 0) {
@@ -199,7 +199,7 @@ void status_menu(signed int hero_pos)
 		handle_input();
 
 		/* RIGHT_KEY */
-		if ((g_action == ACTION_ID_RIGHT) && (gs_group_member_counts[gs_active_group_id] > 1)) {
+		if ((g_action_id == KEY_SCAN_CODE_ARROW_RIGHT) && (gs_group_member_counts[gs_active_group_id] > 1)) {
 
 			/* set hero_pos to the next possible hero */
 			do {
@@ -232,7 +232,7 @@ void status_menu(signed int hero_pos)
 		}
 
 		/* LEFT_KEY */
-		if ((g_action == ACTION_ID_LEFT) && (gs_group_member_counts[gs_active_group_id] > 1)) {
+		if ((g_action_id == KEY_SCAN_CODE_ARROW_LEFT) && (gs_group_member_counts[gs_active_group_id] > 1)) {
 
 			/* set hero_pos to the next possible hero */
 			do {
@@ -267,7 +267,7 @@ void status_menu(signed int hero_pos)
 		if (g_status_page_mode < 3) {
 
 			/* UP_KEY */
-			if (g_action == ACTION_ID_UP) {
+			if (g_action_id == KEY_SCAN_CODE_ARROW_UP) {
 
 				if (g_statuspage_sel_inv_slot_4 != -1) {
 
@@ -286,7 +286,7 @@ void status_menu(signed int hero_pos)
 			}
 
 			/* DOWN_KEY */
-			if (g_action == ACTION_ID_DOWN) {
+			if (g_action_id == KEY_SCAN_CODE_ARROW_DOWN) {
 
 				if (g_statuspage_sel_inv_slot_4 != -1) {
 
@@ -313,14 +313,14 @@ void status_menu(signed int hero_pos)
 				}
 			}
 
-			if ((g_action >= 128) && (g_action <= 152))
+			if ((g_action_id >= 128) && (g_action_id <= 152))
 			{
 				if (g_statuspage_sel_inv_slot_4 != -1) {
-					g_statuspage_sel_inv_slot_4 = g_action - 128;
-					g_action = ACTION_ID_RETURN;
-				} else if (g_action <= 150) {
-					g_statuspage_sel_inv_slot_3 = g_action - 128;
-					g_action = ACTION_ID_RETURN;
+					g_statuspage_sel_inv_slot_4 = g_action_id - 128;
+					g_action_id = KEY_SCAN_CODE_ENTER;
+				} else if (g_action_id <= 150) {
+					g_statuspage_sel_inv_slot_3 = g_action_id - 128;
+					g_action_id = KEY_SCAN_CODE_ENTER;
 				}
 			}
 
@@ -397,7 +397,7 @@ void status_menu(signed int hero_pos)
 				g_statuspage_sel_inv_slot_2 = g_statuspage_sel_inv_slot_4;
 			}
 
-			if (g_action == ACTION_ID_RETURN) {
+			if (g_action_id == KEY_SCAN_CODE_ENTER) {
 				if (g_statuspage_sel_inv_slot_4 != -1) {
 
 					if (flag4 != 0) {
@@ -474,14 +474,14 @@ void status_menu(signed int hero_pos)
 		}
 
 		/* check if the hero is diseased and print a message */
-		if ((g_status_page_mode == 1) && (g_action == ACTION_ID_240) &&	hero_is_diseased(hero2))
+		if ((g_status_page_mode == 1) && (g_action_id == ACTION_ID_STATUS_DISEASE) && hero_is_diseased(hero2))
 		{
 			sprintf(g_dtp2, get_tx2(25 + hero_is_diseased(hero2)), hero2->alias, GUI_get_personal_pronoun(hero2->sex, GRAMMAR_CASE_2ND));
 
 			GUI_output(g_dtp2);
 		}
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			g_current_cursor_bak = g_current_cursor;
 			g_current_cursor = &g_default_mouse_cursor;

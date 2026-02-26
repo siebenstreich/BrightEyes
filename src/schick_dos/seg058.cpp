@@ -379,27 +379,27 @@ void repair_screen(struct smith_descr *smith, const signed int smith_id)
 				GUI_print_loc_line(GUI_name_base_form(g_itemsname[g_item_selector_sell[item_selector_pos + item_selector_page_offset].item_id]));
 			}
 
-			if (g_mouse_rightclick_event  || g_action == ACTION_ID_PAGE_UP) {
+			if (g_mouse_rightclick_event  || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 				answer = GUI_radio(NULL, 5, get_ttx(433), get_ttx(435), get_ttx(436), get_ttx(446), get_ttx(437)) - 1;
 
 				if (answer != -2) {
-					g_action = answer + ACTION_ID_ICON_1;
+					g_action_id = answer + ACTION_ID_ICON_1;
 				}
 			}
 
-			if (g_action == ACTION_ID_ICON_3 && item_selector_page_offset) {
+			if (g_action_id == ACTION_ID_ICON_3 && item_selector_page_offset) {
 
 				l8 = 1;
 				item_selector_page_offset -= 15;
 
-			} else if (g_action == ACTION_ID_ICON_2 && g_item_selector_sell[item_selector_page_offset + 15].item_id) {
+			} else if (g_action_id == ACTION_ID_ICON_2 && g_item_selector_sell[item_selector_page_offset + 15].item_id) {
 
 				l8 = 1;
 				item_selector_page_offset += 15;
 			}
 
-			if (g_action == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK || g_action == ACTION_ID_ICON_1 || g_action == ACTION_ID_RETURN) {
+			if (g_action_id == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK || g_action_id == ACTION_ID_ICON_1 || g_action_id == KEY_SCAN_CODE_ENTER) {
 				/* Is ACTION == ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK possible at all?
 				 * ACTION_ID_DECREASE_ITEM_COUNT_BY_RIGHT_CLICK can be written to ACTION in buy_screen(), but where should it show up in repair_screen()?? */
 
@@ -506,9 +506,9 @@ void repair_screen(struct smith_descr *smith, const signed int smith_id)
 				}
 			}
 
-			if ((g_action >= 241) && (g_action <= 247)) {
+			if ((g_action_id >= ACTION_ID_HERO_1) && (g_action_id <= ACTION_ID_HERO_NPC)) {
 
-				hero_pos = g_action - 241;
+				hero_pos = g_action_id - ACTION_ID_HERO_1;
 				hero2 = get_hero(hero_pos);
 				deselect_hero_icon(hero_pos_old);
 				select_hero_icon(hero_pos);
@@ -516,11 +516,11 @@ void repair_screen(struct smith_descr *smith, const signed int smith_id)
 				l11 = 1;
 			}
 
-			if (g_action == ACTION_ID_ICON_4) {
+			if (g_action_id == ACTION_ID_ICON_4) {
 				l10 = 1;
 			}
 
-			if (g_action == ACTION_ID_ICON_5) {
+			if (g_action_id == ACTION_ID_ICON_5) {
 				done = 1;
 			}
 
@@ -578,7 +578,7 @@ void do_smith(void)
 
 		handle_gui_input();
 
-		if (g_mouse_rightclick_event || g_action == ACTION_ID_PAGE_UP) {
+		if (g_mouse_rightclick_event || g_action_id == KEY_SCAN_CODE_PAGE_UP) {
 
 			g_textbox_width = 4;
 
@@ -588,13 +588,13 @@ void do_smith(void)
 			g_textbox_width = 3;
 
 			if (answer != -2) {
-				g_action = answer + ACTION_ID_ICON_1;
+				g_action_id = answer + ACTION_ID_ICON_1;
 			}
 		}
 
-		if (g_action == ACTION_ID_ICON_3) {
+		if (g_action_id == ACTION_ID_ICON_3) {
 			done = 1;
-		} else if (g_action == ACTION_ID_ICON_1) {
+		} else if (g_action_id == ACTION_ID_ICON_1) {
 
 			talk_smith();
 			g_request_refresh = 1;
@@ -605,7 +605,7 @@ void do_smith(void)
 			{
 				done = 1;
 			}
-		} else if (g_action == ACTION_ID_ICON_2) {
+		} else if (g_action_id == ACTION_ID_ICON_2) {
 			repair_screen(smith, gs_town_typeindex);
 		}
 	}
