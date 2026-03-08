@@ -897,7 +897,7 @@ void DNG_lights(void)
  */
 void DNG_timestep(const signed int forward)
 {
-	signed int dir;
+	signed int viewdir;
 
 	timewarp(MINUTES(1));
 
@@ -921,19 +921,19 @@ void DNG_timestep(const signed int forward)
 
 	if (g_game_state == GAME_STATE_MAIN) {
 
-		dir = gs_viewdir;
+		viewdir = gs_viewdir;
 
 		if (forward == 1) {
 
 			/* go forward */
 
-			if (!dir) {
+			if (!viewdir) {
 				/* north */
 				gs_y--;
-			} else if (dir == EAST) {
+			} else if (viewdir == EAST) {
 				/* east */
 				gs_x++;
-			} else if (dir == SOUTH) {
+			} else if (viewdir == SOUTH) {
 				/* south */
 				gs_y++;
 			} else {
@@ -944,13 +944,13 @@ void DNG_timestep(const signed int forward)
 
 			/* go backward */
 
-			if (!dir) {
+			if (!viewdir) {
 				/* north */
 				gs_y++;
-			} else if (dir == EAST) {
+			} else if (viewdir == EAST) {
 				/* east */
 				gs_x--;
-			} else if (dir == SOUTH) {
+			} else if (viewdir == SOUTH) {
 				/* south */
 				gs_y--;
 			} else {
