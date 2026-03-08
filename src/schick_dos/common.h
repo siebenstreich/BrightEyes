@@ -50,18 +50,19 @@ enum {
 /* The following are BIOS scan codes placed in AH (higher byte) by the INT 16h (functions 00h/10h) BIOS interrupt call, corresponding to the physical key pressed.
  * They are used as action_id values */
 enum {
-	KEY_SCAN_CODE_NONE                   = 0x00,
 	KEY_SCAN_CODE_ESC                    = 0x01,
 	KEY_SCAN_CODE_CLOSING_SQUARE_BRACKET = 0x1b, /* the ']' key. used in buy_screen() at a merchant to decrease the number of items. */
 	KEY_SCAN_CODE_ENTER                  = 0x1c,
 	KEY_SCAN_CODE_J                      = 0x24,
-	KEY_SCAN_CODE_N                      = 0x31, /* the 'N' key. used in seg097.cpp in GUI_menu_input (when called from GUI_bool()). selects the "Nein" (no) answer. */
+	KEY_SCAN_CODE_N                      = 0x31, /* the 'N' key. used in seg097.cpp in GUI_menu_input (when called from GUI_bool()).
+						      * Selects the "Nein" (no) answer.
+						      */
 	KEY_SCAN_CODE_SLASH                  = 0x35, /* the '/' key. used in buy_screen() at a merchant to increase the number of items. */
 	KEY_SCAN_CODE_SPACE_BAR              = 0x39,
 	KEY_SCAN_CODE_Y                      = 0x2c, /* the 'Y' key on **German** keyboard (which is Z on US keyboard).
                                                       * used in seg097.cpp in GUI_menu_input (when called from GUI_bool()). selects the "Ja" (yes) answer.
                                                       * We use identifier 'Y' (and not 'Z') since it is used for "Y"es.
-						      * Note that J is remapped to Y in the functions handle_gui_input and handle_input.
+						      * Note that 'J' is remapped to 'Y' in the functions handle_gui_input and handle_input.
 						      */
 	KEY_SCAN_CODE_ARROW_UP               = 0x48,
 	KEY_SCAN_CODE_PAGE_UP                = 0x49, /* opens the menu */

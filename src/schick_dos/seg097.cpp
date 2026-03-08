@@ -268,7 +268,7 @@ dummy:
 				g_keystroke_ascii_code &= 0xff;
 			}
 
-		} while ((g_action_id == KEY_SCAN_CODE_NONE) && (g_keystroke_ascii_code == ASCII_CODE_NONE));
+		} while ((g_action_id == ACTION_ID_NONE) && (g_keystroke_ascii_code == ASCII_CODE_NONE));
 
 		c = g_keystroke_ascii_code;
 

@@ -1417,11 +1417,11 @@ void interrupt mouse_isr(void)
 		if (((gs_dungeon_id != DUNGEON_ID_NONE) || (gs_town_id != TOWN_ID_NONE)) &&
 				!gs_town_loc_type && !g_dialogbox_lock && (g_pp20_index == ARCHIVE_FILE_PLAYM_UK))
 		{
-			g_current_cursor =	(is_mouse_in_rect( 68,  4, 171,  51) ?	&g_cursor_arrow_up :
-						(is_mouse_in_rect( 68, 89, 171, 136) ?	&g_cursor_arrow_down :
-						(is_mouse_in_rect( 16, 36,  67,  96) ?	&g_cursor_arrow_left :
-						(is_mouse_in_rect(172, 36, 223,  96) ?	&g_cursor_arrow_right :
-						(!is_mouse_in_rect(16,  4, 223, 138) ?	&g_default_mouse_cursor : g_current_cursor)))));
+			g_current_cursor =	(is_mouse_in_rect( 68,  4, 171,  51) ? &g_cursor_arrow_up :
+						(is_mouse_in_rect( 68, 89, 171, 136) ? &g_cursor_arrow_down :
+						(is_mouse_in_rect( 16, 36,  67,  96) ? &g_cursor_arrow_left :
+						(is_mouse_in_rect(172, 36, 223,  96) ? &g_cursor_arrow_right :
+						(!is_mouse_in_rect(16,  4, 223, 138) ? &g_default_mouse_cursor : g_current_cursor)))));
 		} else {
 			if (g_dialogbox_lock) {
 				g_current_cursor = &g_default_mouse_cursor;
@@ -1819,7 +1819,7 @@ void handle_gui_input(void)
 	} else {
 		play_voc(ARCHIVE_FILE_FX1_VOC);
 		g_mouse1_event2 = 0;
-		action_id = KEY_SCAN_CODE_NONE;
+		action_id = ACTION_ID_NONE;
 
 		if (g_action_table_secondary) {
 			action_id = get_mouse_action(g_mouse_posx, g_mouse_posy, g_action_table_secondary);
@@ -3921,7 +3921,7 @@ void vsync_or_key(const signed int duration)
 
 		if (g_town_city_event_active) {
 
-			if (g_action_id != 0) {
+			if (g_action_id != ACTION_ID_NONE) {
 
 				if (g_action_id == KEY_SCAN_CODE_SPACE_BAR) {
 
@@ -3948,7 +3948,7 @@ void vsync_or_key(const signed int duration)
 			}
 		} else {
 
-			if (g_action_id != 0) {
+			if (g_action_id != ACTION_ID_NONE) {
 
 				if (g_action_id == KEY_SCAN_CODE_SPACE_BAR) {
 
