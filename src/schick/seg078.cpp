@@ -68,7 +68,7 @@ signed int DNG02_handler(void)
 			do_fight(FIGHT_ID_F046_01);
 		}
 
-	} else if (target_pos == DNG_POS(0,3,6) && target_pos != gs_dng_handled_pos && gs_viewdir == SOUTH)
+	} else if (target_pos == DNG_POS(0,3,6) && target_pos != gs_dng_pos_bak && gs_viewdir == SOUTH)
 	{
 		strcpy(g_dtp2, get_tx(4));
 		// cooling cellar: room is much colder than the outside
@@ -85,12 +85,12 @@ signed int DNG02_handler(void)
 
 		GUI_output(g_dtp2);
 
-	} else if (target_pos == DNG_POS(0,4,10) && target_pos != gs_dng_handled_pos && gs_viewdir == SOUTH)
+	} else if (target_pos == DNG_POS(0,4,10) && target_pos != gs_dng_pos_bak && gs_viewdir == SOUTH)
 	{
 		GUI_output(get_tx(7));
 		// former storage room for valuables
 
-	} else if ((target_pos == DNG_POS(0,7,13) || target_pos == DNG_POS(1,6,5) || target_pos == DNG_POS(1,4,14)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,7,13) || target_pos == DNG_POS(1,6,5) || target_pos == DNG_POS(1,4,14)) && target_pos != gs_dng_pos_bak)
 	{
 		if (test_talent((hero = get_first_hero_available_in_group()), TA_SINNESSCHAERFE, 6) > 0)
 		{
@@ -158,7 +158,7 @@ signed int DNG02_handler(void)
 	{
 		DNG_pitfall_add_pit(2);
 
-	} else if (target_pos == DNG_POS(0,14,14) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,14,14) && target_pos != gs_dng_pos_bak)
 	{
 		/* If the combined weight of the first two heroes is at least 7000 ounces, a trapdoor is triggered. */
 
@@ -175,7 +175,7 @@ signed int DNG02_handler(void)
 			DNG_pitfall(6);
 		}
 
-	} else if ((target_pos == DNG_POS(0,10,12) || target_pos == DNG_POS(0,10,10)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,10,12) || target_pos == DNG_POS(0,10,10)) && target_pos != gs_dng_pos_bak)
 		// Besides the obvious main purpose of this code branch -- handling entry into squares (0,10,12) and (0,10,12) --
 		// it also covers the effect of leaving square (0,10,11):
 		// A group there might have prevented the wall at (0,10,11) from reappearing.
@@ -216,7 +216,7 @@ signed int DNG02_handler(void)
 
 		play_voc(305);
 
-	} else if ((target_pos == DNG_POS(0,10,13) || target_pos == DNG_POS(0,10,9)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,10,13) || target_pos == DNG_POS(0,10,9)) && target_pos != gs_dng_pos_bak)
 	{
 		// Purpose: detect groups moving away from (0,10,12) or (0,10,10) to remove the wall at (0,10,11).
 		// Original-Bug: groups teleporting away are not detected.
@@ -269,7 +269,7 @@ signed int DNG02_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,7,1) && !gs_dng02_raven_destroyed && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,7,1) && !gs_dng02_raven_destroyed && target_pos != gs_dng_pos_bak)
 	{
 		if (GUI_bool(get_tx(13)))
 		// A raven statue mocking Boron. Destroy?
@@ -284,7 +284,7 @@ signed int DNG02_handler(void)
 			amap_ptr[MAP_POS(5,2)] = DNG_TILE_CORRIDOR << 4;
 		}
 
-	} else if (target_pos == DNG_POS(0,11,6) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,11,6) && target_pos != gs_dng_pos_bak)
 	{
 		hero = get_hero(0);
 		for (i = (signed int)(weight_sum = 0); i <= 6; i++, hero++)
@@ -308,7 +308,7 @@ signed int DNG02_handler(void)
 			amap_ptr[MAP_POS(11,8)] = DNG_TILE_CORRIDOR << 4;
 		}
 
-	} else if ((target_pos == DNG_POS(0,10,6) || target_pos == DNG_POS(0,11,5)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,10,6) || target_pos == DNG_POS(0,11,5)) && target_pos != gs_dng_pos_bak)
 	{
 		// Purpose: detect groups moving away from (0,11,6) to determine whether the wall at (0,11,8) should reappear.
 		// Original-Bug: Groups teleporting away from (0,11,8) are not detected.
@@ -347,7 +347,7 @@ signed int DNG02_handler(void)
 		amap_ptr[MAP_POS(11,8)] = (weight_sum >= 4000L ? (DNG_TILE_CORRIDOR << 4) : (DNG_TILE_WALL << 4));
 
 	} else if (target_pos == DNG_POS(1,12,5) && gs_viewdir == NORTH &&
-			 (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
+			 (target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak))
 	{
 		gs_viewdir_bak = gs_viewdir;
 
@@ -357,7 +357,7 @@ signed int DNG02_handler(void)
 		// Original-Bug: Shouldn't this be "three steps to the right?"
 
 	} else if (target_pos == DNG_POS(1,4,5) && gs_viewdir == SOUTH &&
-			 (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
+			 (target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak))
 	{
 		gs_viewdir_bak = gs_viewdir;
 
@@ -377,12 +377,12 @@ signed int DNG02_handler(void)
 		gs_dng02_sphaerenriss_timer_hours = 7; // 7 hours
 		gs_dng02_sphaerenriss_timer_activated = 1;
 
-	} else if ((target_pos == DNG_POS(1,1,11) || target_pos == DNG_POS(1,1,8)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(1,1,11) || target_pos == DNG_POS(1,1,8)) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(22));
 		// an alchemy table
 
-	} else if (target_pos == DNG_POS(1,3,7) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,3,7) && target_pos != gs_dng_pos_bak)
 	{
 		// This lever is a red herring. It has no effect.
 
@@ -393,7 +393,7 @@ signed int DNG02_handler(void)
 			// a clicking sound.
 		}
 
-	} else if (target_pos == DNG_POS(1,8,9) && target_pos != gs_dng_handled_pos && !gs_dng02_apparatus_destroyed)
+	} else if (target_pos == DNG_POS(1,8,9) && target_pos != gs_dng_pos_bak && !gs_dng02_apparatus_destroyed)
 	{
 		/* petrification trap */
 
@@ -425,7 +425,7 @@ signed int DNG02_handler(void)
 
 		check_group();
 
-	} else if (target_pos == DNG_POS(1,13,11) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,13,11) && target_pos != gs_dng_pos_bak)
 	{
 		do {
 			i = GUI_radio(
@@ -465,7 +465,7 @@ signed int DNG02_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,13,11) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,13,11) && target_pos != gs_dng_pos_bak)
 	{
 		do {
 			i = GUI_radio(
@@ -503,7 +503,7 @@ signed int DNG02_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(0,12,11) || target_pos == DNG_POS(0,14,11) || target_pos == DNG_POS(0,13,10) || target_pos == DNG_POS(0,13,12)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,12,11) || target_pos == DNG_POS(0,14,11) || target_pos == DNG_POS(0,13,10) || target_pos == DNG_POS(0,13,12)) && target_pos != gs_dng_pos_bak)
 	{
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(0,12,11,NORTH);
 
@@ -516,16 +516,16 @@ signed int DNG02_handler(void)
 			add_hero_ap_all(30);
 		}
 
-	} else if (target_pos == DNG_POS(1,1,1) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,1,1) && target_pos != gs_dng_pos_bak)
 	{
 		loot_special_chest(0);
 
-	} else if (target_pos == DNG_POS(1,9,14) && target_pos != gs_dng_handled_pos && gs_viewdir == EAST)
+	} else if (target_pos == DNG_POS(1,9,14) && target_pos != gs_dng_pos_bak && gs_viewdir == EAST)
 	{
 		GUI_output(get_tx(35)); // A torture chamber.
 
 	} else if (target_pos == DNG_POS(0,1,8) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak) &&
 			(gs_viewdir == SOUTH) &&
 			(gs_dng02_secret_door_status_1 != DNG_SECRET_DOOR_STATUS_OPEN))
 	{
@@ -569,7 +569,7 @@ signed int DNG02_handler(void)
 		}
 
 	} else if (target_pos == DNG_POS(0,4,8) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak) &&
 			(gs_viewdir == SOUTH) &&
 			(gs_dng02_secret_door_status_2 != DNG_SECRET_DOOR_STATUS_OPEN))
 	{
@@ -614,7 +614,7 @@ signed int DNG02_handler(void)
 
 	} else if (((target_pos == DNG_POS(1,4,9) && gs_viewdir == EAST) ||
 			(target_pos == DNG_POS(1,6,9) && gs_viewdir == WEST)) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak) &&
 			(gs_dng02_secret_door_status_3 != DNG_SECRET_DOOR_STATUS_OPEN))
 	{
 		hero = get_first_hero_available_in_group();
@@ -659,7 +659,7 @@ signed int DNG02_handler(void)
 			gs_viewdir_bak = gs_viewdir;
 		}
 
-	} else if (target_pos == DNG_POS(0,1,0) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,1,0) && target_pos != gs_dng_pos_bak)
 	{
 		/* exit */
 
@@ -680,7 +680,7 @@ signed int DNG02_handler(void)
 		g_fading_state = 3;
 	}
 
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }

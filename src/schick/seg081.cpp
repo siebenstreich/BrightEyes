@@ -56,7 +56,7 @@ signed int DNG06_handler(void)
 
 	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
-	if (target_pos == DNG_POS(0,14,5) && target_pos != gs_dng_handled_pos && !gs_dng06_book_flag)
+	if (target_pos == DNG_POS(0,14,5) && target_pos != gs_dng_pos_bak && !gs_dng06_book_flag)
 	{
 		if (GUI_bool(get_tx(1)) && give_new_item_to_group(ITEM_ID_BUCH__KAISERSPRUECHE_HALS, 1, 1))
 		{
@@ -65,11 +65,11 @@ signed int DNG06_handler(void)
 
 	}
 
-	if (target_pos == DNG_POS(0,9,9) && target_pos != gs_dng_handled_pos)
+	if (target_pos == DNG_POS(0,9,9) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(35));
 
-	} else if (target_pos == DNG_POS(0,4,13) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,4,13) && target_pos != gs_dng_pos_bak)
 	{
 		if (GUI_bool(get_tx(2)))
 		{
@@ -93,7 +93,7 @@ signed int DNG06_handler(void)
 			GUI_output(g_dtp2);
 		}
 
-	} else if (target_pos == DNG_POS(0,5,3) && target_pos != gs_dng_handled_pos && !gs_dng06_proviant_flag)
+	} else if (target_pos == DNG_POS(0,5,3) && target_pos != gs_dng_pos_bak && !gs_dng06_proviant_flag)
 	{
 		if (GUI_bool(get_tx(5)))
 		{
@@ -101,7 +101,7 @@ signed int DNG06_handler(void)
 			gs_dng06_proviant_flag = 1;
 		}
 
-	} else if (target_pos == DNG_POS(0,2,1) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,2,1) && target_pos != gs_dng_pos_bak)
 	{
 		hero = get_hero(0);
 		for (i = l3 = 0; i < 2; i++, hero++)
@@ -131,7 +131,7 @@ signed int DNG06_handler(void)
 			sub_hero_le(hero_second, random_schick(6));
 		}
 
-	} else if (target_pos == DNG_POS(0,9,7) && target_pos != gs_dng_handled_pos && !gs_dng06_pitdoor_flag)
+	} else if (target_pos == DNG_POS(0,9,7) && target_pos != gs_dng_pos_bak && !gs_dng06_pitdoor_flag)
 	{
 		hero = get_hero(0);
 		for (i = l3 = 0; i <= 6; i++, hero++)
@@ -187,7 +187,7 @@ signed int DNG06_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,8,7) && target_pos != gs_dng_handled_pos && gs_dng06_goldkey_flag != 2)
+	} else if (target_pos == DNG_POS(0,8,7) && target_pos != gs_dng_pos_bak && gs_dng06_goldkey_flag != 2)
 	{
 		hero = get_hero(0);
 		for (i = l3 = 0; i <= 6; i++, hero++)
@@ -216,7 +216,7 @@ signed int DNG06_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,11,6) && target_pos != gs_dng_handled_pos && gs_dng06_countdown_timer)
+	} else if (target_pos == DNG_POS(0,11,6) && target_pos != gs_dng_pos_bak && gs_dng06_countdown_timer)
 	{
 #if !defined(__BORLANDC__)
 		if (div16(amap_ptr[MAP_POS(11,1)]) != DNG_TILE_CLOSED_DOOR ||
@@ -241,7 +241,7 @@ signed int DNG06_handler(void)
 			sub_hero_le(hero, dice_roll(l3, 6, 0));
 		}
 
-	} else if (target_pos == DNG_POS(1,13,5) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,13,5) && target_pos != gs_dng_pos_bak)
 	{
 		do {
 			i = GUI_radio(get_tx(14), 3, get_tx(15), get_tx(16), get_tx(17));
@@ -282,7 +282,7 @@ signed int DNG06_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(1,1,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,1,2) && target_pos != gs_dng_pos_bak)
 	{
 		/* Hole in the wall: want to reach into it? want to move the lever? */
 		if (GUI_bool(get_tx(21)) && GUI_bool(get_tx(22)))
@@ -322,7 +322,7 @@ signed int DNG06_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(1,3,6) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,3,6) && target_pos != gs_dng_pos_bak)
 	{
 		/* Hole in the wall: want to reach into it? want to move the lever? */
 		if (GUI_bool(get_tx(21)) && GUI_bool(get_tx(22)))
@@ -362,7 +362,7 @@ signed int DNG06_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(1,5,8) && target_pos != gs_dng_handled_pos && !gs_dng06_lever_flag)
+	} else if (target_pos == DNG_POS(1,5,8) && target_pos != gs_dng_pos_bak && !gs_dng06_lever_flag)
 	{
 		hero = get_first_hero_available_in_group();
 
@@ -384,7 +384,7 @@ signed int DNG06_handler(void)
 			sub_hero_le(hero, dice_roll(3, 6, 0));
 		}
 
-	} else if (target_pos == DNG_POS(1,7,13) && target_pos != gs_dng_handled_pos && !gs_dng06_fight19_flag)
+	} else if (target_pos == DNG_POS(1,7,13) && target_pos != gs_dng_pos_bak && !gs_dng06_fight19_flag)
 	{
 		if (GUI_bool(get_tx(28)))
 		{
@@ -399,7 +399,7 @@ signed int DNG06_handler(void)
 			sub_hero_le(hero, 2);
 		}
 
-	} else if (target_pos == DNG_POS(1,6,11) && target_pos != gs_dng_handled_pos && !gs_dng06_dasptreas_found)
+	} else if (target_pos == DNG_POS(1,6,11) && target_pos != gs_dng_pos_bak && !gs_dng06_dasptreas_found)
 	{
 		/* treasure of Daspota found */
 		/* REMARK: should be modified, in a way that looting is still possible */
@@ -415,7 +415,7 @@ signed int DNG06_handler(void)
 
 		add_hero_ap_all(30);
 
-	} else if (target_pos == DNG_POS(1,8,14) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,8,14) && target_pos != gs_dng_pos_bak)
 	{
 		g_fig_escape_position[NORTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(1,6,14,WEST);
 		g_fig_escape_position[SOUTH] = g_fig_escape_position[EAST] = DNG_POS_DIR(1,13,13,NORTH);
@@ -425,7 +425,7 @@ signed int DNG06_handler(void)
 			gs_dng06_fight19_flag = 1;
 		}
 
-	} else if (target_pos == DNG_POS(0,13,15) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,13,15) && target_pos != gs_dng_pos_bak)
 	{
 		leave_dungeon();
 
@@ -444,7 +444,7 @@ signed int DNG06_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }

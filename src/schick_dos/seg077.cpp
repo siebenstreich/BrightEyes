@@ -82,7 +82,7 @@ signed int DNG01_handler(void)
 		DNG_pitfall_add_pit(6);
 		gs_y++;
 
-	} else if ((target_pos == DNG_POS(1,13,5)) && (target_pos != gs_dng_handled_pos) && !gs_dng01_sabre_taken)
+	} else if ((target_pos == DNG_POS(1,13,5)) && (target_pos != gs_dng_pos_bak) && !gs_dng01_sabre_taken)
 	{
 		sprintf(g_text_output_buf, get_ttx(528), GUI_name_inflect_with_article(
 			INFLECT_INDEFINITE_ARTICLE | INFLECT_SINGULAR | INFLECT_1ST_CASE,
@@ -99,7 +99,7 @@ signed int DNG01_handler(void)
 			gs_dng01_sabre_taken = 1;
 		}
 
-	} else if ((target_pos == DNG_POS(3,2,9)) && (target_pos != gs_dng_handled_pos) && !gs_dng01_crossbow_taken)
+	} else if ((target_pos == DNG_POS(3,2,9)) && (target_pos != gs_dng_pos_bak) && !gs_dng01_crossbow_taken)
 	{
 		sprintf(g_text_output_buf, get_ttx(528), GUI_name_inflect_with_article(
 			INFLECT_INDEFINITE_ARTICLE | INFLECT_SINGULAR | INFLECT_1ST_CASE,
@@ -117,7 +117,7 @@ signed int DNG01_handler(void)
 			gs_dng01_crossbow_taken = 1;
 		}
 
-	} else if ((target_pos == DNG_POS(4,2,9)) && (target_pos != gs_dng_handled_pos) && !gs_dng01_amulet_taken)
+	} else if ((target_pos == DNG_POS(4,2,9)) && (target_pos != gs_dng_pos_bak) && !gs_dng01_amulet_taken)
 	{
 		/* ITEM: a magic AMULET */
 		if (GUI_bool(get_tx(7)) && give_new_item_to_group(ITEM_ID_AMULETT__FLIM_FLAM, 1, 1))
@@ -126,7 +126,7 @@ signed int DNG01_handler(void)
 			gs_gods_estimation[GOD_ID_BORON] -= 100L;
 		}
 
-	} else if ((target_pos == DNG_POS(4,13,6)) && (target_pos != gs_dng_handled_pos))
+	} else if ((target_pos == DNG_POS(4,13,6)) && (target_pos != gs_dng_pos_bak))
 	{
 		loot_special_chest(0);
 
@@ -180,7 +180,7 @@ signed int DNG01_handler(void)
 
 		add_hero_ap_all(20);
 
-	} else if ((target_pos == DNG_POS(5,14,7)) && (target_pos != gs_dng_handled_pos))
+	} else if ((target_pos == DNG_POS(5,14,7)) && (target_pos != gs_dng_pos_bak))
 	{
 		if (GUI_bool(get_tx(11)))
 		{
@@ -206,7 +206,7 @@ signed int DNG01_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(2,8,11)) && (target_pos != gs_dng_handled_pos))
+	} else if ((target_pos == DNG_POS(2,8,11)) && (target_pos != gs_dng_pos_bak))
 	{
 		if (GUI_bool(get_tx(24)))
 		{
@@ -248,7 +248,7 @@ signed int DNG01_handler(void)
 		}
 	}
 
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }

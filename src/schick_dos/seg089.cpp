@@ -89,12 +89,12 @@ signed int DNG15_handler(void)
 	hero = get_first_hero_available_in_group(); /* UNNEEDED */
 
 	if ((((target_pos == DNG_POS(0,6,3) || target_pos == DNG_POS(0,6,6) || target_pos == DNG_POS(0,6,9)) && dir == EAST) ||
-		((target_pos == DNG_POS(0,12,10) || target_pos == DNG_POS(0,8,10)) && dir == NORTH)) && target_pos != gs_dng_handled_pos)
+		((target_pos == DNG_POS(0,12,10) || target_pos == DNG_POS(0,8,10)) && dir == NORTH)) && target_pos != gs_dng_pos_bak)
 	{
 		/* INFO: a large hall */
 		GUI_output(get_tx(1));
 
-	} else if (((target_pos == DNG_POS(0,3,4) && dir == NORTH) || (target_pos == DNG_POS(0,4,3) && dir == WEST)) && target_pos != gs_dng_handled_pos)
+	} else if (((target_pos == DNG_POS(0,3,4) && dir == NORTH) || (target_pos == DNG_POS(0,4,3) && dir == WEST)) && target_pos != gs_dng_pos_bak)
 	{
 		/* INFO: entering the tower */
 		GUI_output(get_tx(2));
@@ -103,7 +103,7 @@ signed int DNG15_handler(void)
 			target_pos == DNG_POS(0,1,2) || target_pos == DNG_POS(0,2,2) || target_pos == DNG_POS(0,3,2) || target_pos == DNG_POS(0,4,2) ||
 			target_pos == DNG_POS(0,1,3) || target_pos == DNG_POS(0,2,3) || target_pos == DNG_POS(0,3,3) || target_pos == DNG_POS(0,4,3) ||
 			target_pos == DNG_POS(0,1,4) || target_pos == DNG_POS(0,2,4) || target_pos == DNG_POS(0,3,4) || target_pos == DNG_POS(0,4,4)) &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		/* TRAP: light wounds */
 		hero = get_hero(0);
@@ -123,38 +123,38 @@ signed int DNG15_handler(void)
 
 	} else if ((target_pos == DNG_POS(0,10,1) || target_pos == DNG_POS(0,11,1) || target_pos == DNG_POS(0,11,2) ||
 			target_pos == DNG_POS(0,12,2) || target_pos == DNG_POS(0,13,2) || target_pos == DNG_POS(0,14,3)) &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		/* debris, with wounds and no hidden ladder */
 		DNG15_wounds_and_ladders(get_tx(9), 1, 0);
 
 	} else if ((target_pos == DNG_POS(0,11,0) || target_pos == DNG_POS(0,12,0) || target_pos == DNG_POS(0,13,0) ||
 			target_pos == DNG_POS(0,15,0) || target_pos == DNG_POS(0,15,1) || target_pos == DNG_POS(0,14,0)) &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		/* debris, no wounds and no hidden ladder */
 		DNG15_wounds_and_ladders(get_tx(14), 0, 0);
 
-	} else if (target_pos == DNG_POS(0,14,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,14,2) && target_pos != gs_dng_pos_bak)
 	{
 		/* debris, with wounds and hidden ladder */
 		DNG15_wounds_and_ladders(get_tx(15), 1, 1);
 
 	} else if ((target_pos == DNG_POS(0,11,1) || target_pos == DNG_POS(0,12,1) || target_pos == DNG_POS(0,13,1) ||
-			target_pos == DNG_POS(0,14,1)) && target_pos != gs_dng_handled_pos)
+			target_pos == DNG_POS(0,14,1)) && target_pos != gs_dng_pos_bak)
 	{
 		/* debris, with wounds and no hidden ladder */
 		DNG15_wounds_and_ladders(get_tx(16), 1, 0);
 
-	} else if (target_pos == DNG_POS(0,9,1) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,9,1) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[0]);
 
-	} else if (target_pos == DNG_POS(0,14,4) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,14,4) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[1]);
 
-	} else if (target_pos == DNG_POS(1,14,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,14,2) && target_pos != gs_dng_pos_bak)
 	{
 		/* LADDER: upwards */
 		if (GUI_bool(get_tx(17))) {
@@ -165,7 +165,7 @@ signed int DNG15_handler(void)
 		}
 
 	} else if (target_pos == DNG_POS(1,8,1) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir_bak != dir) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir_bak != dir) &&
 			(!gs_dng15_lever_south || !gs_dng15_lever_north))
 	{
 		tmp = dir;
@@ -189,7 +189,7 @@ signed int DNG15_handler(void)
 		gs_viewdir_bak = (signed char)dir;
 
 	} else if (target_pos == DNG_POS(1,8,5) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir_bak != dir) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir_bak != dir) &&
 			(!gs_dng15_lever_south || !gs_dng15_lever_north))
 	{
 		tmp = dir;
@@ -213,7 +213,7 @@ signed int DNG15_handler(void)
 
 		gs_viewdir_bak = (signed char)dir;
 
-	} else if (target_pos == DNG_POS(1,8,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,8,2) && target_pos != gs_dng_pos_bak)
 	{
 		/* check if another group stands on the other side */
 		for (i = tmp = 0; i < 6; i++)
@@ -235,7 +235,7 @@ signed int DNG15_handler(void)
 			gs_y = gs_y_bak;
 		}
 
-	} else if (target_pos == DNG_POS(1,8,4) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,8,4) && target_pos != gs_dng_pos_bak)
 	{
 
 		/* check if another group stands on the other side */
@@ -259,20 +259,20 @@ signed int DNG15_handler(void)
 			gs_y = gs_y_bak;
 		}
 
-	} else if (target_pos == DNG_POS(1,1,14) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,1,14) && target_pos != gs_dng_pos_bak)
 	{
 		loot_multi_chest(gs_dng15_chest_equips, get_tx(38));
 
-	} else if (target_pos == DNG_POS(1,1,11) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,1,11) && target_pos != gs_dng_pos_bak)
 	{
 		/* INFO: wooden beams */
 		GUI_output(get_tx(39));
 
-	} else if (target_pos == DNG_POS(1,3,10) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,3,10) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[2]);
 
-	} else if (target_pos == DNG_POS(2,4,10) && target_pos != gs_dng_handled_pos && !gs_dng15_took_hoe)
+	} else if (target_pos == DNG_POS(2,4,10) && target_pos != gs_dng_pos_bak && !gs_dng15_took_hoe)
 	{
 		/* ITEM: a HOE */
 		if (GUI_bool(get_tx(50)))
@@ -285,92 +285,92 @@ signed int DNG15_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(2,1,9) || target_pos == DNG_POS(2,3,13)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(2,1,9) || target_pos == DNG_POS(2,3,13)) && target_pos != gs_dng_pos_bak)
 	{
 		/* INFO: end of the corridor */
 		GUI_output(get_tx(52));
 
-	} else if (target_pos == DNG_POS(2,3,12) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,3,12) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[3]);
 
-	} else if (target_pos == DNG_POS(2,3,11) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,3,11) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[4]);
 
-	} else if (target_pos == DNG_POS(2,2,9) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,2,9) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[5]);
 
-	} else if (target_pos == DNG_POS(2,7,3) && target_pos != gs_dng_handled_pos && !gs_dng15_cursed_money[0])
+	} else if (target_pos == DNG_POS(2,7,3) && target_pos != gs_dng_pos_bak && !gs_dng15_cursed_money[0])
 	{
 		DNG15_cursed_money(&gs_dng15_cursed_money[0]);
 
-	} else if (target_pos == DNG_POS(2,6,6) && target_pos != gs_dng_handled_pos && !gs_dng15_cursed_money[1])
+	} else if (target_pos == DNG_POS(2,6,6) && target_pos != gs_dng_pos_bak && !gs_dng15_cursed_money[1])
 	{
 		DNG15_cursed_money(&gs_dng15_cursed_money[1]);
 
-	} else if (target_pos == DNG_POS(2,8,11) && target_pos != gs_dng_handled_pos && !gs_dng15_cursed_money[2])
+	} else if (target_pos == DNG_POS(2,8,11) && target_pos != gs_dng_pos_bak && !gs_dng15_cursed_money[2])
 	{
 		DNG15_cursed_money(&gs_dng15_cursed_money[2]);
 
-	} else if (target_pos == DNG_POS(2,9,7) && target_pos != gs_dng_handled_pos && !gs_dng15_cursed_money[5])
+	} else if (target_pos == DNG_POS(2,9,7) && target_pos != gs_dng_pos_bak && !gs_dng15_cursed_money[5])
 	{
 		DNG15_cursed_money(&gs_dng15_cursed_money[5]);
 
-	} else if (target_pos == DNG_POS(2,5,1) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,5,1) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[11]);
 
-	} else if (target_pos == DNG_POS(2,9,3) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,9,3) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[12]);
 
-	} else if (target_pos == DNG_POS(2,9,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,9,2) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[13]);
 
-	} else if (target_pos == DNG_POS(2,3,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,3,2) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[15]);
 
-	} else if (target_pos == DNG_POS(2,3,3) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,3,3) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[16]);
 
-	} else if (target_pos == DNG_POS(2,3,4) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,3,4) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[17]);
 
-	} else if (target_pos == DNG_POS(3,1,12) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,1,12) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[6]);
 
-	} else if (target_pos == DNG_POS(3,1,13) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,1,13) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[7]);
 
-	} else if (target_pos == DNG_POS(3,1,14) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,1,14) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[8]);
 
-	} else if (target_pos == DNG_POS(3,2,13) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,2,13) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[9]);
 
-	} else if (target_pos == DNG_POS(3,2,14) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,2,14) && target_pos != gs_dng_pos_bak)
 	{
 		DNG15_collapsing_ceiling(&gs_dng15_ceilings[10]);
 
-	} else if (target_pos == 0x3e02 && target_pos != gs_dng_handled_pos && !gs_dng15_cursed_money[3])
+	} else if (target_pos == 0x3e02 && target_pos != gs_dng_pos_bak && !gs_dng15_cursed_money[3])
 	{
 		DNG15_cursed_money(&gs_dng15_cursed_money[3]);
 
-	} else if (target_pos == DNG_POS(3,11,5) && target_pos != gs_dng_handled_pos && !gs_dng15_cursed_money[4])
+	} else if (target_pos == DNG_POS(3,11,5) && target_pos != gs_dng_pos_bak && !gs_dng15_cursed_money[4])
 	{
 		DNG15_cursed_money(&gs_dng15_cursed_money[4]);
 
-	} else if (target_pos == DNG_POS(3,11,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,11,2) && target_pos != gs_dng_pos_bak)
 	{
 		/* FIGHT: */
 		if (random_schick(100) < 10) /* 9% chance */
@@ -384,7 +384,7 @@ signed int DNG15_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(3,13,3) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(3,13,3) && target_pos != gs_dng_pos_bak)
 	{
 		/* FIGHT: */
 		if (random_schick(100) < 10)
@@ -397,7 +397,7 @@ signed int DNG15_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(2,8,9) || target_pos == DNG_POS(2,9,9)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(2,8,9) || target_pos == DNG_POS(2,9,9)) && target_pos != gs_dng_pos_bak)
 	{
 		/* FIGHT: */
 		g_fig_escape_position[NORTH] = DNG_POS_DIR(2,9,7,NORTH);
@@ -406,7 +406,7 @@ signed int DNG15_handler(void)
 
 		do_fight(!gs_dng15_undead_fight ? 134 : 133);
 
-	} else if ((target_pos == DNG_POS(3,13,5) || target_pos == DNG_POS(3,9,5)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(3,13,5) || target_pos == DNG_POS(3,9,5)) && target_pos != gs_dng_pos_bak)
 	{
 		/* FIGHT: */
 		if (gs_dng15_undead_fight != 2)
@@ -423,7 +423,7 @@ signed int DNG15_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(3,10,10) || target_pos == DNG_POS(3,13,10) || target_pos == DNG_POS(3,12,14)) &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		/* QUEST: hyggelik */
 		if (gs_dng15_took_cursed_money)
@@ -462,7 +462,7 @@ signed int DNG15_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,0,11) && target_pos != gs_dng_handled_pos) {
+	} else if (target_pos == DNG_POS(0,0,11) && target_pos != gs_dng_pos_bak) {
 
 		/* EXIT: may be blocked if cursed money has been taken */
 		if (gs_dng15_took_cursed_money)
@@ -490,7 +490,7 @@ signed int DNG15_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }

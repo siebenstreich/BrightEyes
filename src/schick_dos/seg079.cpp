@@ -61,14 +61,14 @@ signed int DNG03_handler(void)
 	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
 	if ((target_pos == DNG_POS(0,4,7) || target_pos == DNG_POS(0,4,9) || target_pos == DNG_POS(0,6,8)) &&
-		target_pos != gs_dng_handled_pos)
+		target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(1));
 
 		gs_x = gs_y = 1;
 		DNG_inc_level();
 
-	} else if (target_pos == DNG_POS(0,3,4) && target_pos != gs_dng_handled_pos && gs_viewdir == NORTH)
+	} else if (target_pos == DNG_POS(0,3,4) && target_pos != gs_dng_pos_bak && gs_viewdir == NORTH)
 	{
 		GUI_input(get_tx(2), 15);
 
@@ -94,7 +94,7 @@ signed int DNG03_handler(void)
 			}
 		}
 
-	} else if (target_pos == DNG_POS(0,11,6) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,11,6) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(4));
 
@@ -118,7 +118,7 @@ signed int DNG03_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(0,6,10) || target_pos == DNG_POS(0,7,9)) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
+			(target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak))
 	{
 		if ((target_pos == DNG_POS(0,6,10) && gs_viewdir == EAST) ||
 			(target_pos == DNG_POS(0,7,9) && gs_viewdir == SOUTH))
@@ -131,7 +131,7 @@ signed int DNG03_handler(void)
 
 	} else if ((target_pos == DNG_POS(0,10,9) || target_pos == DNG_POS(0,9,14)) &&
 			gs_dng03_lever_trap &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(5));
 
@@ -180,7 +180,7 @@ signed int DNG03_handler(void)
 		}
 
 	} else if (target_pos == DNG_POS(0,9,11) && (gs_viewdir == WEST) &&
-			target_pos != gs_dng_handled_pos && gs_viewdir != gs_viewdir_bak)
+			target_pos != gs_dng_pos_bak && gs_viewdir != gs_viewdir_bak)
 	{
 		/* LEVER: */
 		if (GUI_bool(get_tx(8)))
@@ -190,7 +190,7 @@ signed int DNG03_handler(void)
 		}
 
 	} else if (target_pos == DNG_POS(1,3,11) && (gs_viewdir == EAST) &&
-			(target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak))
+			(target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak))
 	{
 		if (GUI_bool(get_tx(8)))
 		{
@@ -199,7 +199,7 @@ signed int DNG03_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(1,14,13) || target_pos == DNG_POS(1,13,4) || target_pos == DNG_POS(1,11,2)) &&
-		target_pos != gs_dng_handled_pos)
+		target_pos != gs_dng_pos_bak)
 	{
 		j = 0;
 
@@ -270,7 +270,7 @@ signed int DNG03_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(1,2,10) || target_pos == DNG_POS(1,3,13)) &&
-		target_pos != gs_dng_handled_pos)
+		target_pos != gs_dng_pos_bak)
 	{
 		g_fig_escape_position[NORTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(1,2,8,NORTH);
 		g_fig_escape_position[EAST] = g_fig_escape_position[SOUTH] = DNG_POS_DIR(1,5,13,NORTH);
@@ -283,7 +283,7 @@ signed int DNG03_handler(void)
 		do_fight(gs_dng03_highpriest_killed == 14 ? 224 : 225);
 
 	} else if ((target_pos == DNG_POS(1,2,4) || target_pos == DNG_POS(1,5,2)) &&
-		target_pos != gs_dng_handled_pos)
+		target_pos != gs_dng_pos_bak)
 	{
 		g_fig_escape_position[NORTH] = g_fig_escape_position[EAST] = DNG_POS_DIR(1,7,2,NORTH);
 		g_fig_escape_position[SOUTH] = g_fig_escape_position[WEST] = DNG_POS_DIR(1,2,6,NORTH);
@@ -295,7 +295,7 @@ signed int DNG03_handler(void)
 
 		do_fight(gs_dng03_highpriest_killed == 16 ? 222 : 223);
 
-	} else if (target_pos == DNG_POS(1,1,12) && (target_pos != gs_dng_handled_pos) && !gs_dng03_sanctum_smashed)
+	} else if (target_pos == DNG_POS(1,1,12) && (target_pos != gs_dng_pos_bak) && !gs_dng03_sanctum_smashed)
 	{
 
 		/* check if a hero in this group has crystals */
@@ -332,7 +332,7 @@ signed int DNG03_handler(void)
 			do_fight(FIGHT_ID_F051_14C);
 		}
 
-	} else if (target_pos == DNG_POS(1,1,1) && target_pos != gs_dng_handled_pos &&
+	} else if (target_pos == DNG_POS(1,1,1) && target_pos != gs_dng_pos_bak &&
 			!gs_dng03_spidereggs_burned)
 	{
 		do {
@@ -353,11 +353,11 @@ signed int DNG03_handler(void)
 			gs_deathtrap = 2;
 		}
 
-	} else if (target_pos == DNG_POS(1,10,4) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,10,4) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(24));
 
-	} else if (target_pos == DNG_POS(1,10,8) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,10,8) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(4));
 		gs_x = 5;
@@ -378,7 +378,7 @@ signed int DNG03_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(1,2,1) && target_pos != gs_dng_handled_pos && GUI_bool(get_tx(23))) ||
+	} else if ((target_pos == DNG_POS(1,2,1) && target_pos != gs_dng_pos_bak && GUI_bool(get_tx(23))) ||
 			target_pos == DNG_POS(0,0,8))
 	{
 		leave_dungeon();
@@ -398,7 +398,7 @@ signed int DNG03_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }

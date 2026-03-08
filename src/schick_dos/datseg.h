@@ -1116,7 +1116,15 @@ extern struct struct_modification_timer gs_modification_timers[100];	//ds:0x2e2c
 extern int32_t gs_gods_estimation[15];		//ds:0x314e; seg003-seg114
 extern int8_t  gs_tav_cheated_flags[88];		//ds:0x318a; seg059, seg103
 extern struct smith_repairitems gs_smith_repairitems[50]; //ds:0x31e2; seg002, seg058
-extern int16_t gs_dng_handled_pos;		//ds:0x330e; seg077-seg091
+
+extern int16_t gs_dng_pos_bak;		//ds:0x330e; seg077-seg091
+/* Stores the position where a dungeon handler was called the last time.
+ * Used to check whether a square was newly entered in the current cycle of the main game loop.
+ * This mechanism can cause bugs/exploits when the position is modified within the dungeon event handler, see discussion at
+ * https://www.crystals-dsa-foren.de/showthread.php?tid=66&pid=175437#pid175437
+ * Note that the variable was name 'gs_dng_handled_pos' in the past.
+ * */
+
 extern int16_t gs_deathtrap_steps;		//ds:0x3310; seg075, seg077, seg079
 extern int16_t gs_deathtrap;			//ds:0x3312; seg025, seg075, seg077, seg079
 extern int8_t  gs_dng01_amulet_taken;		//ds:0x3314; seg077

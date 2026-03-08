@@ -49,7 +49,7 @@ signed int DNG07_handler(void)
 
 	hero = get_first_hero_available_in_group();
 
-	if (target_pos == DNG_POS(0,13,2) && target_pos != gs_dng_handled_pos)
+	if (target_pos == DNG_POS(0,13,2) && target_pos != gs_dng_pos_bak)
 	{
 #if !defined(__BORLANDC__)
 		if (div16((uint16_t)amap_ptr[MAP_POS(13,2)]) != DNG_TILE_STAIR_DOWN)
@@ -152,18 +152,18 @@ signed int DNG07_handler(void)
 			DNG_inc_level();
 		}
 
-	} else if (target_pos == DNG_POS(1,12,3) && target_pos != gs_dng_handled_pos && gs_treasure_maps[1] != 1)
+	} else if (target_pos == DNG_POS(1,12,3) && target_pos != gs_dng_pos_bak && gs_treasure_maps[1] != 1)
 	{
 		GUI_output(get_tx(1));
 
-	} else if (target_pos == DNG_POS(1,13,2) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(1,13,2) && target_pos != gs_dng_pos_bak)
 	{
 
 		gs_x++;
 
 		DNG_dec_level();
 
-	} else if (target_pos == DNG_POS(1,6,1) && target_pos != gs_dng_handled_pos && (gs_dng07_mu_elixir_flag != 2))
+	} else if (target_pos == DNG_POS(1,6,1) && target_pos != gs_dng_pos_bak && (gs_dng07_mu_elixir_flag != 2))
 	{
 		if (!gs_dng07_mu_elixir_flag)
 		{
@@ -197,13 +197,13 @@ signed int DNG07_handler(void)
 			}
 		}
 
-	} else if ((target_pos == DNG_POS(2,3,13) || target_pos == DNG_POS(2,2,13)) && target_pos != gs_dng_handled_pos && !gs_dng07_flicker_flag)
+	} else if ((target_pos == DNG_POS(2,3,13) || target_pos == DNG_POS(2,2,13)) && target_pos != gs_dng_pos_bak && !gs_dng07_flicker_flag)
 	{
 		gs_dng07_flicker_flag = 1;
 
 		GUI_output(get_tx(4));
 
-	} else if (target_pos == DNG_POS(2,1,11) && target_pos != gs_dng_handled_pos && !gs_dng07_anti_mu_elixir_flag)
+	} else if (target_pos == DNG_POS(2,1,11) && target_pos != gs_dng_pos_bak && !gs_dng07_anti_mu_elixir_flag)
 	{
 		if (GUI_bool(get_tx(5)))
 		{
@@ -212,7 +212,7 @@ signed int DNG07_handler(void)
 			gs_dng07_anti_mu_elixir_flag = 1;
 		}
 
-	} else if (target_pos == DNG_POS(2,10,1) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,10,1) && target_pos != gs_dng_pos_bak)
 	{
 		if (!do_fight(FIGHT_ID_F100_13))
 		{
@@ -228,19 +228,19 @@ signed int DNG07_handler(void)
 			show_treasure_map();
 		}
 
-	} else if (target_pos == DNG_POS(2,14,13) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,14,13) && target_pos != gs_dng_pos_bak)
 	{
 		gs_x = 7;
 
 		gs_viewdir = ((gs_viewdir + 2) & 3);
 
-	} else if (target_pos == DNG_POS(2,8,13) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(2,8,13) && target_pos != gs_dng_pos_bak)
 	{
 		gs_x = 13;
 
 		gs_viewdir = ((gs_viewdir + 2) & 3);
 
-	} else if (target_pos == DNG_POS(2,1,2) && target_pos != gs_dng_handled_pos && !gs_dng07_poison_flag)
+	} else if (target_pos == DNG_POS(2,1,2) && target_pos != gs_dng_pos_bak && !gs_dng07_poison_flag)
 	{
 		if (GUI_bool(get_tx(6)))
 		{
@@ -251,7 +251,7 @@ signed int DNG07_handler(void)
 			gs_dng07_poison_timer = DAYS(1);
 		}
 
-	} else if (target_pos == DNG_POS(0,1,14) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,1,14) && target_pos != gs_dng_pos_bak)
 	{
 		if (GUI_bool(get_tx(15)))
 		{
@@ -290,7 +290,7 @@ signed int DNG07_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }

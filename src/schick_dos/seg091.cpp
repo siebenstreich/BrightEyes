@@ -55,7 +55,7 @@ signed int DNG13_handler(void)
 		sub_hero_le(hero, 2);
 	}
 
-	if (target_pos == DNG_POS(0,9,13) && target_pos != gs_dng_handled_pos && !gs_dng13_lantern_flag)
+	if (target_pos == DNG_POS(0,9,13) && target_pos != gs_dng_pos_bak && !gs_dng13_lantern_flag)
 	{
 		if (GUI_bool(get_tx(1)))
 		{
@@ -65,69 +65,69 @@ signed int DNG13_handler(void)
 		}
 
 	} else if ((target_pos == DNG_POS(0,1,12) || target_pos == DNG_POS(0,14,6) || target_pos == DNG_POS(0,14,13) || target_pos == DNG_POS(0,3,1)) &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(2));
 
-	} else if (target_pos == DNG_POS(0,2,13) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,2,13) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_dialog_na(60, get_tx(3));
 
-	} else if (target_pos == DNG_POS(0,3,12) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,3,12) && target_pos != gs_dng_pos_bak)
 	{
 		DNG13_unblock_passage(get_tx(4), &gs_dng13_passage1_flag);
 
-	} else if (target_pos == DNG_POS(0,4,9) && (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) && gs_viewdir == WEST)
+	} else if (target_pos == DNG_POS(0,4,9) && (target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak) && gs_viewdir == WEST)
 	{
 		GUI_output(get_tx(6));
 		gs_viewdir_bak = gs_viewdir;
 
 	} else if (target_pos == DNG_POS(0,10,2) &&
-			 (target_pos != gs_dng_handled_pos || gs_viewdir != gs_viewdir_bak) &&
+			 (target_pos != gs_dng_pos_bak || gs_viewdir != gs_viewdir_bak) &&
 			gs_viewdir == EAST)
 	{
 		GUI_output(get_tx(6));
 		gs_viewdir_bak = gs_viewdir;
 
-	} else if (target_pos == DNG_POS(0,5,9) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,5,9) && target_pos != gs_dng_pos_bak)
 	{
 		DNG13_unblock_passage(get_tx(7), &gs_dng13_passage2_flag);
 
-	} else if (target_pos == DNG_POS(0,2,9) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,2,9) && target_pos != gs_dng_pos_bak)
 	{
 		loot_multi_chest(gs_dng13_chest_equips, get_tx(8));
 
-	} else if (target_pos == DNG_POS(0,10,6) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,10,6) && target_pos != gs_dng_pos_bak)
 	{
 		DNG13_unblock_passage(get_tx(7), &gs_dng13_passage3_flag);
 
-	} else if (target_pos == DNG_POS(0,11,5) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,11,5) && target_pos != gs_dng_pos_bak)
 	{
 		loot_special_chest(0);
 
-	} else if (target_pos == DNG_POS(0,10,10) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,10,10) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(12));
 
-	} else if (target_pos == DNG_POS(0,14,9) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,14,9) && target_pos != gs_dng_pos_bak)
 	{
 		DNG13_unblock_passage(get_tx(7), &gs_dng13_passage4_flag);
 
-	} else if (target_pos == DNG_POS(0,7,3) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,7,3) && target_pos != gs_dng_pos_bak)
 	{
 		DNG13_unblock_passage(get_tx(7), &gs_dng13_passage5_flag);
 
-	} else if (target_pos == DNG_POS(0,4,1) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,4,1) && target_pos != gs_dng_pos_bak)
 	{
 		loot_special_chest(0);
 
-	} else if (target_pos == DNG_POS(0,5,5) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,5,5) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(15));
 
 		GUI_output(get_tx(16));
 
-	} else if (target_pos == DNG_POS(0,4,7) && target_pos != gs_dng_handled_pos && !gs_dng13_money_flag)
+	} else if (target_pos == DNG_POS(0,4,7) && target_pos != gs_dng_pos_bak && !gs_dng13_money_flag)
 	{
 		GUI_output(get_tx(17));
 
@@ -138,15 +138,15 @@ signed int DNG13_handler(void)
 		set_party_money(p_money);
 
 	} else if ((target_pos == DNG_POS(0,7,14) || target_pos == DNG_POS(0,5,12) || target_pos == DNG_POS(0,1,8) || target_pos == DNG_POS(0,4,3) || target_pos == DNG_POS(0,7,5) || target_pos == DNG_POS(0,14,1) || target_pos == DNG_POS(0,8,8)) &&
-			target_pos != gs_dng_handled_pos)
+			target_pos != gs_dng_pos_bak)
 	{
 		DNG13_collapsing_ceiling();
 
-	} else if ((target_pos == DNG_POS(0,14,12) || target_pos == DNG_POS(0,7,1)) && target_pos != gs_dng_handled_pos)
+	} else if ((target_pos == DNG_POS(0,14,12) || target_pos == DNG_POS(0,7,1)) && target_pos != gs_dng_pos_bak)
 	{
 		DNG13_collapsing_ceiling_easy();
 
-	} else if (target_pos == DNG_POS(0,7,15) && target_pos != gs_dng_handled_pos)
+	} else if (target_pos == DNG_POS(0,7,15) && target_pos != gs_dng_pos_bak)
 	{
 		/* leave dungeon */
 		/* AP bonus for each collapsed ceiling tile, 8 AP if no hero lost, 5 AP otherwise */
@@ -160,7 +160,7 @@ signed int DNG13_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_handled_pos = target_pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }
