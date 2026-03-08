@@ -916,6 +916,7 @@ void DNG_timestep(const signed int forward)
 		gs_dungeon_id = DUNGEON_ID_NONE;
 
 		/* exit game */
+		/* Original-Bug: What if there is another group not on the Totenschiff?? They should survive. */
 		g_game_state = GAME_STATE_DEAD;
 	}
 
