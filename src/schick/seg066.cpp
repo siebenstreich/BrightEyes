@@ -1418,33 +1418,33 @@ signed int town_step(void)
  */
 void town_do_step(const signed int forward)
 {
-	signed int dir;
+	signed int viewdir;
 
 	timewarp(MINUTES(2));
 
-	dir = gs_viewdir;
+	viewdir = gs_viewdir;
 
 	if (forward == 1) {
 
-		if (!dir) {
+		if (!viewdir) { // viewdir == NORTH
 			gs_y--;
-		} else if (dir == 1) {
+		} else if (viewdir == EAST) {
 			gs_x++;
-		} else if (dir == 2) {
+		} else if (viewdir == SOUTH) {
 			gs_y++;
-		} else {
+		} else { // viewdir == WEST
 			gs_x--;
 		}
 
 	} else {
 
-		if (!dir) {
+		if (!viewdir) { // viewdir == NORTH
 			gs_y++;
-		} else if (dir == 1) {
+		} else if (viewdir == EAST) {
 			gs_x--;
-		} else if (dir == 2) {
+		} else if (viewdir == SOUTH) {
 			gs_y--;
-		} else {
+		} else { // viewdir == WEST
 			gs_x++;
 		}
 	}
