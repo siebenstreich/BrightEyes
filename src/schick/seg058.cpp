@@ -647,6 +647,6 @@ void TLK_schmied(const signed int state)
 		gs_dungeon_level = 3;
 		gs_x_bak = gs_x = 11;
 		gs_y_bak = gs_y = 2;
-		gs_viewdir = 2;
+		gs_viewdir = SOUTH;
 	}
 }

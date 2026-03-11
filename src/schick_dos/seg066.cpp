@@ -1062,16 +1062,13 @@ void town_building_textures(void)
 
 			bi = get_border_index(c2);
 
-			if (bi != 7 && bi != 6) {
-			    /* if not grass or water */
+			if (bi != TOWN_TILE_GRASS && bi != TOWN_TILE_WATER) {
 
 				ptr = (int16_t*)&g_visual_square_offsets_std[c1];
 
-				if (bi == 8) {
-					/* direction sign */
+				if (bi == TOWN_TILE_SIGNPOST) {
 					ptr = (int16_t*)&g_visual_square_offsets_sign[c1];
-				} else if (bi == 9 || bi == 10) {
-					/* tavern/inn or shop */
+				} else if (bi == TOWN_TILE_INN_OR_TAVERN || bi == TOWN_TILE_MERCHANT) {
 					ptr = (int16_t*)&g_visual_square_offsets_inn[c1];
 				}
 
@@ -1084,19 +1081,19 @@ void town_building_textures(void)
 
 					ptr = (int16_t*)&g_tex_descr_table[c1 - 1][0];
 
-					l4 =	bi == 2 ? 186 : (
-						bi == 3 ? 187 : (
-						bi == 4 ? 188 : (
-						bi == 5 ? 189 : (
-						bi == 1 ? 188 : (
-						bi == 9 ? 232 : (
-						bi == 10 ? 233 : 185))))));
+					l4 =	bi == TOWN_TILE_HOUSE_1 ? 186 : (
+						bi == TOWN_TILE_HOUSE_2 ? 187 : (
+						bi == TOWN_TILE_HOUSE_3 ? 188 : (
+						bi == TOWN_TILE_HOUSE_4 ? 189 : (
+						bi == TOWN_TILE_TEMPLE ? 188 : (
+						bi == TOWN_TILE_INN_OR_TAVERN ? 232 : (
+						bi == TOWN_TILE_MERCHANT ? 233 : 185))))));
 
 					if ((nvf_no = ptr[2]) != -1) {
 
-						if (g_entrance_angle == 2 && bi >= 1 && bi <= 5) {
+						if (g_entrance_angle == 2 && bi >= TOWN_TILE_TEMPLE && bi <= TOWN_TILE_HOUSE_4) {
 
-							if (bi == 1) {
+							if (bi == TOWN_TILE_TEMPLE) {
 								nvf_no -= 5;
 								l4 = 185;
 							} else {
@@ -1104,25 +1101,25 @@ void town_building_textures(void)
 							}
 						}
 
-						if (bi == 9 || bi == 10) {
+						if (bi == TOWN_TILE_INN_OR_TAVERN || bi == TOWN_TILE_MERCHANT) {
 							load_special_textures(bi);
 						}
 
 						load_town_texture(x + ptr[0], y + ptr[1], nvf_no, l4);
 
-						if (bi == 9 || bi == 10) {
+						if (bi == TOWN_TILE_INN_OR_TAVERN || bi == TOWN_TILE_MERCHANT) {
 							call_load_buffer();
 						}
 					}
 
 					if ((nvf_no = ptr[5]) != -1) {
 
-						if (bi == 1) {
+						if (bi == TOWN_TILE_TEMPLE) {
 							l4 = 188;
 						}
 
 						if (g_entrance_angle == 1 && !(nvf_no & 0x8000) &&
-							bi >= 1 && bi <= 5)
+							bi >= TOWN_TILE_TEMPLE && bi <= TOWN_TILE_HOUSE_4)
 						{
 							nvf_no -= 10;
 
