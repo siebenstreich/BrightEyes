@@ -132,15 +132,15 @@ static signed char get_seq_header(const signed int ani_num)
 /* Borlandified and identical */
 void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_hero *hero, const signed int weapon_gfx_id, const signed int f_action, const signed int object_id_attacker, const signed int object_id_target, const signed int a7)
 {
-	signed int l1;
+	signed int ani_index_ptr_index_0;
 	signed int attacker_x;
 	signed int attacker_y;
 	signed int target_x;
 	signed int target_y;
-	signed int viewdir;
-	signed int viewdir_1;
-	signed int viewdir_2;
-	signed int viewdir_3;
+	signed int viewdir_of_action;
+	signed int ani_index_ptr_index_1;
+	signed int ani_index_ptr_index_2;
+	signed int viewdir_iter;
 	signed int i;
 	int8_t *p_ani_clip_base;
 	int8_t *p_ani_clip_weapon;
@@ -157,19 +157,19 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 
 		if (attacker_x == target_x) {
 			if (target_y < attacker_y) {
-				viewdir = FIG_VIEWDIR_DOWN;
+				viewdir_of_action = FIG_VIEWDIR_DOWN;
 			} else {
-				viewdir = FIG_VIEWDIR_UP;
+				viewdir_of_action = FIG_VIEWDIR_UP;
 			}
 		} else {
 			if (target_x < attacker_x) {
-				viewdir = FIG_VIEWDIR_LEFT;
+				viewdir_of_action = FIG_VIEWDIR_LEFT;
 			} else {
-				viewdir = FIG_VIEWDIR_RIGHT;
+				viewdir_of_action = FIG_VIEWDIR_RIGHT;
 			}
 		}
 	} else {
-		viewdir = hero->viewdir;
+		viewdir_of_action = hero->viewdir;
 	}
 
 	if (
@@ -177,13 +177,13 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 		|| ((hero->typus == HERO_TYPE_MAGIER) && (weapon_id == ITEM_ID_ZAUBERSTAB))
 	) {
 
-		l1 = (f_action == FIG_ACTION_MELEE_ATTACK) ? 45 :		/* melee attack */
+		ani_index_ptr_index_0 = (f_action == FIG_ACTION_MELEE_ATTACK) ? 45 :		/* melee attack */
 			(f_action == FIG_ACTION_UNKNOWN3) ? 41 :		/* drink potion */
 			(f_action == FIG_ACTION_UNKNOWN4) ? 53 :		/* cast spell */
 			49;
 
 	} else {
-		l1 = (f_action == FIG_ACTION_MELEE_ATTACK) ?  21:		/* melee attack */
+		ani_index_ptr_index_0 = (f_action == FIG_ACTION_MELEE_ATTACK) ?  21:		/* melee attack */
 			(f_action == FIG_ACTION_UNKNOWN3) ? 41 :		/* drink potion */
 			(f_action == FIG_ACTION_UNKNOWN4) ? 53 :		/* cast spell */
 			(f_action != FIG_ACTION_RANGE_ATTACK) ? 25 :
@@ -192,11 +192,11 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 			61;
 	}
 
-	l1 += viewdir;
+	ani_index_ptr_index_0 += viewdir_of_action;
 	p_ani_clip_base = &g_fig_ani_tracks[ani_track_id][1];
 	p_ani_clip_weapon = &g_fig_ani_tracks[FANI_TRACK_ID_BASE_TO_WEAPON(ani_track_id)][1];
 
-	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[l1]);
+	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 	g_fig_ani_tracks[ani_track_id][242] = hero->actor_sprite_id;
 
 	/* Concerning the following code block: There are parallel code blocks in
@@ -209,7 +209,7 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 	 */
 	if (
 		check_hero(hero)
-		&& (hero->viewdir != viewdir)
+		&& (hero->viewdir != viewdir_of_action)
 		&& (
 			(f_action == FIG_ACTION_MELEE_ATTACK)
 			|| (f_action == FIG_ACTION_RANGE_ATTACK)
@@ -221,32 +221,32 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 	) {
 			g_fig_ani_tracks[ani_track_id][0] = 0;
 
-			viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
-			viewdir_3 = hero->viewdir;
-			viewdir_2 = viewdir_3;
+			ani_index_ptr_index_2 = ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
+			viewdir_iter = hero->viewdir;
+			ani_index_ptr_index_2 = viewdir_iter;
 
-			viewdir_3++;
-			if (viewdir_3 == FIG_VIEWDIR__END) {
-				viewdir_3 = FIG_VIEWDIR__BEGIN;
+			viewdir_iter++;
+			if (viewdir_iter == FIG_VIEWDIR__END) {
+				viewdir_iter = FIG_VIEWDIR__BEGIN;
 			}
 
-			if (viewdir_3 != viewdir) {
-				viewdir_1 = viewdir_3;
+			if (viewdir_iter != viewdir_of_action) {
+				ani_index_ptr_index_1 = viewdir_iter;
 
-				viewdir_3++;
-				if (viewdir_3 == FIG_VIEWDIR__END) {
-					viewdir_3 = FIG_VIEWDIR__BEGIN;
+				viewdir_iter++;
+				if (viewdir_iter == FIG_VIEWDIR__END) {
+					viewdir_iter = FIG_VIEWDIR__BEGIN;
 				}
 
-				if (viewdir_3 != viewdir) {
-					viewdir_2 = hero->viewdir + 4;
-					viewdir_1 = FIG_VIEWDIR__NONE;
+				if (viewdir_iter != viewdir_of_action) {
+					ani_index_ptr_index_2 = hero->viewdir + 4;
+					ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 				}
 			}
 
-			hero->viewdir = viewdir;
+			hero->viewdir = viewdir_of_action;
 
-			if (viewdir_1 == FIG_VIEWDIR__NONE) {
+			if (ani_index_ptr_index_1 == FIG_VIEWDIR__NONE) {
 				for (i = 0; i < 2; i++) {
 					*p_ani_clip_base++ = -5;
 					*p_ani_clip_base++ = 0;
@@ -254,14 +254,14 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 				}
 			}
 
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-			if (viewdir_1 != FIG_VIEWDIR__NONE) {
-				p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
+			if (ani_index_ptr_index_1 != FIG_VIEWDIR__NONE) {
+				p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_1], ANI_SRC_FILE_ID_ANI_DAT);
 			}
 
 			*p_ani_clip_base++ = -4;
-			*p_ani_clip_base++ = get_seq_header(ani_index_ptr[l1]);
+			*p_ani_clip_base++ = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 			*p_ani_clip_base++ = 0;
 	} else {
 		for (i = 0; i < 5; i++) {
@@ -282,7 +282,7 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 			|| ((f_action == FIG_ACTION_PARRY) && !g_fig_hero_parry_action_used[(signed char)object_id_attacker - 1])
 		)
 	) {
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l1], ANI_SRC_FILE_ID_ANI_DAT);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_0], ANI_SRC_FILE_ID_ANI_DAT);
 
 		if (
 			(weapon_gfx_id != WEAPON_GFX_ID_NONE)
@@ -313,7 +313,7 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 		)
 	) {
 
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l1], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_0], ANI_SRC_FILE_ID_ANI_DAT);
 
 			if (
 				(weapon_gfx_id != WEAPON_GFX_ID_NONE)
@@ -370,19 +370,19 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 /* Borlandified and identical */
 void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sheet *enemy, const signed int f_action, const signed int object_id_attacker, const signed int object_id_target, const signed int a7)
 {
-	signed int l1;
+	signed int ani_index_ptr_index_0;
 	signed int attacker_x;
 	signed int attacker_y;
 	signed int target_x;
 	signed int target_y;
-	signed int viewdir;
-	signed int viewdir_1;
-	signed int viewdir_2;
-	signed int viewdir_3;
+	signed int viewdir_of_action;
+	signed int ani_index_ptr_index_1;
+	signed int ani_index_ptr_index_2;
+	signed int viewdir_iter;
 	signed int i;
 	int8_t *p_ani_clip_base;
 	int8_t *p_ani_clip_weapon;
-	struct struct_fighter *p_fighter;			/* only user for two sprited figures */
+	struct struct_fighter *p_fighter;	/* only user for double-size enemies */
 	int16_t *ani_index_ptr;			/* read only */
 	signed int weapon_gfx_id;
 
@@ -408,20 +408,20 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	/* find out which direction the action will have */
 	if (attacker_x == target_x) {
 		if (target_y < attacker_y) {
-			viewdir = FIG_VIEWDIR_DOWN;
+			viewdir_of_action = FIG_VIEWDIR_DOWN;
 		} else {
-			viewdir = FIG_VIEWDIR_UP;
+			viewdir_of_action = FIG_VIEWDIR_UP;
 		}
 	} else {
 		if (target_x < attacker_x) {
-			viewdir = FIG_VIEWDIR_LEFT;
+			viewdir_of_action = FIG_VIEWDIR_LEFT;
 		} else {
-			viewdir = FIG_VIEWDIR_RIGHT;
+			viewdir_of_action = FIG_VIEWDIR_RIGHT;
 		}
 	}
 
 	/* melee attack */
-	l1 = (f_action == FIG_ACTION_MELEE_ATTACK) ? 21 : 25;
+	ani_index_ptr_index_0 = (f_action == FIG_ACTION_MELEE_ATTACK) ? 21 : 25;
 
 	if (
 		(enemy->actor_sprite_id == ACTOR_SPRITE_ID_DRUIDE__MALE)
@@ -431,21 +431,21 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	) {
 
 		weapon_gfx_id = WEAPON_GFX_ID_NONE;
-		l1 = (f_action == FIG_ACTION_MELEE_ATTACK) ? 45 : 49;
+		ani_index_ptr_index_0 = (f_action == FIG_ACTION_MELEE_ATTACK) ? 45 : 49;
 	}
 
 	if (f_action == FIG_ACTION_RANGE_ATTACK) {
-		l1 = 33;
+		ani_index_ptr_index_0 = 33;
 		weapon_gfx_id = WEAPON_GFX_ID_NONE;
 	}
 
-	l1 += viewdir;
+	ani_index_ptr_index_0 += viewdir_of_action;
 
 	p_ani_clip_base = &g_fig_ani_tracks[ani_track_id][1];
 	p_ani_clip_weapon = &g_fig_ani_tracks[FANI_TRACK_ID_BASE_TO_WEAPON(ani_track_id)][1];
 
 
-	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[l1]);
+	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 	g_fig_ani_tracks[ani_track_id][242] = enemy->actor_sprite_id;
 
 	/* Concerning the following code block: There are parallel code blocks in
@@ -457,7 +457,7 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 
 	/* first the enemy may turn */
 	if (
-		(enemy->viewdir != viewdir)
+		(enemy->viewdir != viewdir_of_action)
 		&& (
 			(
 				 (f_action == FIG_ACTION_MELEE_ATTACK)
@@ -472,45 +472,45 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 		g_fig_ani_tracks[ani_track_id][0] = 0;
 
 		/* find out the new direction */
-		viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
+		ani_index_ptr_index_2 = ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 
-		viewdir_3 = enemy->viewdir;
-		viewdir_2 = viewdir_3;
+		viewdir_iter = enemy->viewdir;
+		ani_index_ptr_index_2 = viewdir_iter;
 
 		/* turn right by 90 degrees */
-		viewdir_3++;
-		if (viewdir_3 == FIG_VIEWDIR__END) {
-			viewdir_3 = FIG_VIEWDIR__BEGIN;
+		viewdir_iter++;
+		if (viewdir_iter == FIG_VIEWDIR__END) {
+			viewdir_iter = FIG_VIEWDIR__BEGIN;
 		}
 
-		if (viewdir_3 != viewdir) {
+		if (viewdir_iter != viewdir_of_action) {
 			/* still not the same direction */
-			viewdir_1 = viewdir_3; // misleading, setting viewdir_1 to any value != FIG_VIEWDIR__NONE would do.
+			ani_index_ptr_index_1 = viewdir_iter; // misleading, setting ani_index_ptr_index_1 to any value != FIG_VIEWDIR__NONE would do.
 
 			/* turn right by 90 degrees for the second time */
-			viewdir_3++;
-			if (viewdir_3 == FIG_VIEWDIR__END) {
-				viewdir_3 = FIG_VIEWDIR__BEGIN;
+			viewdir_iter++;
+			if (viewdir_iter == FIG_VIEWDIR__END) {
+				viewdir_iter = FIG_VIEWDIR__BEGIN;
 			}
 
-			if (viewdir_3 != viewdir) {
+			if (viewdir_iter != viewdir_of_action) {
 				/* still not the same direction */
 				/* So: correct direction is turning left by 90 degrees from the starting position. */
-				viewdir_2 = enemy->viewdir + 4;
-				viewdir_1 = FIG_VIEWDIR__NONE;
+				ani_index_ptr_index_2 = enemy->viewdir + 4;
+				ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 			}
 		}
 
-		/* outcome:                   viewdir_1                                         viewdir_2
+		/* outcome:                   ani_index_ptr_index_1                             ani_index_ptr_index_2
 		 * turn right by 90 degrees   FIG_VIEWDIR__NONE                                 initial viewdir
 		 * turn by 180 degrees        initial viewdir, turned 90 degrees to the right   initial viewdir
 		 * turn left by 90 degrees    FIG_VIEWDIR__NONE                                 (initial viewdir) + 4
 		 */
 
 		/* set the new direction in enemy sheet */
-		enemy->viewdir = viewdir;
+		enemy->viewdir = viewdir_of_action;
 
-		if (viewdir_1 == FIG_VIEWDIR__NONE) {
+		if (ani_index_ptr_index_1 == FIG_VIEWDIR__NONE) {
 			/* attacking enemy turns by 90 degrees (left or right) */
 			/* do not move for 2 frames */
 			for (i = 0; i < 2; i++) {
@@ -520,16 +520,16 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 			}
 		}
 
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_2], 1);
 
-		if (viewdir_1 != FIG_VIEWDIR__NONE) {
+		if (ani_index_ptr_index_1 != FIG_VIEWDIR__NONE) {
 			/* attacking enemy turned by 180 degrees */
 			/* show sprite turned 90 degrees to the right (intermediate turning state) */
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_1], 1);
 		}
 
 		*p_ani_clip_base++ = -4;
-		*p_ani_clip_base++ = get_seq_header(ani_index_ptr[l1]);
+		*p_ani_clip_base++ = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 		*p_ani_clip_base++ = 0;
 	} else {
 		/* attacking enemy is already heading toward the target and does not turn. */
@@ -546,7 +546,7 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 		|| (f_action == FIG_ACTION_RANGE_ATTACK)
 		|| ((f_action == FIG_ACTION_PARRY) && !g_fig_enemy_parry_action_used[(signed char)object_id_attacker])
 	) {
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l1], 1);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_0], 1);
 
 		if (weapon_gfx_id != WEAPON_GFX_ID_NONE) {
 
@@ -568,7 +568,7 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 		|| ((g_fig_critical_fail_backfire_1 != 0) && (a7 == 1))
 	) {
 
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l1], 1);
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_0], 1);
 
 			if (weapon_gfx_id != WEAPON_GFX_ID_NONE) {
 
@@ -617,7 +617,6 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	}
 }
 
-
 /**
  *
  * \param[in] ani_track_id  0 or 1
@@ -636,13 +635,12 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 	signed int y_caster;
 	signed int x_target;
 	signed int y_target;
-	signed int viewdir;
-	signed int viewdir_1;
-	signed int viewdir_2;
+	signed int viewdir_of_action;
+	signed int ani_index_ptr_index_1;
+	signed int ani_index_ptr_index_2;
 	int8_t *p_ani_clip_base;
 	int16_t *ani_index_ptr;
-
-	signed int l_di;
+	signed int ani_index_ptr_index_0;
 
 	/* get a pointer from an array where the Monster-ID serves as index */
 	ani_index_ptr = g_gfx_ani_index[hero->actor_sprite_id];
@@ -652,27 +650,27 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 
 	if (x_caster == x_target) {
 		if (y_target < y_caster)
-			viewdir = FIG_VIEWDIR_DOWN;
+			viewdir_of_action = FIG_VIEWDIR_DOWN;
 		else
-			viewdir = FIG_VIEWDIR_UP;
+			viewdir_of_action = FIG_VIEWDIR_UP;
 	} else {
 		if (x_target < x_caster)
-			viewdir = FIG_VIEWDIR_LEFT;
+			viewdir_of_action = FIG_VIEWDIR_LEFT;
 		else
-			viewdir = FIG_VIEWDIR_RIGHT;
+			viewdir_of_action = FIG_VIEWDIR_RIGHT;
 	}
 
 	if ((signed char)target_object_id == (signed char)caster_object_id)
-		viewdir = hero->viewdir;
+		viewdir_of_action = hero->viewdir;
 
 
-	l_di = (max_range == 4) ? ((v5 == 1) ? 37 : 29) : 16;
+	ani_index_ptr_index_0 = (max_range == 4) ? ((v5 == 1) ? 37 : 29) : 16;
 
-	l_di += (max_range == 4) ? viewdir : hero->viewdir;
+	ani_index_ptr_index_0 += (max_range == 4) ? viewdir_of_action : hero->viewdir;
 
 	p_ani_clip_base = &g_fig_ani_tracks[ani_track_id][1];
 
-	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[l_di]);
+	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 
 	g_fig_ani_tracks[ani_track_id][242] = hero->actor_sprite_id;
 
@@ -684,42 +682,46 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 	 * FANI_prepare_spell_hero(...) in seg044.cpp
 	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
 	 */
-	if ((hero->viewdir != viewdir) && (max_range == 4)) {
+	if ((hero->viewdir != viewdir_of_action) && (max_range == 4)) {
 
-		signed int viewdir_3;
+		signed int viewdir_iter;
 
 		g_fig_ani_tracks[ani_track_id][0] = 0;
 
-		viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
-		viewdir_3 = hero->viewdir;
-		viewdir_2 = viewdir_3;
-		viewdir_3++;
-		if (viewdir_3 == FIG_VIEWDIR__END)
-			viewdir_3 = FIG_VIEWDIR__BEGIN;
+		ani_index_ptr_index_2 = ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
+		viewdir_iter = hero->viewdir;
+		ani_index_ptr_index_2 = viewdir_iter;
 
-		if (viewdir_3 != viewdir) {
-			viewdir_1 = viewdir_3;
-			viewdir_3++;
-			if (viewdir_3 == FIG_VIEWDIR__END)
-				viewdir_3 = FIG_VIEWDIR__BEGIN;
+		viewdir_iter++;
+		if (viewdir_iter == FIG_VIEWDIR__END) {
+			viewdir_iter = FIG_VIEWDIR__BEGIN;
+		}
 
-			if (viewdir_3 != viewdir) {
-				viewdir_2 = hero->viewdir + 4;
-				viewdir_1 = FIG_VIEWDIR__NONE;
+		if (viewdir_iter != viewdir_of_action) {
+			ani_index_ptr_index_1 = viewdir_iter;
+
+			viewdir_iter++;
+			if (viewdir_iter == FIG_VIEWDIR__END) {
+				viewdir_iter = FIG_VIEWDIR__BEGIN;
+			}
+
+			if (viewdir_iter != viewdir_of_action) {
+				ani_index_ptr_index_2 = hero->viewdir + 4;
+				ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 			}
 		}
 
-		hero->viewdir = viewdir;
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
+		hero->viewdir = viewdir_of_action;
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-		if (viewdir_1 != FIG_VIEWDIR__NONE) {
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
+		if (ani_index_ptr_index_1 != FIG_VIEWDIR__NONE) {
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_1], ANI_SRC_FILE_ID_ANI_DAT);
 		}
 
 		*p_ani_clip_base = -4;
 		p_ani_clip_base++;
 
-		*p_ani_clip_base = get_seq_header(ani_index_ptr[l_di]);
+		*p_ani_clip_base = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 		p_ani_clip_base++;
 
 		*p_ani_clip_base = 0x00;
@@ -733,7 +735,7 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 		|| ((g_fig_target_dead != 0) && (v6 == 1))
 	) {
 
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l_di], ANI_SRC_FILE_ID_ANI_DAT);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_0], ANI_SRC_FILE_ID_ANI_DAT);
 	}
 
 	if (
@@ -763,7 +765,7 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
  *
  * \param[in] ani_track_id  0 or 1
  * \param   p           pointer to an entry of g_enemy_sheets
- * \param   max_range   4 of 99
+ * \param   max_range   4 or 99
  * \param   target_object_id      the id of the target
  * \param   caster_object_id      the id of the caster
  * \param   v5          0 or 1
@@ -771,18 +773,17 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 /* Borlandified and identical */
 void FANI_prepare_spell_enemy(const signed int ani_track_id, struct enemy_sheet *enemy, const signed int max_range, const signed int target_object_id, const signed int caster_object_id, const signed int v5)
 {
-	signed int l1;
+	signed int ani_index_ptr_index_0;
 	signed int x_target;
 	signed int y_target;
 	signed int x_caster;
 	signed int y_caster;
-	signed int viewdir;
-	signed int viewdir_1;
-	signed int viewdir_2;		/* indicees to ani_index_ptr */
+	signed int viewdir_of_action;
+	signed int ani_index_ptr_index_1;
+	signed int ani_index_ptr_index_2;		/* indicees to ani_index_ptr */
 	int8_t *p_ani_clip_base;	/* mostly written */
 	int16_t *ani_index_ptr;	/* read only */
-
-	signed int viewdir_3;
+	signed int viewdir_iter;
 
 
 	/* get a pointer from an array where the actor_sprite_id of the enemy serves as index */
@@ -793,28 +794,28 @@ void FANI_prepare_spell_enemy(const signed int ani_track_id, struct enemy_sheet 
 
 	if (x_target == x_caster) {
 		if (y_caster < y_target)
-			viewdir = FIG_VIEWDIR_DOWN;
+			viewdir_of_action = FIG_VIEWDIR_DOWN;
 		else
-			viewdir = FIG_VIEWDIR_UP;
+			viewdir_of_action = FIG_VIEWDIR_UP;
 	} else {
 		if (x_caster < x_target)
-			viewdir = FIG_VIEWDIR_LEFT;
+			viewdir_of_action = FIG_VIEWDIR_LEFT;
 		else
-			viewdir = FIG_VIEWDIR_RIGHT;
+			viewdir_of_action = FIG_VIEWDIR_RIGHT;
 	}
 
 	if ((signed char)caster_object_id == (signed char)target_object_id)
-		viewdir = enemy->viewdir;
+		viewdir_of_action = enemy->viewdir;
 
 	/* this is true if an enemy attacks a hero */
-	l1 = (max_range == 4) ? 29 : 16;
+	ani_index_ptr_index_0 = (max_range == 4) ? 29 : 16;
 
 	p_ani_clip_base = &g_fig_ani_tracks[ani_track_id][1];
 
 	/* this is true if an enemy attacks a hero */
-	l1 += (max_range == 4) ? viewdir : enemy->viewdir;
+	ani_index_ptr_index_0 += (max_range == 4) ? viewdir_of_action : enemy->viewdir;
 
-	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[l1]);
+	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 
 	g_fig_ani_tracks[ani_track_id][242] = enemy->actor_sprite_id;
 
@@ -826,48 +827,53 @@ void FANI_prepare_spell_enemy(const signed int ani_track_id, struct enemy_sheet 
 	 * FANI_prepare_spell_hero(...) in seg044.cpp
 	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
 	 */
-	if ((enemy->viewdir != viewdir) && (max_range == 4)) {
+	if ((enemy->viewdir != viewdir_of_action) && (max_range == 4)) {
 
 		g_fig_ani_tracks[ani_track_id][0] = 0;
 
-		viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
+		ani_index_ptr_index_2 = ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 
-		viewdir_3 = enemy->viewdir;
-		viewdir_2 = viewdir_3;
-		viewdir_3++;
-		if (viewdir_3 == FIG_VIEWDIR__END)
-			viewdir_3 = FIG_VIEWDIR__BEGIN;
+		viewdir_iter = enemy->viewdir;
+		ani_index_ptr_index_2 = viewdir_iter;
 
-		if (viewdir_3 != viewdir) {
+		viewdir_iter++;
+		if (viewdir_iter == FIG_VIEWDIR__END) {
+			viewdir_iter = FIG_VIEWDIR__BEGIN;
+		}
 
-			viewdir_1 = viewdir_3;
-			viewdir_3++;
-			if (viewdir_3 == FIG_VIEWDIR__END)
-				viewdir_3 = FIG_VIEWDIR__BEGIN;
-			if (viewdir_3 != viewdir) {
-				viewdir_2 = enemy->viewdir + 4;
-				viewdir_1 = FIG_VIEWDIR__NONE;
+		if (viewdir_iter != viewdir_of_action) {
+
+			ani_index_ptr_index_1 = viewdir_iter;
+
+			viewdir_iter++;
+			if (viewdir_iter == FIG_VIEWDIR__END) {
+				viewdir_iter = FIG_VIEWDIR__BEGIN;
+			}
+
+			if (viewdir_iter != viewdir_of_action) {
+				ani_index_ptr_index_2 = enemy->viewdir + 4;
+				ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 			}
 		}
 
-		enemy->viewdir = viewdir;
+		enemy->viewdir = viewdir_of_action;
 
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_2], 1);
 
-		if (viewdir_1 != FIG_VIEWDIR__NONE)
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
+		if (ani_index_ptr_index_1 != FIG_VIEWDIR__NONE)
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_1], 1);
 
 		*p_ani_clip_base = -4;
 		p_ani_clip_base++;
 
-		*p_ani_clip_base = get_seq_header(ani_index_ptr[l1]);
+		*p_ani_clip_base = get_seq_header(ani_index_ptr[ani_index_ptr_index_0]);
 		p_ani_clip_base++;
 
 		*p_ani_clip_base = 0;
 		p_ani_clip_base++;
 	}
 
-	p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l1], 1);
+	p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_0], 1);
 
 	if (
 		(g_fig_attacker_dead && !v5)

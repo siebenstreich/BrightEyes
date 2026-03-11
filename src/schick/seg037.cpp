@@ -80,9 +80,9 @@ static signed int copy_ani_sequence(int8_t *dst, const signed int ani_num, const
 
 void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 {
-	signed char viewdir_1;
-	signed char viewdir_2;
-	signed char viewdir_3;
+	signed char ani_index_ptr_index_1;
+	signed char ani_index_ptr_index_2;
+	signed char viewdir_iter;
 	int8_t *p_ani_clip_base;
 	struct struct_fighter *p_fighter;
 	int16_t *ani_index_ptr;
@@ -108,39 +108,39 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 		 */
 		if (enemy->viewdir != g_fig_move_pathdir[i]) {
 
-			viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
-			viewdir_3 = enemy->viewdir;
-			viewdir_2 = viewdir_3;
+			ani_index_ptr_index_2 = ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
+			viewdir_iter = enemy->viewdir;
+			ani_index_ptr_index_2 = viewdir_iter;
 
-			viewdir_3++;
-			if (viewdir_3 == FIG_VIEWDIR__END) {
-				viewdir_3 = FIG_VIEWDIR__BEGIN;
+			viewdir_iter++;
+			if (viewdir_iter == FIG_VIEWDIR__END) {
+				viewdir_iter = FIG_VIEWDIR__BEGIN;
 			}
 
-			if (g_fig_move_pathdir[i] != viewdir_3) {
+			if (g_fig_move_pathdir[i] != viewdir_iter) {
 
-				viewdir_1 = viewdir_3;
+				ani_index_ptr_index_1 = viewdir_iter;
 
-				viewdir_3++;
-				if (viewdir_3 == FIG_VIEWDIR__END) {
-					viewdir_3 = FIG_VIEWDIR__BEGIN;
+				viewdir_iter++;
+				if (viewdir_iter == FIG_VIEWDIR__END) {
+					viewdir_iter = FIG_VIEWDIR__BEGIN;
 				}
 
-				if (g_fig_move_pathdir[i] != viewdir_3) {
+				if (g_fig_move_pathdir[i] != viewdir_iter) {
 
-					viewdir_2 = enemy->viewdir + 4;
-					viewdir_1 = FIG_VIEWDIR__NONE;
+					ani_index_ptr_index_2 = enemy->viewdir + 4;
+					ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 				}
 
 			}
 
 			enemy->viewdir = g_fig_move_pathdir[i];
 
-			p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
+			p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_2], 1);
 
-			if (viewdir_1 != FIG_VIEWDIR__NONE) {
+			if (ani_index_ptr_index_1 != FIG_VIEWDIR__NONE) {
 
-				p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
+				p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_1], 1);
 			}
 		}
 

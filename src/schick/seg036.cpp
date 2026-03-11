@@ -104,10 +104,10 @@ static signed int load_ani_clip_from_file(int8_t *dst, const signed int clip_num
 void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 {
 	signed int i;
-	signed char viewdir_1;
-	signed char viewdir_2;
+	signed char ani_index_ptr_index_1;
+	signed char ani_index_ptr_index_2;
 	int8_t *p_ani_clip_base;
-	signed char viewdir_3;
+	signed char viewdir_iter;
 	int16_t *ani_index_ptr;
 
 	g_fig_ani_tracks[FANI_TRACK_ID_ACTOR_0_BASE][0] = 0;
@@ -130,37 +130,37 @@ void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 		 */
 		if (hero->viewdir != g_fig_move_pathdir[i]) {
 
-			viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
-			viewdir_3 = hero->viewdir;
-			viewdir_2 = viewdir_3;
+			ani_index_ptr_index_2 = ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
+			viewdir_iter = hero->viewdir;
+			ani_index_ptr_index_2 = viewdir_iter;
 
-			viewdir_3++;
-			if (viewdir_3 == FIG_VIEWDIR__END) {
-				viewdir_3 = FIG_VIEWDIR__BEGIN;
+			viewdir_iter++;
+			if (viewdir_iter == FIG_VIEWDIR__END) {
+				viewdir_iter = FIG_VIEWDIR__BEGIN;
 			}
 
-			if (g_fig_move_pathdir[i] != viewdir_3) {
+			if (g_fig_move_pathdir[i] != viewdir_iter) {
 
-				viewdir_1 = viewdir_3;
+				ani_index_ptr_index_1 = viewdir_iter;
 
-				viewdir_3++;
-				if (viewdir_3 == FIG_VIEWDIR__END) {
-					viewdir_3 = FIG_VIEWDIR__BEGIN;
+				viewdir_iter++;
+				if (viewdir_iter == FIG_VIEWDIR__END) {
+					viewdir_iter = FIG_VIEWDIR__BEGIN;
 				}
 
-				if (g_fig_move_pathdir[i] != viewdir_3) {
+				if (g_fig_move_pathdir[i] != viewdir_iter) {
 
-					viewdir_2 = hero->viewdir + 4;
-					viewdir_1 = FIG_VIEWDIR__NONE;
+					ani_index_ptr_index_2 = hero->viewdir + 4;
+					ani_index_ptr_index_1 = FIG_VIEWDIR__NONE;
 				}
 			}
 
 			hero->viewdir = g_fig_move_pathdir[i];
 
-			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-			if (viewdir_1 != FIG_VIEWDIR__NONE) {
-				p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
+			if (ani_index_ptr_index_1 != FIG_VIEWDIR__NONE) {
+				p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[ani_index_ptr_index_1], ANI_SRC_FILE_ID_ANI_DAT);
 			}
 		}
 
