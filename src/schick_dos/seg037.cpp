@@ -103,6 +103,8 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 		 * FIG_prepare_hero_ani(...) in seg037.cpp
 		 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
 		 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+		 * FANI_prepare_spell_hero(...) in seg044.cpp
+		 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
 		 */
 		if (enemy->viewdir != g_fig_move_pathdir[i]) {
 

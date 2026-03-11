@@ -125,6 +125,8 @@ void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 		 * FIG_prepare_hero_ani(...) in seg037.cpp
 		 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
 		 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+		 * FANI_prepare_spell_hero(...) in seg044.cpp
+		 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
 		 */
 		if (hero->viewdir != g_fig_move_pathdir[i]) {
 

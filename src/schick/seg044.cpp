@@ -204,6 +204,8 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 	 * FIG_prepare_hero_ani(...) in seg037.cpp
 	 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
 	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 * FANI_prepare_spell_hero(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
 	 */
 	if (
 		check_hero(hero)
@@ -635,8 +637,8 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 	signed int x_target;
 	signed int y_target;
 	signed int viewdir;
-	signed int l2;
-	signed int l3;
+	signed int viewdir_1;
+	signed int viewdir_2;
 	int8_t *p_ani_clip_base;
 	int16_t *ani_index_ptr;
 
@@ -674,36 +676,44 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 
 	g_fig_ani_tracks[ani_track_id][242] = hero->actor_sprite_id;
 
+	/* Concerning the following code block: There are parallel code blocks in
+	 * prepare_enemy_ani(...) in seg036.cpp
+	 * FIG_prepare_hero_ani(...) in seg037.cpp
+	 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 * FANI_prepare_spell_hero(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 */
 	if ((hero->viewdir != viewdir) && (max_range == 4)) {
 
-		signed int viewdir_2;
+		signed int viewdir_3;
 
 		g_fig_ani_tracks[ani_track_id][0] = 0;
 
-		l3 = l2 = -1;
-		viewdir_2 = hero->viewdir;
-		l3 = viewdir_2;
-		viewdir_2++;
-		if (viewdir_2 == 4)
-			viewdir_2 = 0;
+		viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
+		viewdir_3 = hero->viewdir;
+		viewdir_2 = viewdir_3;
+		viewdir_3++;
+		if (viewdir_3 == FIG_VIEWDIR__END)
+			viewdir_3 = FIG_VIEWDIR__BEGIN;
 
-		if (viewdir_2 != viewdir) {
-			l2 = viewdir_2;
-			viewdir_2++;
-			if (viewdir_2 == 4)
-				viewdir_2 = 0;
+		if (viewdir_3 != viewdir) {
+			viewdir_1 = viewdir_3;
+			viewdir_3++;
+			if (viewdir_3 == FIG_VIEWDIR__END)
+				viewdir_3 = FIG_VIEWDIR__BEGIN;
 
-			if (viewdir_2 != viewdir) {
-				l3 = hero->viewdir + 4;
-				l2 = -1;
+			if (viewdir_3 != viewdir) {
+				viewdir_2 = hero->viewdir + 4;
+				viewdir_1 = FIG_VIEWDIR__NONE;
 			}
 		}
 
 		hero->viewdir = viewdir;
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l3], ANI_SRC_FILE_ID_ANI_DAT);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-		if (l2 != -1) {
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l2], ANI_SRC_FILE_ID_ANI_DAT);
+		if (viewdir_1 != FIG_VIEWDIR__NONE) {
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
 		}
 
 		*p_ani_clip_base = -4;
@@ -746,7 +756,6 @@ void FANI_prepare_spell_hero(const signed int ani_track_id, struct struct_hero *
 	*p_ani_clip_base = -1;
 }
 
-
 /**
  * \brief   prepares a spell animation
  *
@@ -768,12 +777,12 @@ void FANI_prepare_spell_enemy(const signed int ani_track_id, struct enemy_sheet 
 	signed int x_caster;
 	signed int y_caster;
 	signed int viewdir;
-	signed int l2;
-	signed int l3;		/* indicees to ani_index_ptr */
+	signed int viewdir_1;
+	signed int viewdir_2;		/* indicees to ani_index_ptr */
 	int8_t *p_ani_clip_base;	/* mostly written */
 	int16_t *ani_index_ptr;	/* read only */
 
-	signed int viewdir_2;
+	signed int viewdir_3;
 
 
 	/* get a pointer from an array where the actor_sprite_id of the enemy serves as index */
@@ -809,36 +818,44 @@ void FANI_prepare_spell_enemy(const signed int ani_track_id, struct enemy_sheet 
 
 	g_fig_ani_tracks[ani_track_id][242] = enemy->actor_sprite_id;
 
+	/* Concerning the following code block: There are parallel code blocks in
+	 * prepare_enemy_ani(...) in seg036.cpp
+	 * FIG_prepare_hero_ani(...) in seg037.cpp
+	 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 * FANI_prepare_spell_hero(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 */
 	if ((enemy->viewdir != viewdir) && (max_range == 4)) {
 
 		g_fig_ani_tracks[ani_track_id][0] = 0;
 
-		l3 = l2 = -1;
+		viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
 
-		viewdir_2 = enemy->viewdir;
-		l3 = viewdir_2;
-		viewdir_2++;
-		if (viewdir_2 == 4)
-			viewdir_2 = 0;
+		viewdir_3 = enemy->viewdir;
+		viewdir_2 = viewdir_3;
+		viewdir_3++;
+		if (viewdir_3 == FIG_VIEWDIR__END)
+			viewdir_3 = FIG_VIEWDIR__BEGIN;
 
-		if (viewdir_2 != viewdir) {
+		if (viewdir_3 != viewdir) {
 
-			l2 = viewdir_2;
-			viewdir_2++;
-			if (viewdir_2 == 4)
-				viewdir_2 = 0;
-			if (viewdir_2 != viewdir) {
-				l3 = enemy->viewdir + 4;
-				l2 = -1;
+			viewdir_1 = viewdir_3;
+			viewdir_3++;
+			if (viewdir_3 == FIG_VIEWDIR__END)
+				viewdir_3 = FIG_VIEWDIR__BEGIN;
+			if (viewdir_3 != viewdir) {
+				viewdir_2 = enemy->viewdir + 4;
+				viewdir_1 = FIG_VIEWDIR__NONE;
 			}
 		}
 
 		enemy->viewdir = viewdir;
 
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l3], 1);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
 
-		if (l2 != -1)
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l2], 1);
+		if (viewdir_1 != FIG_VIEWDIR__NONE)
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
 
 		*p_ani_clip_base = -4;
 		p_ani_clip_base++;
