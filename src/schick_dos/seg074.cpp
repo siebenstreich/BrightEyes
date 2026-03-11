@@ -57,7 +57,7 @@ void show_automap(void)
 	signed int l_di;
 	signed int loc_bak;
 	signed int done;
-	signed int dungeon;
+	signed int dungeon_id;
 	signed int town_id;
 	signed int tw_bak;
 
@@ -67,7 +67,7 @@ void show_automap(void)
 
 		g_special_screen = 1;
 
-		dungeon = gs_dungeon_id;
+		dungeon_id = gs_dungeon_id;
 		town_id = gs_town_id;
 
 		gs_town_id = gs_dungeon_id = 0;
@@ -80,7 +80,7 @@ void show_automap(void)
 				((gs_x - 8 > 15) ? 16 : gs_x - 8));
 
 		gs_town_id = town_id;
-		gs_dungeon_id = dungeon;
+		gs_dungeon_id = dungeon_id;
 
 		g_request_refresh = 1;
 
@@ -231,7 +231,7 @@ void render_automap(const signed int x_off)
 	signed int group_i;
 	signed int x;
 	signed int y;
-	signed int entrance_dir;
+	signed int viewdir_entrance_door;
 
 	g_pic_copy.x1 = 0;
 	g_pic_copy.y1 = 0;
@@ -281,12 +281,12 @@ void render_automap(const signed int x_off)
 
 					if ((tile_type != TOWN_TILE_STREET) && (tile_type != TOWN_TILE_GRASS) && (tile_type != TOWN_TILE_WATER) && (tile_type != TOWN_TILE_SIGNPOST)) {
 
-						entrance_dir = (g_map_size_x == 16) ?
+						viewdir_entrance_door = (g_map_size_x == 16) ?
 										get_mapval_small(x, y) :
 										get_mapval_large(x + x_off, y);
 
-						entrance_dir &= 3;
-						draw_automap_entrance(x, y, entrance_dir);
+						viewdir_entrance_door &= 3;
+						draw_automap_entrance(x, y, viewdir_entrance_door);
 					}
 				}
 			}
@@ -344,12 +344,12 @@ void render_automap(const signed int x_off)
 /**
  * \brief   draws a building on the automap
  *
- * \param   x           x-coordinate on the automap
- * \param   y           y-coordiante on the automap
- * \param   color       the color
- * \param   dir         direction of the entrance, -1 for none
+ * \param   x                  x-coordinate on the automap
+ * \param   y                  y-coordiante on the automap
+ * \param   map_tile_id        the id of the map tile, which also encodes the color
+ * \param   viewdir_arrow      for arrows: the direction
  */
-void draw_automap_square(const signed int x, const signed int y, const signed int color, const signed int dir)
+void draw_automap_square(const signed int x, const signed int y, const signed int map_tile_id, const signed int viewdir_arrow)
 {
 	signed int i;
 	signed int offset_y;
@@ -363,26 +363,27 @@ void draw_automap_square(const signed int x, const signed int y, const signed in
 	p_img_tile = (uint8_t*)g_renderbuf_ptr + offset_y + 8 * x + 0xca8;
 
 	for (i = 0; i < 49; i++) {
-		tile[i] = color;
+		tile[i] = map_tile_id;
 	}
 
-	if ((color == 4) || (color == 16)) {
+	if ((map_tile_id == MAP_TILE_YELLOW_ARROW) || (map_tile_id == MAP_TILE_PURPLE_ARROW)) {
 
-		if (dir == 0) {
+		if (viewdir_arrow == NORTH) {
 
 			memcpy(g_text_output_buf, g_automap_tile_arrowup, 49);
 
-		} else if (dir == 2) {
+		} else if (viewdir_arrow == SOUTH) {
 
 			for (i = 0; i < 49; i++) {
 				g_text_output_buf[i] = g_automap_tile_arrowup[48 - i];
 			}
 
-		} else if (dir == 1) {
+		} else if (viewdir_arrow == EAST) {
 
 			memcpy(g_text_output_buf, g_automap_tile_arrowright, 49);
 
 		} else {
+			// viewdir_arrow == WEST
 
 			for (i = 0; i < 49; i++) {
 				g_text_output_buf[i] = g_automap_tile_arrowright[48 - i];
@@ -396,13 +397,13 @@ void draw_automap_square(const signed int x, const signed int y, const signed in
 		}
 	}
 
-	if (color == 7) {
+	if (map_tile_id == MAP_TILE_CROSS) {
 
 		for (i = 0; i < 49; i++) {
 			if (!g_automap_tile_cross[i]) {
 				tile[i] = 0;
 			} else {
-				tile[i] = color;
+				tile[i] = map_tile_id;
 			}
 		}
 	}
@@ -418,12 +419,12 @@ void draw_automap_square(const signed int x, const signed int y, const signed in
  *
  * \param   x           x-coordinate of the building
  * \param   y           y-coordinate of the building
- * \param   dir         direction of the entrance, 0 = NORTH, 1 = EAST,...
+ * \param   viewdir     direction of the entrance, 0 = NORTH, 1 = EAST,...
  */
-void draw_automap_entrance(const signed int x, const signed int y, const signed int dir)
+void draw_automap_entrance(const signed int x, const signed int y, const signed int viewdir)
 {
 	signed int offset_y = y;
-	signed int d = dir;
+	signed int d = viewdir;
 	signed int skipsize;
 	uint8_t *p_img_tile;
 
