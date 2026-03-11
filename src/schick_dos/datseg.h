@@ -2074,7 +2074,7 @@ extern struct ems_tab *g_ems_unused_tab;	// ds:0xbd8c; seg028
 #endif
 extern unsigned char g_visual_square_vals[29];	// ds:0xbd6e; seg003, seg066,seg075, seg077, seg080
 extern signed char g_visual_squares_tex[29];	// ds:0xbd50; seg066, seg075
-extern signed char g_direction_unkn;		// ds:0xbd4f; seg003
+extern signed char g_viewdir_flag_bogus;		// ds:0xbd4f; seg003 // write-only
 extern unsigned char g_steptarget_back;		// ds:0xbd4e; seg003, seg066, seg076
 extern unsigned char g_steptarget_front;	// ds:0xbd4d; seg003, seg066, seg076, seg099
 extern signed char g_new_menu_icons[9];		// ds:0xbd38; seg002, seg026, seg066, seg076, seg099

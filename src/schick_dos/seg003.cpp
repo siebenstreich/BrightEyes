@@ -32,7 +32,7 @@ signed int update_direction(const unsigned char mod)
 	gs_viewdir = ((gs_viewdir + mod) & 0x3);
 
 	/* set bogus variable to 1 */
-	g_direction_unkn = 1;
+	g_viewdir_flag_bogus = 1;
 
 	return -1;
 }
