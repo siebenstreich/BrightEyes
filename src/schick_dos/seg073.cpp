@@ -687,34 +687,34 @@ void tavern_follow_informer(void)
 		do_talk(6, 0);
 		gs_x_bak = 8;
 		gs_y_bak = 6;
-		gs_viewdir = 3;
+		gs_viewdir = WEST;
 		break;
 	}
 	case 6: {
 		do_talk(8, 0);
 		gs_x_bak = 5;
 		gs_y_bak = 4;
-		gs_viewdir = 3;
+		gs_viewdir = WEST;
 		break;
 	}
 	case 7: {
 		do_talk(8, 1);
 		gs_x_bak = 12;
 		gs_y_bak = 10;
-		gs_viewdir = 1;
+		gs_viewdir = EAST;
 		break;
 	}
 	case 8: {
 		do_talk(10, 1);
 		gs_x_bak = gs_y_bak = 7;
-		gs_viewdir = 1;
+		gs_viewdir = EAST;
 		break;
 	}
 	case 14: {
 		do_talk(8, 2);
 		gs_x_bak = 5;
 		gs_y_bak = 8;
-		gs_viewdir = 0;
+		gs_viewdir = NORTH;
 		break;
 	}
 	}
