@@ -138,9 +138,9 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 	signed int target_x;
 	signed int target_y;
 	signed int viewdir;
-	signed int l7;
-	signed int l8;
-	signed int l9;
+	signed int viewdir_1;
+	signed int viewdir_2;
+	signed int viewdir_3;
 	signed int i;
 	int8_t *p_ani_clip_base;
 	int8_t *p_ani_clip_weapon;
@@ -199,6 +199,12 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[l1]);
 	g_fig_ani_tracks[ani_track_id][242] = hero->actor_sprite_id;
 
+	/* Concerning the following code block: There are parallel code blocks in
+	 * prepare_enemy_ani(...) in seg036.cpp
+	 * FIG_prepare_hero_ani(...) in seg037.cpp
+	 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 */
 	if (
 		check_hero(hero)
 		&& (hero->viewdir != viewdir)
@@ -212,31 +218,33 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 		)
 	) {
 			g_fig_ani_tracks[ani_track_id][0] = 0;
-			l8 = l7 = -1;
-			l9 = hero->viewdir;
-			l8 = l9;
-			l9++;
 
-			if (l9 == 4) {
-				l9 = 0;
+			viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
+			viewdir_3 = hero->viewdir;
+			viewdir_2 = viewdir_3;
+
+			viewdir_3++;
+			if (viewdir_3 == FIG_VIEWDIR__END) {
+				viewdir_3 = FIG_VIEWDIR__BEGIN;
 			}
 
-			if (l9 != viewdir) {
-				l7 = l9;
-				l9++;
-				if (l9 == 4) {
-					l9 = 0;
+			if (viewdir_3 != viewdir) {
+				viewdir_1 = viewdir_3;
+
+				viewdir_3++;
+				if (viewdir_3 == FIG_VIEWDIR__END) {
+					viewdir_3 = FIG_VIEWDIR__BEGIN;
 				}
 
-				if (l9 != viewdir) {
-					l8 = hero->viewdir + 4;
-					l7 = -1;
+				if (viewdir_3 != viewdir) {
+					viewdir_2 = hero->viewdir + 4;
+					viewdir_1 = FIG_VIEWDIR__NONE;
 				}
 			}
 
 			hero->viewdir = viewdir;
 
-			if (l7 == -1) {
+			if (viewdir_1 == FIG_VIEWDIR__NONE) {
 				for (i = 0; i < 2; i++) {
 					*p_ani_clip_base++ = -5;
 					*p_ani_clip_base++ = 0;
@@ -244,10 +252,10 @@ void FANI_prepare_fight_hero_ani(const signed int ani_track_id, struct struct_he
 				}
 			}
 
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l8], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-			if (l7 != -1) {
-				p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l7], ANI_SRC_FILE_ID_ANI_DAT);
+			if (viewdir_1 != FIG_VIEWDIR__NONE) {
+				p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
 			}
 
 			*p_ani_clip_base++ = -4;
@@ -366,9 +374,9 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	signed int target_x;
 	signed int target_y;
 	signed int viewdir;
-	signed int l7;
-	signed int l8;
-	signed int l9;
+	signed int viewdir_1;
+	signed int viewdir_2;
+	signed int viewdir_3;
 	signed int i;
 	int8_t *p_ani_clip_base;
 	int8_t *p_ani_clip_weapon;
@@ -438,6 +446,13 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 	g_fig_ani_tracks[ani_track_id][0] = get_seq_header(ani_index_ptr[l1]);
 	g_fig_ani_tracks[ani_track_id][242] = enemy->actor_sprite_id;
 
+	/* Concerning the following code block: There are parallel code blocks in
+	 * prepare_enemy_ani(...) in seg036.cpp
+	 * FIG_prepare_hero_ani(...) in seg037.cpp
+	 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
+	 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+	 */
+
 	/* first the enemy may turn */
 	if (
 		(enemy->viewdir != viewdir)
@@ -455,36 +470,46 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 		g_fig_ani_tracks[ani_track_id][0] = 0;
 
 		/* find out the new direction */
-		l8 = l7 = -1;
+		viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
 
-		/* try to turn right 90 degrees */
-		l9 = enemy->viewdir;
-		l8 = l9;
-		l9++;
+		viewdir_3 = enemy->viewdir;
+		viewdir_2 = viewdir_3;
 
-		if (l9 == 4) {
-			l9 = 0;
+		/* turn right by 90 degrees */
+		viewdir_3++;
+		if (viewdir_3 == FIG_VIEWDIR__END) {
+			viewdir_3 = FIG_VIEWDIR__BEGIN;
 		}
 
-		if (l9 != viewdir) {
-			l7 = l9;
-			l9++;
-			if (l9 == 4) {
-				l9 = 0;
+		if (viewdir_3 != viewdir) {
+			/* still not the same direction */
+			viewdir_1 = viewdir_3; // misleading, setting viewdir_1 to any value != FIG_VIEWDIR__NONE would do.
+
+			/* turn right by 90 degrees for the second time */
+			viewdir_3++;
+			if (viewdir_3 == FIG_VIEWDIR__END) {
+				viewdir_3 = FIG_VIEWDIR__BEGIN;
 			}
 
-			if (l9 != viewdir) {
-				l8 = enemy->viewdir + 4;
-				l7 = -1;
+			if (viewdir_3 != viewdir) {
+				/* still not the same direction */
+				/* So: correct direction is turning left by 90 degrees from the starting position. */
+				viewdir_2 = enemy->viewdir + 4;
+				viewdir_1 = FIG_VIEWDIR__NONE;
 			}
 		}
 
+		/* outcome:                   viewdir_1                                         viewdir_2
+		 * turn right by 90 degrees   FIG_VIEWDIR__NONE                                 initial viewdir
+		 * turn by 180 degrees        initial viewdir, turned 90 degrees to the right   initial viewdir
+		 * turn left by 90 degrees    FIG_VIEWDIR__NONE                                 (initial viewdir) + 4
+		 */
 
 		/* set the new direction in enemy sheet */
 		enemy->viewdir = viewdir;
 
-		/* only if the turn is 90 degree */
-		if (l7 == -1) {
+		if (viewdir_1 == FIG_VIEWDIR__NONE) {
+			/* attacking enemy turns by 90 degrees (left or right) */
 			/* do not move for 2 frames */
 			for (i = 0; i < 2; i++) {
 				*p_ani_clip_base++ = -5;
@@ -493,18 +518,21 @@ void FANI_prepare_fight_enemy_ani(const signed int ani_track_id, struct enemy_sh
 			}
 		}
 
-		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l8], 1);
+		p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
 
-		if (l7 != -1) {
-			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[l7], 1);
+		if (viewdir_1 != FIG_VIEWDIR__NONE) {
+			/* attacking enemy turned by 180 degrees */
+			/* show sprite turned 90 degrees to the right (intermediate turning state) */
+			p_ani_clip_base += copy_ani_seq(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
 		}
 
 		*p_ani_clip_base++ = -4;
 		*p_ani_clip_base++ = get_seq_header(ani_index_ptr[l1]);
 		*p_ani_clip_base++ = 0;
 	} else {
-		/* do not move for 5 frames */
+		/* attacking enemy is already heading toward the target and does not turn. */
 		for (i = 0; i < 5; i++) {
+			/* do not move for 5 frames */
 			*p_ani_clip_base++ = -5;
 			*p_ani_clip_base++ = 0;
 			*p_ani_clip_base++ = 0;

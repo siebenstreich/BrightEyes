@@ -12,6 +12,6 @@ void FIG_unused(const signed int, const signed int, signed int*, signed int*);
 void FIG_find_path_to_target_backtrack(int8_t*, signed int, signed int, signed int, const signed char, const signed int, const signed int, const signed int);
 /* 0x34 */
 /* static */
-signed int FIG_count_direction_changes_of_path(signed char*);
+signed int FIG_num_viewdir_changes_of_path(signed char*);
 /* 0x39 */
 signed int FIG_find_path_to_target(uint8_t *, const signed int, const signed int, const signed int, const signed int);

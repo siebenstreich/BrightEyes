@@ -120,39 +120,44 @@ void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 
 	while (g_fig_move_pathdir[i] != -1) {
 
+		/* Concerning the following code block: There are parallel code blocks in
+		 * prepare_enemy_ani(...) in seg036.cpp
+		 * FIG_prepare_hero_ani(...) in seg037.cpp
+		 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
+		 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+		 */
 		if (hero->viewdir != g_fig_move_pathdir[i]) {
 
-			viewdir_2 = viewdir_1 = -1;
+			viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
 			viewdir_3 = hero->viewdir;
 			viewdir_2 = viewdir_3;
-			viewdir_3++;
 
-			if (viewdir_3 == 4) {
-				viewdir_3 = 0;
+			viewdir_3++;
+			if (viewdir_3 == FIG_VIEWDIR__END) {
+				viewdir_3 = FIG_VIEWDIR__BEGIN;
 			}
 
 			if (g_fig_move_pathdir[i] != viewdir_3) {
 
 				viewdir_1 = viewdir_3;
-				viewdir_3++;
 
-				if (viewdir_3 == 4) {
-					viewdir_3 = 0;
+				viewdir_3++;
+				if (viewdir_3 == FIG_VIEWDIR__END) {
+					viewdir_3 = FIG_VIEWDIR__BEGIN;
 				}
 
 				if (g_fig_move_pathdir[i] != viewdir_3) {
 
 					viewdir_2 = hero->viewdir + 4;
-					viewdir_1 = -1;
+					viewdir_1 = FIG_VIEWDIR__NONE;
 				}
 			}
 
-			/* set heroes looking direction */
 			hero->viewdir = g_fig_move_pathdir[i];
 
 			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[viewdir_2], ANI_SRC_FILE_ID_ANI_DAT);
 
-			if (viewdir_1 != -1) {
+			if (viewdir_1 != FIG_VIEWDIR__NONE) {
 				p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[viewdir_1], ANI_SRC_FILE_ID_ANI_DAT);
 			}
 		}
@@ -314,7 +319,7 @@ signed int AFIG_can_attack_neighbour(const signed int start_x, const signed int 
  *
  * \param   x           x-coordinate of the hero
  * \param   y           y-coordinate of the hero
- * \param   dir         looking direction of the hero
+ * \param   viewdir     viewing direction of the hero
  * \param   renegade    0 = hero is normal, 1 = hero is renegade
  * \return              0 = no target found, fight-id of the target
  */
@@ -467,8 +472,8 @@ signed int AFIG_select_range_target(struct struct_hero *hero, const signed int h
 
 				count++;
 
-				if (++viewdir == 4) {
-					viewdir = 0;
+				if (++viewdir == FIG_VIEWDIR__END) {
+					viewdir = FIG_VIEWDIR__BEGIN;
 				}
 			}
 		}

@@ -363,11 +363,11 @@ signed char FIG_cb_select_target(signed int *px, signed int *py, const signed in
 /* determine free position (*px,*py) for new enemy to appear on chessboard
  * if the desired position (x,y) is occupied, a free position is determined as
  * close as possible to this position.
- * mode is 1 if the enemy has a double-size sprite (such as wolves)
+ * double_size is 1 if the enemy has a double-size sprite (such as wolves)
  */
-void FIG_find_latecomer_position(const signed int x, const signed int y, signed int *px, signed int *py, const signed int dir, const signed int mode)
+void FIG_find_latecomer_position(const signed int x, const signed int y, signed int *px, signed int *py, const signed int viewdir, const signed int double_size)
 {
-	signed int new_dir;
+	signed int new_viewdir;
 	signed int dist;
 	signed int new_x;
 	signed int new_y;
@@ -382,11 +382,11 @@ void FIG_find_latecomer_position(const signed int x, const signed int y, signed 
 
 	if (get_cb_val(x, y) == 0) {
 
-		if (mode == 0) {
+		if (double_size == 0) {
 			return;
 		}
 
-		if (get_cb_val(x - a.offset[dir].x, y - a.offset[dir].y) == 0) {
+		if (get_cb_val(x - a.offset[viewdir].x, y - a.offset[viewdir].y) == 0) {
 			return;
 		}
 	}
@@ -395,15 +395,15 @@ void FIG_find_latecomer_position(const signed int x, const signed int y, signed 
 
 	while (!done) {
 
-		for (new_dir = 0; new_dir < 4; new_dir++) {
+		for (new_viewdir = FIG_VIEWDIR__BEGIN; new_viewdir < FIG_VIEWDIR__END; new_viewdir++) {
 
-			new_x = *px + a.offset[new_dir].x * dist;
-			new_y = *py + a.offset[new_dir].y * dist;
+			new_x = *px + a.offset[new_viewdir].x * dist;
+			new_y = *py + a.offset[new_viewdir].y * dist;
 
 			if ((new_x >= 0) && (new_x < 24) && (new_y >= 0) && (new_y < 24) && !get_cb_val(new_x, new_y))
 			{
 
-				if ((mode == 0) || (!get_cb_val(new_x - a.offset[dir].x, new_y - a.offset[dir].y)))
+				if ((double_size == 0) || (!get_cb_val(new_x - a.offset[viewdir].x, new_y - a.offset[viewdir].y)))
 				{
 					done = 1;
 					*px = new_x;

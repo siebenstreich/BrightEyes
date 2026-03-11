@@ -4592,7 +4592,7 @@ void sub_hero_le(struct struct_hero *hero, const signed int le)
 
 				p_fighter = FIG_get_fighter(hero->fighter_id);
 
-				/* update looking dir and other  */
+				/* update viewing direction and more */
 				p_fighter->nvf_no = hero->viewdir;
 				p_fighter->reload = -1;
 				p_fighter->offsetx = 0;

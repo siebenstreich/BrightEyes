@@ -98,30 +98,36 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 
 	while (g_fig_move_pathdir[i] != -1) {
 
+		/* Concerning the following code block: There are parallel code blocks in
+		 * prepare_enemy_ani(...) in seg036.cpp
+		 * FIG_prepare_hero_ani(...) in seg037.cpp
+		 * FANI_prepare_fight_hero_ani(...) in seg044.cpp
+		 * FANI_prepare_fight_enemy_ani(...) in seg044.cpp
+		 */
 		if (enemy->viewdir != g_fig_move_pathdir[i]) {
 
-			viewdir_2 = viewdir_1 = -1;
+			viewdir_2 = viewdir_1 = FIG_VIEWDIR__NONE;
 			viewdir_3 = enemy->viewdir;
 			viewdir_2 = viewdir_3;
-			viewdir_3++;
 
-			if (viewdir_3 == 4) {
-				viewdir_3 = 0;
+			viewdir_3++;
+			if (viewdir_3 == FIG_VIEWDIR__END) {
+				viewdir_3 = FIG_VIEWDIR__BEGIN;
 			}
 
 			if (g_fig_move_pathdir[i] != viewdir_3) {
 
 				viewdir_1 = viewdir_3;
-				viewdir_3++;
 
-				if (viewdir_3 == 4) {
-					viewdir_3 = 0;
+				viewdir_3++;
+				if (viewdir_3 == FIG_VIEWDIR__END) {
+					viewdir_3 = FIG_VIEWDIR__BEGIN;
 				}
 
 				if (g_fig_move_pathdir[i] != viewdir_3) {
 
 					viewdir_2 = enemy->viewdir + 4;
-					viewdir_1 = -1;
+					viewdir_1 = FIG_VIEWDIR__NONE;
 				}
 
 			}
@@ -130,7 +136,7 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
 
 			p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[viewdir_2], 1);
 
-			if (viewdir_1 != -1) {
+			if (viewdir_1 != FIG_VIEWDIR__NONE) {
 
 				p_ani_clip_base += copy_ani_sequence(p_ani_clip_base, ani_index_ptr[viewdir_1], 1);
 			}
@@ -180,8 +186,8 @@ void prepare_enemy_ani(struct enemy_sheet *enemy, const signed int enemy_id)
  *
  * \param   x           x - coordinate of attacker
  * \param   y           y - coordinate of attacker
- * \param   dx          delta to x (looking direction)
- * \param   dy          delta to y (looking direction)
+ * \param   dx          delta to x (viewing direction)
+ * \param   dy          delta to y (viewing direction)
  * \param   mode        0 = common, 1 = attack enemies only, 2 = attack heroes only
  * \return              0 if theres nothing to attack else 1
  */
@@ -241,7 +247,7 @@ signed int FIG_enemy_can_attack_neighbour(const signed int x, const signed int y
  *
  * \param   x           x - coordinate of attacker
  * \param   y           y - coordinate of attacker
- * \param   dir         looking direction
+ * \param   viewdir     viewing direction
  * \param   mode        0 = common, 1 = attack enemies only, 2 = attack heroes only
  * \return              0 if theres nothing to attack in that direction
  *                      or the ID of the attackee.
@@ -621,8 +627,8 @@ signed int FIG_enemy_range_attack(struct enemy_sheet *enemy, const signed int en
 
 				enemy->target_object_id = FIG_search_range_target(x, y, viewdir, attack_foe);
 				cnt++;
-				if (++viewdir == 4) {
-					viewdir = 0;
+				if (++viewdir == FIG_VIEWDIR__END) {
+					viewdir = FIG_VIEWDIR__BEGIN;
 				}
 			}
 
@@ -825,8 +831,8 @@ void FIG_enemy_turn(struct enemy_sheet *enemy, const signed int enemy_id, signed
 				}
 
 				cnt++;
-				if (++viewdir == 4) {
-					viewdir = 0;
+				if (++viewdir == FIG_VIEWDIR__END) {
+					viewdir = FIG_VIEWDIR__BEGIN;
 				}
 			}
 		}

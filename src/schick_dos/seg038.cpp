@@ -107,7 +107,7 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 			signed int dist, const signed char bp_avail,
 			const signed int mode, const signed int double_size, const signed int enemy_id)
 {
-	signed int i;
+	signed int i; /* dual use: viewdir, index for g_fig_move_pathdir */
 	signed int dist_duplicate; /* duplicates the dist variable. apparently redundant */
 	signed int backtrack_x;
 	signed int backtrack_y;
@@ -116,19 +116,20 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 	signed int target_is_escape_square = 0;
 	signed int tail_x;
 	signed int tail_y;
-	signed int dir;
+	signed int viewdir;
 	signed int success;
-	signed int lowest_num_dir_changes;
-	signed int num_dir_changes;
+	signed int lowest_num_viewdir_changes;
+	signed int num_viewdir_changes;
 #ifndef M302de_ORIGINAL_BUGFIX
 	/* potential Original-Bug:
-	 * best_dir is not initialized and may stay so in case that FIG_find_path_to_target_backtrack is called with equal target and hero/enemy position.
+	 * best_viewdir is not initialized and may stay so in case that FIG_find_path_to_target_backtrack
+	 * is called with equal target and hero/enemy position.
 	 * It's not clear however if this does indeed happen.
 	 * See https://www.crystals-dsa-foren.de/showthread.php?tid=5383&pid=155007#pid155007
 	 */
-	signed int best_dir;
+	signed int best_viewdir;
 #else
-	signed int best_dir = 0;
+	signed int best_viewdir = FIG_VIEWDIR__BEGIN;
 #endif
 	int8_t *path_cur;
 	signed int x_bak;
@@ -136,10 +137,10 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 	signed int target_out_of_reach; /* will be set to 1 if the target is out of reach with avail_bp steps. Redundant, as this could simply be tested by (avail_bp < dist). */
 	struct viewdir_offsets inverse_coordinate_offset = g_fig_viewdir_inverse_offsets1;
 
-	int8_t *path_table[4];
+	int8_t *path_table[FIG_VIEWDIR__END];
 
 	target_out_of_reach = 0;
-	lowest_num_dir_changes = 99;
+	lowest_num_viewdir_changes = 99;
 
 	memset(g_text_output_buf, 0, 80);
 	path_table[0] = (int8_t*)g_text_output_buf;
@@ -159,12 +160,12 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 
 	/* the following appears to be a simplistic way to produce paths with few (but not necessarily the fewest possible number of) direction changes.
 	 * the value i in the following loop is the "preferred" direction. The backtracking always tries this direction first. */
-	for (i = 0; i < 4; i++) {
+	for (i = FIG_VIEWDIR__BEGIN; i < FIG_VIEWDIR__END; i++) {
 
 		dist = dist_bak;
 		target_x = x_bak;
 		target_y = y_bak;
-		dir = i; /* start with the preferred direction */
+		viewdir = i; /* start with the preferred direction */
 
 		path_cur = path_table[i];
 		dist_duplicate = dist;
@@ -179,10 +180,10 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 
 			while (success == 0) {
 
-				backtrack_y = target_y + inverse_coordinate_offset.offset[dir].y;
-				backtrack_x = target_x + inverse_coordinate_offset.offset[dir].x;
-				tail_y = backtrack_y + inverse_coordinate_offset.offset[dir].y;
-				tail_x = backtrack_x + inverse_coordinate_offset.offset[dir].x;
+				backtrack_y = target_y + inverse_coordinate_offset.offset[viewdir].y;
+				backtrack_x = target_x + inverse_coordinate_offset.offset[viewdir].x;
+				tail_y = backtrack_y + inverse_coordinate_offset.offset[viewdir].y;
+				tail_x = backtrack_x + inverse_coordinate_offset.offset[viewdir].x;
 
 				if ((backtrack_y < 24) && (backtrack_y >= 0) && (backtrack_x < 24) && (backtrack_x >= 0))
 				{
@@ -218,7 +219,7 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 							target_out_of_reach = 1;
 						} else {
 							/* otherwise, write the found direction to the path */
-							path_cur[dist_duplicate] = (signed char)dir;
+							path_cur[dist_duplicate] = (signed char)viewdir;
 							dist_duplicate--;
 						}
 
@@ -229,10 +230,10 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 
 				if (success == 0) {
 
-					dir++;
+					viewdir++;
 
-					if  (dir == 4) {
-						dir = 0;
+					if  (viewdir == FIG_VIEWDIR__END) {
+						viewdir = FIG_VIEWDIR__BEGIN;
 					}
 				}
 			}
@@ -248,14 +249,14 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 
 		if (*path_cur != -1) {
 
-			num_dir_changes = FIG_count_direction_changes_of_path(path_cur);
+			num_viewdir_changes = FIG_num_viewdir_changes_of_path(path_cur);
 
-			if (num_dir_changes < lowest_num_dir_changes) {
+			if (num_viewdir_changes < lowest_num_viewdir_changes) {
 
-				best_dir = i;
-				lowest_num_dir_changes = num_dir_changes;
+				best_viewdir = i;
+				lowest_num_viewdir_changes = num_viewdir_changes;
 
-				if (num_dir_changes == 0) {
+				if (num_viewdir_changes == 0) {
 					break;
 				}
 			}
@@ -263,7 +264,7 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 	}
 
 	/* TODO: g_fig_move_pathdir is only 10 bytes, but should be enlarged */
-	memcpy(g_fig_move_pathdir, path_table[best_dir], 20);
+	memcpy(g_fig_move_pathdir, path_table[best_viewdir], 20);
 
 	/* In the way the path has been created, it is terminated by at least one symbol -1.
 	 * In the case that the path doesnt reach the target (because of insufficient bp_avail),
@@ -278,7 +279,7 @@ void FIG_find_path_to_target_backtrack(int8_t *dist_table_ptr, signed int target
 }
 
 //static
-signed int FIG_count_direction_changes_of_path(signed char *path_ptr)
+signed int FIG_num_viewdir_changes_of_path(signed char *path_ptr)
 {
 
 	signed int i = 0;
@@ -321,7 +322,7 @@ signed int FIG_count_direction_changes_of_path(signed char *path_ptr)
 signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id, const signed int x_in, const signed int y_in, const signed int mode)
  {
 	signed int nr_targets_reached;
-	signed int i;
+	signed int i; /* multi use: index for target_reached_x, hero_pos, viewdir */
 	signed int target_reached = 0;
 	signed int dist = 0;
 	signed int new_squares_reached;
@@ -331,9 +332,9 @@ signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id
 	signed int y;
 	signed int tail_x;
 	signed int tail_y;
-	signed int dir;
-	signed int num_dir_changes;
-	signed int lowest_num_dir_changes;
+	signed int viewdir;
+	signed int num_viewdir_changes;
+	signed int lowest_num_viewdir_changes;
 	signed int best_target;
 	signed char object_id_or_dist_entry; /* used for both a chessboard entry and as a distance table entry */
 	signed char object_id;
@@ -421,15 +422,15 @@ signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id
 					/* hero_ptr points to an actual alive hero in the current group */
 					FIG_search_obj_on_cb(i + 1, &x, &y);
 
-					for (dir = 0; dir < 4; dir++) {
+					for (viewdir = FIG_VIEWDIR__BEGIN; viewdir < FIG_VIEWDIR__END; viewdir++) {
 
 						done = 0;
 						ranged_dist = 1;
 
 						while (done == 0) {
 
-							new_y = y + ranged_dist * coordinate_offset.offset[dir].y;
-							new_x = x + ranged_dist * coordinate_offset.offset[dir].x;
+							new_y = y + ranged_dist * coordinate_offset.offset[viewdir].y;
+							new_x = x + ranged_dist * coordinate_offset.offset[viewdir].x;
 
 
 							if ((new_y < 0) || (new_y > 23) || (new_x < 0) ||
@@ -474,13 +475,13 @@ signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id
 
 					FIG_search_obj_on_cb(i + 10, &x, &y);
 
-					for (dir = 0; dir < 4; dir++) {
+					for (viewdir = FIG_VIEWDIR__BEGIN; viewdir < FIG_VIEWDIR__END; viewdir++) {
 						done = 0;
 						ranged_dist = 1;
 
 						while (done == 0) {
-							new_y = y + ranged_dist * coordinate_offset.offset[dir].y;
-							new_x = x + ranged_dist * coordinate_offset.offset[dir].x;
+							new_y = y + ranged_dist * coordinate_offset.offset[viewdir].y;
+							new_x = x + ranged_dist * coordinate_offset.offset[viewdir].x;
 
 							if ((new_y < 0) || (new_y > 23) || (new_x < 0) ||
 #ifndef M302de_ORIGINAL_BUGFIX
@@ -536,7 +537,7 @@ signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id
 
 				if (*(dist_table_ptr + y * 25 + x) == (dist - 1)) {
 
-					for (i = 0; i < 4; i++) {
+					for (i = FIG_VIEWDIR__BEGIN; i < FIG_VIEWDIR__END; i++) {
 
 						new_y = y + coordinate_offset.offset[i].y;
 						new_x = x + coordinate_offset.offset[i].x;
@@ -676,7 +677,7 @@ signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id
 		if (nr_targets_reached) {
 			target_reached = 1;
 			best_target = 0;
-			lowest_num_dir_changes = 99;
+			lowest_num_viewdir_changes = 99;
 
 			/* find target whose path has the lowest number of direction changes */
 			for (i = 0; i < nr_targets_reached; i++) {
@@ -687,15 +688,15 @@ signed int FIG_find_path_to_target(uint8_t *actor_ptr, const signed int actor_id
 					FIG_find_path_to_target_backtrack(dist_table_ptr, target_reached_x[i], target_reached_y[i], dist, ((struct struct_hero*)actor_ptr)->fight_bp_left, mode, double_size, actor_id);
 				}
 
-				num_dir_changes = FIG_count_direction_changes_of_path(g_fig_move_pathdir);
+				num_viewdir_changes = FIG_num_viewdir_changes_of_path(g_fig_move_pathdir);
 
-				if (num_dir_changes == 0) {
+				if (num_viewdir_changes == 0) {
 					best_target = i;
 					break;
 				}
 
-				if (num_dir_changes < lowest_num_dir_changes) {
-					lowest_num_dir_changes = num_dir_changes;
+				if (num_viewdir_changes < lowest_num_viewdir_changes) {
+					lowest_num_viewdir_changes = num_viewdir_changes;
 					best_target = i;
 				}
 			}

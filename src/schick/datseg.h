@@ -1774,12 +1774,12 @@ extern signed char g_finalfight_tumult;		//ds:0x5f30; seg033, seg041
 extern signed char g_autofight_magic;		//ds:0x5f31; seg033, seg036
 extern const signed int g_cb_obj_nonobstacle[27];	//ds:0x5f46; seg034, seg036, seg037
 
-extern const signed char g_gfxtab_double_size_extra_ox[4];		//ds:0x6028; seg005, seg039
-extern const signed char g_gfxtab_double_size_extra_oy[4];		//ds:0x602c; seg005, seg039
-extern const signed char g_gfxtab_double_size_x1[4];			//ds:0x6030; seg005, seg039, seg043
-extern const signed char g_gfxtab_double_size_x2[4];			//ds:0x6034; seg005, seg039, seg043
-extern const signed char g_gfxtab_double_size_extra_x1[4];		//ds:0x6038; seg005, seg039
-extern const signed char g_gfxtab_double_size_extra_x2[4];		//ds:0x603c; seg005, seg039
+extern const signed char g_gfxtab_double_size_extra_ox[FIG_VIEWDIR__END];		//ds:0x6028; seg005, seg039
+extern const signed char g_gfxtab_double_size_extra_oy[FIG_VIEWDIR__END];		//ds:0x602c; seg005, seg039
+extern const signed char g_gfxtab_double_size_x1[FIG_VIEWDIR__END];			//ds:0x6030; seg005, seg039, seg043
+extern const signed char g_gfxtab_double_size_x2[FIG_VIEWDIR__END];			//ds:0x6034; seg005, seg039, seg043
+extern const signed char g_gfxtab_double_size_extra_x1[FIG_VIEWDIR__END];		//ds:0x6038; seg005, seg039
+extern const signed char g_gfxtab_double_size_extra_x2[FIG_VIEWDIR__END];		//ds:0x603c; seg005, seg039
 extern const signed int g_gfxtab_obj_offset_x[63];	//ds:0x6060; seg032, seg040
 extern const signed int g_gfxtab_obj_offset_y[63];	//ds:0x6060; seg032, seg040
 
@@ -2081,7 +2081,7 @@ extern struct ems_tab *g_ems_unused_tab;	// ds:0xbd8c; seg028
 #endif
 extern unsigned char g_visual_square_vals[29];	// ds:0xbd6e; seg003, seg066,seg075, seg077, seg080
 extern signed char g_visual_squares_tex[29];	// ds:0xbd50; seg066, seg075
-extern signed char g_viewdir_flag_bogus;		// ds:0xbd4f; seg003
+extern signed char g_viewdir_flag_bogus;		// ds:0xbd4f; seg003 // write-only
 extern unsigned char g_steptarget_back;		// ds:0xbd4e; seg003, seg066, seg076
 extern unsigned char g_steptarget_front;	// ds:0xbd4d; seg003, seg066, seg076, seg099
 extern signed char g_new_menu_icons[9];		// ds:0xbd38; seg002, seg026, seg066, seg076, seg099

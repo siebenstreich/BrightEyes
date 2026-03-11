@@ -18,14 +18,14 @@
 #include "seg027.h"
 #include "seg032.h"
 
-static const struct struct_point g_gfxtab_double_size_extra_cb[4] = {
+static const struct struct_point g_gfxtab_double_size_extra_cb[FIG_VIEWDIR__END] = {
 	{ -1,  0 }, {  0,  1 }, {  1,  0 }, {  0, -1 } }; // ds:0x6018, ; { {-1,0}, , , {0,-1} }
-const signed char g_gfxtab_double_size_extra_ox[4] = { 10, -10, -10, 10 }; // ds:0x6028, { 10,-10,-10,10 }
-const signed char g_gfxtab_double_size_extra_oy[4] = { 5, 5, -5, -5 }; // ds:0x602c, { 10,-10,-5,-5 }
-const signed char g_gfxtab_double_size_x1[4] = { 16, 0, 0, 16 }; // ds:0x6030
-const signed char g_gfxtab_double_size_x2[4] = { 31, 15, 15, 31 }; // ds:0x6034
-const signed char g_gfxtab_double_size_extra_x1[4] = { 0, 16, 16, 0 }; // ds:0x6038
-const signed char g_gfxtab_double_size_extra_x2[4] = { 15, 31, 31, 15 }; // ds:0x603c
+const signed char g_gfxtab_double_size_extra_ox[FIG_VIEWDIR__END] = { 10, -10, -10, 10 }; // ds:0x6028, { 10,-10,-10,10 }
+const signed char g_gfxtab_double_size_extra_oy[FIG_VIEWDIR__END] = { 5, 5, -5, -5 }; // ds:0x602c, { 10,-10,-5,-5 }
+const signed char g_gfxtab_double_size_x1[FIG_VIEWDIR__END] = { 16, 0, 0, 16 }; // ds:0x6030
+const signed char g_gfxtab_double_size_x2[FIG_VIEWDIR__END] = { 31, 15, 15, 31 }; // ds:0x6034
+const signed char g_gfxtab_double_size_extra_x1[FIG_VIEWDIR__END] = { 0, 16, 16, 0 }; // ds:0x6038
+const signed char g_gfxtab_double_size_extra_x2[FIG_VIEWDIR__END] = { 15, 31, 31, 15 }; // ds:0x603c
 
 
 /**
@@ -196,10 +196,10 @@ void fill_enemy_sheet(const signed int enemy_id, const signed char target_object
  * \param[in]   y           Y-Coordinate
  * \param[in]   object_id   object ID
  * \param[in]   type        typus for heroes, monster_id for enemies
- * \param[in]   dir         looking direction
+ * \param[in]   viewdir     viewing direction
  * \return  1 if the placement was successful or 0 if not.
  */
-signed int place_obj_on_cb(const signed int x, const signed int y, const signed int object_id, const signed int type, const signed char dir)
+signed int place_obj_on_cb(const signed int x, const signed int y, const signed int object_id, const signed int type, const signed char viewdir)
 {
 	/* check if an object is already on that square
 		check if the object id is valid */
@@ -242,21 +242,21 @@ signed int place_obj_on_cb(const signed int x, const signed int y, const signed 
 		}
 
 	} else {
-		/* if object is a double-size enemy  */
+		/* if object is a double-size enemy */
 		if (object_id >= 10 && is_in_byte_array(type, g_double_size_actor_sprite_id_table))
 		{
 
 			/* check if square is empty */
-			if ((get_cb_val(x + g_gfxtab_double_size_extra_cb[dir].x, y + g_gfxtab_double_size_extra_cb[dir].y)) ||
-				(y + g_gfxtab_double_size_extra_cb[dir].y < 0) ||
-				(y + g_gfxtab_double_size_extra_cb[dir].y > 23) ||
-				(x + g_gfxtab_double_size_extra_cb[dir].x < 0 ||
-				(x + g_gfxtab_double_size_extra_cb[dir].x > 23)))
+			if ((get_cb_val(x + g_gfxtab_double_size_extra_cb[viewdir].x, y + g_gfxtab_double_size_extra_cb[viewdir].y)) ||
+				(y + g_gfxtab_double_size_extra_cb[viewdir].y < 0) ||
+				(y + g_gfxtab_double_size_extra_cb[viewdir].y > 23) ||
+				(x + g_gfxtab_double_size_extra_cb[viewdir].x < 0 ||
+				(x + g_gfxtab_double_size_extra_cb[viewdir].x > 23)))
 			{
 				return 0;
 			}
 
-			FIG_set_cb_object(y + g_gfxtab_double_size_extra_cb[dir].y, x + g_gfxtab_double_size_extra_cb[dir].x, object_id + 20);
+			FIG_set_cb_object(y + g_gfxtab_double_size_extra_cb[viewdir].y, x + g_gfxtab_double_size_extra_cb[viewdir].x, object_id + 20);
 		}
 	}
 

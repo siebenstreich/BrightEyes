@@ -16,10 +16,13 @@ enum {
  * oriented such that FIGHT_VIEWDIR_UP corresponds to NORTH, FIGHT_VIEWDIR_RIGHT corresponds to EAST etc.
  */
 enum {
-	FIG_VIEWDIR_RIGHT = 0, /* on screen: toward the bottom right */
-	FIG_VIEWDIR_DOWN  = 1, /* on screen: toward the bottom left */
-	FIG_VIEWDIR_LEFT  = 2, /* on screen: toward the top left */
-	FIG_VIEWDIR_UP    = 3  /* on screen: toward the top right */
+	FIG_VIEWDIR__NONE  = -1,
+	FIG_VIEWDIR__BEGIN =  0,
+	FIG_VIEWDIR_RIGHT  =  0, /* on screen: toward the bottom right */
+	FIG_VIEWDIR_DOWN   =  1, /* on screen: toward the bottom left */
+	FIG_VIEWDIR_LEFT   =  2, /* on screen: toward the top left */
+	FIG_VIEWDIR_UP     =  3, /* on screen: toward the top right */
+	FIG_VIEWDIR__END   =  4
 };
 
 enum {

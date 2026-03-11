@@ -170,7 +170,7 @@ void FIG_do_hero_action(struct struct_hero* hero, const signed int hero_pos)
 
 				if (p_target_enemy->viewdir != viewdir) {
 
-					/* target enemy is not looking towards the attacker */
+					/* target enemy is not facing the attacker */
 
 					object_id = get_cb_val(attacker_x + inverse_offset.offset[viewdir].x, attacker_y + inverse_offset.offset[viewdir].y);
 					/* object_id now refers to the target */

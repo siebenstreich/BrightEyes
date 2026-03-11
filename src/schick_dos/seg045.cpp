@@ -14,7 +14,7 @@
 #include "seg038.h"
 #include "seg039.h"
 
-static const signed int g_gfxtab_projectile_ox[6][4] = {
+static const signed int g_gfxtab_projectile_ox[6][FIG_VIEWDIR__END] = {
 	{ -17, -3, -3, 3 },
 	{ -17, -3, -3, 3 },
 	{ -17, -3, -3, 3 },
@@ -22,7 +22,7 @@ static const signed int g_gfxtab_projectile_ox[6][4] = {
 	{ -17, -3, -3, 3 },
 	{ -17, -3, -3, 3 }
 }; // ds:0x6198
-static const signed int g_gfxtab_projectile_oy[6][4] = {
+static const signed int g_gfxtab_projectile_oy[6][FIG_VIEWDIR__END] = {
 	{ -30, -20, -20, -20 },
 	{ -30, -20, -20, -20 },
 	{ -30, -20, -20, -20 },
@@ -65,7 +65,7 @@ static const int8_t g_anitab_projectile_data[24][7] = {
 	{-2, -1,  0, 22, 0, 0, -1},
 	{-2,  0,  1, 23, 0, 0, -1}
 }; // ds:0x621c, arrays, each terminated by -1
-static const int8_t *g_anitab_projectile_index2[6][4] = {
+static const int8_t *g_anitab_projectile_index2[6][FIG_VIEWDIR__END] = {
 	{g_anitab_projectile_data[0],  g_anitab_projectile_data[1],  g_anitab_projectile_data[2],  g_anitab_projectile_data[3]},
 	{g_anitab_projectile_data[4],  g_anitab_projectile_data[5],  g_anitab_projectile_data[6],  g_anitab_projectile_data[7]},
 	{g_anitab_projectile_data[8],  g_anitab_projectile_data[9],  g_anitab_projectile_data[10], g_anitab_projectile_data[11]},
