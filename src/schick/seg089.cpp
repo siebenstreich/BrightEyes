@@ -74,8 +74,8 @@ signed int DNG15_handler(void)
 {
 	signed int target_pos;
 	signed int i;
-	signed int dir;
-	signed int tmp;
+	signed int viewdir;
+	signed int tmp; // multi use: random value, viewdir, group index
 	signed int tw_bak;
 	struct struct_hero *hero;
 
@@ -84,17 +84,17 @@ signed int DNG15_handler(void)
 
 	target_pos = DNG_POS(gs_dungeon_level, gs_x, gs_y);
 
-	dir = gs_viewdir;
+	viewdir = gs_viewdir;
 
 	hero = get_first_hero_available_in_group(); /* UNNEEDED */
 
-	if ((((target_pos == DNG_POS(0,6,3) || target_pos == DNG_POS(0,6,6) || target_pos == DNG_POS(0,6,9)) && dir == EAST) ||
-		((target_pos == DNG_POS(0,12,10) || target_pos == DNG_POS(0,8,10)) && dir == NORTH)) && target_pos != gs_dng_pos_bak)
+	if ((((target_pos == DNG_POS(0,6,3) || target_pos == DNG_POS(0,6,6) || target_pos == DNG_POS(0,6,9)) && viewdir == EAST) ||
+		((target_pos == DNG_POS(0,12,10) || target_pos == DNG_POS(0,8,10)) && viewdir == NORTH)) && target_pos != gs_dng_pos_bak)
 	{
 		/* INFO: a large hall */
 		GUI_output(get_tx(1));
 
-	} else if (((target_pos == DNG_POS(0,3,4) && dir == NORTH) || (target_pos == DNG_POS(0,4,3) && dir == WEST)) && target_pos != gs_dng_pos_bak)
+	} else if (((target_pos == DNG_POS(0,3,4) && viewdir == NORTH) || (target_pos == DNG_POS(0,4,3) && viewdir == WEST)) && target_pos != gs_dng_pos_bak)
 	{
 		/* INFO: entering the tower */
 		GUI_output(get_tx(2));
@@ -165,15 +165,16 @@ signed int DNG15_handler(void)
 		}
 
 	} else if (target_pos == DNG_POS(1,8,1) &&
-			(target_pos != gs_dng_pos_bak || gs_viewdir_bak != dir) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir_bak != viewdir) &&
 			(!gs_dng15_lever_south || !gs_dng15_lever_north))
 	{
-		tmp = dir;
+		tmp = viewdir;
 
 		sprintf(g_dtp2, get_tx(23),
-			(char*)(tmp == 0 ? get_tx(22) :
-				(tmp == 2 ? get_tx(21) :
-				(tmp == 3 ? get_tx(20) : get_tx(19)))));
+			(char*)(tmp == NORTH ? get_tx(22) :
+				(tmp == SOUTH ? get_tx(21) :
+				(tmp == WEST ? get_tx(20) :
+				get_tx(19))))); // tmp == EAST
 
 		for (i = tmp = 0; i < 6; i++)
 		{
@@ -186,13 +187,13 @@ signed int DNG15_handler(void)
 		strcat(g_dtp2, (char*)(tmp == 0 ? get_tx(24) : get_tx(25)));
 		GUI_output(g_dtp2);
 
-		gs_viewdir_bak = (signed char)dir;
+		gs_viewdir_bak = (signed char)viewdir;
 
 	} else if (target_pos == DNG_POS(1,8,5) &&
-			(target_pos != gs_dng_pos_bak || gs_viewdir_bak != dir) &&
+			(target_pos != gs_dng_pos_bak || gs_viewdir_bak != viewdir) &&
 			(!gs_dng15_lever_south || !gs_dng15_lever_north))
 	{
-		tmp = dir;
+		tmp = viewdir;
 
 		sprintf(g_dtp2, get_tx(23),
 				(char*)(tmp == 0 ? get_tx(21) :
@@ -211,7 +212,7 @@ signed int DNG15_handler(void)
 
 		GUI_output(g_dtp2);
 
-		gs_viewdir_bak = (signed char)dir;
+		gs_viewdir_bak = (signed char)viewdir;
 
 	} else if (target_pos == DNG_POS(1,8,2) && target_pos != gs_dng_pos_bak)
 	{
