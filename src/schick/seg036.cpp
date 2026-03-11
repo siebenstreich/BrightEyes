@@ -166,12 +166,12 @@ void FIG_prepare_hero_ani(struct struct_hero *hero, const signed int hero_pos)
 
 		if (g_fig_move_pathdir[i] == g_fig_move_pathdir[i + 1]) {
 
-			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[(g_fig_move_pathdir[i] + 12)], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[g_fig_move_pathdir[i] + 12], ANI_SRC_FILE_ID_ANI_DAT);
 			i += 2;
 			/* BP - 2 */
 			hero->fight_bp_left = hero->fight_bp_left - 2;
 		} else {
-			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[(g_fig_move_pathdir[i] + 8)], ANI_SRC_FILE_ID_ANI_DAT);
+			p_ani_clip_base += load_ani_clip_from_file(p_ani_clip_base, ani_index_ptr[g_fig_move_pathdir[i] + 8], ANI_SRC_FILE_ID_ANI_DAT);
 			i++;
 			/* BP - 1 */
 			hero->fight_bp_left--;
