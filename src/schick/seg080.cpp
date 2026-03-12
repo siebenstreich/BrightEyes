@@ -334,7 +334,7 @@ void DNG04_chest02_loot(struct struct_chest* chest)
  */
 signed int DNG05_handler(void)
 {
-	signed int pos;
+	signed int target_pos;
 	signed int tmp; /* multiple use: mod_slot, answer */
 	signed int tw_bak;
 	struct struct_hero *hero;
@@ -342,9 +342,9 @@ signed int DNG05_handler(void)
 	tw_bak = g_textbox_width;
 	g_textbox_width = 7;
 
-	pos = DNG_POS(gs_dungeon_level, gs_x, + gs_y);
+	target_pos = DNG_POS(gs_dungeon_level, gs_x, + gs_y);
 
-	if (pos == DNG_POS(0,7,14) && pos != gs_dng_pos_bak && !g_dng05_trash_flag)
+	if (target_pos == DNG_POS(0,7,14) && target_pos != gs_dng_pos_bak && !g_dng05_trash_flag)
 	{
 		if (GUI_bool(get_tx(1)) && GUI_bool(get_tx(15)))
 		{
@@ -360,7 +360,7 @@ signed int DNG05_handler(void)
 			add_party_money(20L);
 		}
 
-	} else if (pos == DNG_POS(0,5,12) && pos != gs_dng_pos_bak && !gs_dng05_proviant_flag)
+	} else if (target_pos == DNG_POS(0,5,12) && target_pos != gs_dng_pos_bak && !gs_dng05_proviant_flag)
 	{
 		if (GUI_bool(get_tx(2)))
 		{
@@ -371,7 +371,7 @@ signed int DNG05_handler(void)
 			gs_dng05_proviant_flag = 1;
 		}
 
-	} else if (pos == DNG_POS(0,9,7) && pos != gs_dng_pos_bak && !gs_dng05_bats_flag)
+	} else if (target_pos == DNG_POS(0,9,7) && target_pos != gs_dng_pos_bak && !gs_dng05_bats_flag)
 	{
 		if (GUI_bool(get_tx(4)))
 		{
@@ -380,7 +380,7 @@ signed int DNG05_handler(void)
 			gs_dng05_bats_flag = 1;
 		}
 
-	} else if (pos == DNG_POS(0,3,9) && pos != gs_dng_pos_bak && !gs_dng05_god_flag)
+	} else if (target_pos == DNG_POS(0,3,9) && target_pos != gs_dng_pos_bak && !gs_dng05_god_flag)
 	{
 		do {
 			tmp = GUI_radio(get_tx(6), 2, get_tx(7), get_tx(8));
@@ -393,7 +393,7 @@ signed int DNG05_handler(void)
 
 		gs_dng05_god_flag = 1;
 
-	} else if (pos == DNG_POS(0,8,5) && pos != gs_dng_pos_bak)
+	} else if (target_pos == DNG_POS(0,8,5) && target_pos != gs_dng_pos_bak)
 	{
 		if (random_schick(100) < 30)
 		{
@@ -403,11 +403,11 @@ signed int DNG05_handler(void)
 			do_fight(FIGHT_ID_F061_4B);
 		}
 
-	} else if (pos == DNG_POS(0,11,1) && pos != gs_dng_pos_bak)
+	} else if (target_pos == DNG_POS(0,11,1) && target_pos != gs_dng_pos_bak)
 	{
 		GUI_output(get_tx(11));
 
-	} else if (pos == DNG_POS(0,6,1) && pos != gs_dng_pos_bak)
+	} else if (target_pos == DNG_POS(0,6,1) && target_pos != gs_dng_pos_bak)
 	{
 		if (GUI_bool(get_tx(12)))
 		{
@@ -421,7 +421,7 @@ signed int DNG05_handler(void)
 			hero_disease_test(hero, DISEASE_ID_WUNDFIEBER, 65);
 		}
 
-	} else if (pos == DNG_POS(0,3,14) && pos != gs_dng_pos_bak)
+	} else if (target_pos == DNG_POS(0,3,14) && target_pos != gs_dng_pos_bak)
 	{
 		load_ani(32);
 		init_ani(1);
@@ -433,7 +433,7 @@ signed int DNG05_handler(void)
 		gs_x = 5;
 		g_area_prepared = AREA_TYPE_NONE;
 
-	} else if (pos == DNG_POS(0,6,15) && pos != gs_dng_pos_bak)
+	} else if (target_pos == DNG_POS(0,6,15) && target_pos != gs_dng_pos_bak)
 	{
 		/* the exit of this dungeon */
 		leave_dungeon();
@@ -453,7 +453,7 @@ signed int DNG05_handler(void)
 	}
 
 	g_textbox_width = tw_bak;
-	gs_dng_pos_bak = pos;
+	gs_dng_pos_bak = target_pos;
 
 	return 0;
 }
