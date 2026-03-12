@@ -122,6 +122,9 @@ struct screen_rect {
 #define FIGHT_ROUNDS(n)	(n * 9L)
 /* The duration of a fight round is 9 ticks, which is six seconds. */
 
+#define REVERSE_VIEWDIR(dir) (((dir) + 2) & 0x03)
+#define REVERSE_VIEWDIR_2(dir) (((dir) + 2) % 4)
+
 /* for positions stored in 2 bytes, containing data level, x, y and possibly direction. */
 #define TOWN_POS(x, y) (((x) << 8) + (y))
 #define DNG_POS(level, x, y)	(((level) << 12) + ((x) << 8) + (y))

@@ -433,7 +433,7 @@ signed int DNG09_handler(void)
 		gs_x = gs_travel_destination_x;
 		gs_y = gs_travel_destination_y;
 		gs_town_loc_type = LOCTYPE_NONE;
-		gs_viewdir = ((gs_travel_destination_viewdir + 2) & 3);
+		gs_viewdir = REVERSE_VIEWDIR(gs_travel_destination_viewdir);
 
 		sprintf(g_dtp2,	get_tx(55), get_ttx(gs_journey_destination_town_id + 0xeb));
 

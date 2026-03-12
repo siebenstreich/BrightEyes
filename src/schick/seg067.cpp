@@ -291,7 +291,7 @@ void city_event_6(void)
 	/* fix analogous to to Original-Bug 26.
 	 * The rotation is performed in the function leave_location(), which has been called in do_merchant() above.
 	 * We fix the bug in a hacky way by simply correcting the rotation afterwards. */
-	gs_viewdir = ((gs_viewdir + 2) % 4); /* rotate by 180 degrees */
+			gs_viewdir = REVERSE_VIEWDIR(gs_viewdir); /* rotate by 180 degrees */
 #endif
 		}
 	}
