@@ -2107,7 +2107,7 @@ enum {
 	ITEM_ID_MAGISCHER_BROTBEUTEL              = 184, /* magic breadbag [cannot be found in the game] */
 	ITEM_ID_MAGISCHER_WASSERSCHLAUCH          = 185, /* magic waterskin [cannot be found in the game] */
 	ITEM_ID_REZEPT_FUER_HEILTRANK             = 186, /* recipe for heal potion */
-	ITEM_ID_SCHREIBEN_VON_JADRA               = 187, /* writing of Jarda */
+	ITEM_ID_SCHREIBEN_VON_JADRA               = 187, /* writing of Jadra */
 	ITEM_ID_AMULETT__ORDINARY                 = 188, /* amulet [golden cross. not magic. found in fight F094_02 in DUNGEON_ID_DASPOTASCHATZ ] */
 	ITEM_ID_LOBPREISUNGEN                     = 189, /* praises of the nameless god [found in Tempel des Namenlosen and in Piratenhoehle] */
 	ITEM_ID_MITGLIEDERLISTE                   = 190, /* member list [found in Tempel des Namenlosen] */
